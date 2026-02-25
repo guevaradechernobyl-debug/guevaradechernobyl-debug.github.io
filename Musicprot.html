@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Steven — About Me</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --text: #1e1a2e;
+  --border: #7a4f8a;
+  --accent: #6b5cff;
+}
+
+body.dark {
+  --card: rgba(20,20,35,0.9);
+  --text: #eae6ff;
+  --border: #8c7cc2;
+  --accent: #a59bff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* FULLSCREEN VIDEO BACKGROUND */
+video.bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+/* dark overlay for readability */
+.video-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+/* MAIN CONTENT BLOCK */
+.site-wrapper {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 20px;
+  border-radius: 18px;
+  transition: 0.3s;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+.toggle {
+  cursor: pointer;
+  font-size: 22px;
+}
+
+/* PIXEL INTRO PANEL */
+.pixel-panel {
+  background: rgba(0, 0, 0, 0.45); /* transparent black */
+  color: #d9d9d9;
+  padding: 20px;
+  border: 3px solid #888;
+  box-shadow: inset 0 0 0 2px #fff;
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  font-family: monospace;
+  position: relative;
+  backdrop-filter: blur(6px); /* glass effect */
+}
+
+.pixel-panel::after {
+  content: "";
+  position: absolute;   
+  pointer-events: none;
+}
+
+.pixel-avatar {
+  width: 120px;
+  background: rgb(173, 141, 141);
+  border: 2px solid #b3ad65fd;
+  text-align: center;
+}
+
+.pixel-avatar img {
+  width: 100%;
+  image-rendering: pixelated;
+}
+
+.pixel-avatar small {
+  display: block;
+  font-family: "Press Start 2P", monospace;
+  font-size: 8px;
+  padding: 6px 0;
+  color: #b3ad65fd;
+}
+
+.pixel-title {
+  font-family: "Press Start 2P", monospace;
+  font-size: 18px;
+  color: #b3ad65fd;
+  text-shadow: 2px 2px #05063a;
+  margin-bottom: 15px;
+}
+
+.pixel-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 15px;
+}
+
+.pixel-list li {
+  margin-bottom: 8px;
+  padding-left: 18px;
+  position: relative;
+}
+
+.pixel-list li::before {
+  content: "■";
+  position: absolute;
+  left: 0;
+  color: #b3ad65fd;
+}
+
+/* ABOUT SECTION */
+.about-section {
+  margin-top: 30px;
+  line-height: 1.7;
+}
+
+/* FOOTER */
+footer {
+  margin-top: 50px;
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* MOBILE */
+@media(max-width:700px) {
+  .pixel-panel {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+}
+  /* BACK BUTTON */
+  /* ===== BACK BUTTON (MATCHED TO THIS THEME) ===== */
+
+.panel-header{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  margin-bottom:20px;
+}
+
+.back-btn{
+  font-family:'Press Start 2P', monospace;
+  font-size:10px;
+
+  padding:8px 14px;
+
+  background:rgba(179,173,101,0.08);
+  color:#b3ad65fd;
+
+  border:2px solid #b3ad65fd;
+  box-shadow:
+    inset 0 0 0 2px #2a2445;
+
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.back-btn:hover{
+  background:#b3ad65fd;
+  color:#1e1a2e;
+
+  box-shadow:
+    0 0 12px rgba(179,173,101,.6),
+    inset 0 0 0 2px #2a2445;
+}
+
+.back-btn:active{
+  transform:translateY(2px);
+}
+    /* ===== TOP TRACKS TABLE (SPOTIFY STYLE) ===== */
+
+    .tracks-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 15px;
+  background: rgba(0, 0, 0, 0.45);
+      border: 2px solid ;
+    }
+
+    .tracks-table th,
+    .tracks-table td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark .tracks-table td,
+    body.dark .tracks-table th {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .tracks-table th {
+      font-size: 13px;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    .track-row:hover {
+      background: rgba(0, 51, 204, 0.08);
+      transition: 0.2s;
+    }
+
+    .track-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .track-cover {
+      width: 42px;
+      height: 42px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    .track-artist {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .track-row {
+      cursor: pointer;
+    }
+
+    .album-link {
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .album-link:hover {
+      color: #1db954;
+      /* Spotify green */
+    }
+
+    .clickable {
+      cursor: pointer;
+    }
+
+    .track-description {
+      display: none;
+      color: #ccc;
+      transition: 0.3s ease;
+  animation: expandDesc 0.25s ease-out forwards;
+    }
+    
+
+    .track-description td {
+      padding: 7px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    /* TAGS */
+    .tags {
+      margin-top: 20px;
+    }
+.tracks-table {
+  width: 90%;
+  border-collapse: collapse;
+  table-layout: fixed; /* 🔥 IMPORTANT */
+}
+
+.tracks-table th:first-child,
+.tracks-table td:first-child {
+  width: 35px;
+  text-align: left;
+  padding-right: 10px;
+  padding-left: 17px;
+}
+    .tag {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 20px;
+      background: rgba(0, 51, 204, 0.1);
+      border: 1px solid var(--border);
+      color: #b3ad65fd;
+      cursor: default;
+      transition: 0.2s;
+    }
+
+    .tag:hover {
+      background: var(--accent);
+      color: white;
+    } /* POSTS */
+    .post {
+      background: var(--card);
+      padding: 18px;
+      margin-bottom: 16px;
+      transition: .25s;
+    }
+
+    .post:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+    }
+
+    .post h2 {
+      margin: 0;
+    }
+
+    .date {
+      font-size: 12px;
+      opacity: .6;
+      margin-top: 6px;
+    }
+
+    .post-link {
+      color: inherit;
+      text-decoration: none;
+      display: block;
+    } /* MAIN GRID */
+    .layout {
+      max-width: 1200px;
+      margin: 30px auto;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 20px;
+    }
+
+    @media(max-width:900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+</style>
+</head>
+
+<body>
+
+<!-- VIDEO BACKGROUND -->
+<video class="bg-video" autoplay muted loop playsinline>
+  <source src="Pokemon.mp4 " type="video/mp4">
+</video>
+<div class="video-overlay"></div>
+
+<div class="site-wrapper">
+
+<div class="pixel-panel">
+
+ <div class="panel-header">
+  <button onclick="window.history.back()" class="back-btn">← GO BACK</button>
+</div>
+<header>
+<div class="about-section">
+  <div class="pixel-title">MY TOP MUSIC TRACKS (OF ALL TIME)</div>
+  <div>
+<main>
+          <h4>I thought about including my music tracks in this blog. </h4>
+          <p>🗓️ 12 Feb 2026 | ⏱️~5 minute read </p>
+        </section>
+
+        <!-- BLOG CONTENT -->
+        <div class="post">
+
+          <table class="tracks-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Album</th>
+                <th>Date Released</th>
+                <th>⏱</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr class="track-row clickable">
+                <td>1</td>
+                <td class="track-title">
+                  <img src="EVERYTHING.jpg" class="track-cover">
+                  <div>
+                    EVERYTHING<br>
+                    <span class="track-artist">The Black Skirts</span>
+                  </div>
+                </td>
+                <td>Team Baby</td>
+                <td>Jan 29, 2016 </td>
+                <td>5:03</td>
+              </tr>
+              <tr class="track-description" style="background-color: #7c6746;">
+                <td colspan="5">
+                  This song being at top 1 i'snt an exaggeration. I've discovered it in mid 2020, and from time to time
+                  i found myself growing with it.
+                  It has a euphoric, dreamy vibe, and melodies that feels like my soul is floating. A very special song
+                  that helped me through my tough phases.
+                </td>
+              </tr>
+
+              <tr class="track-row clickable">
+                <td>2</td>
+                <td class="track-title">
+                  <img src="cover2.jpg" class="track-cover">
+                  <div>
+                    Intercourse<br>
+                    <span class="track-artist">Malcolm Todd</span>
+                  </div>
+                </td>
+                <td>Shower Shoes</td>
+                <td>Mar 24, 2023 </td>
+                <td>3:09</td>
+              </tr>
+              <tr class="track-description" style="background-color: #c48b30; color: #0f1115;">
+                <td colspan="5">
+                  Now one of the most underrated in this list. Playing this song reminds of my best life with my cousins
+                  and siblings back in our province, Mindoro Oriental.
+                  The melody and tone has a relaxed and soft-dreamy vibe that instantly reminds me of the beach, and my
+                  best and fun experiences with my loved ones.
+                </td>
+              </tr>
+
+              <tr class="track-row clickable">
+                <td>3</td>
+                <td class="track-title">
+                  <img src="cover3.jpg" class="track-cover">
+                  <div>
+                    Imagine Pt.3 <br>
+                    <span class="track-artist">Smith Westerns</span>
+                  </div>
+                </td>
+                <td>Dye It Blonde</td>
+                <td>Jan 7, 2009</td>
+                <td>3:33</td>
+              </tr>
+              <tr class="track-description" style="background-color: #000000; color:#b84825">
+                <td colspan="5">
+                  If i were to summarize what this song sounds like in one word it'd be: "Fireworks" for how it is
+                  PACKED with instrumentals and the roaring vibe of courageness.
+                  I've discovered this song back when i was in 10th grade, 2024. This song amplified my growth and has a
+                  special place in my heart.
+                </td>
+              </tr>
+
+              <tr class="track-row clickable">
+                <td>4</td>
+                <td class="track-title">
+                  <img src="cover4.jpg" class="track-cover">
+                  <div>
+                    ASTEARSGOBY<br>
+                    <span class="track-artist">JANNABI</span>
+                  </div>
+                </td>
+                <td>GRIPPIN’THEGREEN</td>
+                <td>May 10, 2022</td>
+                <td>3:56</td>
+              </tr>
+              <tr class="track-description" style="background-color: #35691d;">
+                <td colspan="5">
+                  For me this song feels like walking in a delicate line between nostalgia and melancholy.
+                  I've discovered this song in a time i am most confused. It's the 'goodbye song' you want to play to
+                  help you move on from something or someone.
+                  If i had to sum it up: it's the kind of song that's soft and tender, but leaves a lingering ache. Like
+                  a good memory that's also a little sad.
+                </td>
+              </tr>
+
+              <tr class="track-row clickable">
+                <td>5</td>
+                <td class="track-title">
+                  <img src="cover7.jpg" class="track-cover">
+                  <div>
+                    Let It Happen<br>
+                    <span class="track-artist">Tame Impala</span>
+                  </div>
+                </td>
+                <td>
+                  <a>
+                    Currents
+                  </a>
+                </td>
+                <td>Mar 11, 2015</td>
+                <td>7:46</td>
+              </tr>
+
+              <tr class="track-description" style="background-color: #352052; color: #a18191;">
+                <td colspan="5">
+                  This song feels like being lost in your own thoughts.
+                  The slow build and psychedelic production make it hypnotic.
+                </td>
+              </tr>
+
+              <tr class="track-row clickable">
+                <td>6</td>
+                <td class="track-title">
+                  <img src="cover6.jpg" class="track-cover">
+                  <div>
+                    Whatever<br>
+                    <span class="track-artist">Oasis</span>
+                  </div>
+                </td>
+                <td>Time Flies</td>
+                <td>Dec 18, 1994</td>
+                <td>6:21</td>
+              </tr>
+              <tr class="track-description" style="background-color: #000000; color:#fffbfb">
+                <td colspan="5">
+                  This song feels like being lost in your own thoughts.
+                  The slow build and psychedelic production make it hypnotic.
+                </td>
+              </tr>
+
+
+
+              <tr class="track-row clickable">
+                <td>7</td>
+                <td class="track-title">
+                  <img src="cover5.jpg" class="track-cover">
+                  <div>
+                    Happiness Is Overrated<br>
+                    <span class="track-artist">The Airborne Toxic Event</span>
+                  </div>
+                </td>
+                <td>The Airborne Toxic Event</td>
+                <td>Aug 5, 2008</td>
+                <td>3:12</td>
+              </tr>
+              <tr class="track-description" style="background-color: #a7a49a; color: #000000;">
+                <td colspan="5">
+                  I've just recently discovered this song actually, while i was watching TVD and seeing Katherine walk
+                  out in the shower, Damon shocked and petrified.
+                  Anyway, the song is atmospheric and contemplative, it has a retro-rock vibe. Especially lyric "I'll be
+                  alone instead, i don't need anyone in this bed"
+                  is amazing to me.
+                </td>
+              </tr>
+
+              <tr class="track-row clickable">
+                <td>8</td>
+                <td class="track-title">
+                  <img src="cover8.jpg" class="track-cover">
+                  <div>
+                    Art House<br>
+                    <span class="track-artist">Malcolm Todd</span>
+                  </div>
+                </td>
+                <td>Sweet Boy</td>
+                <td>Nov 7, 2023</td>
+                <td>2:19</td>
+              </tr>
+              <tr class="track-description" style="background-color: #b99a69; color: #000000;">
+                <td colspan="5">
+                  This song feels like being lost in your own thoughts.
+                  The slow build and psychedelic production make it hypnotic.
+                </td>
+              </tr>
+
+              <tr class="track-row clickable">
+                <td>9</td>
+                <td class="track-title">
+                  <img src="cover9.jpg" class="track-cover">
+                  <div>
+                    May The TENDERNESS Be With You!<br>
+                    <span class="track-artist">JANNABI</span>
+                  </div>
+                </td>
+                <td>Legend</td>
+                <td>Mar 13, 2019</td>
+                <td>4:24</td>
+              </tr>
+              <tr class="track-description" style="background-color: #050722; color: #7b91cc;">
+                <td colspan="5">
+                  This song feels like being lost in your own thoughts.
+                  The slow build and psychedelic production make it hypnotic.
+                </td>
+              </tr>
+
+              <tr class="track-row clickable">
+                <td>10</td>
+                <td class="track-title"><img src="cover10.jpg" class="track-cover">
+                  <div>California Feelin'<br><span class="track-artist">The Beach Boys</span></div>
+                </td>
+                <td><a class="album-link" target="_blank" href="#">Feel Flows</a></td>
+                <td>Jul 19, 2019</td>
+                <td>2:50</td>
+              </tr>
+              <tr class="track-description" style="background-color: #265881; color: #f2f2f2  ;">
+                <td colspan="5">Write your thoughts about this song here.</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+
+        <div class="tags">
+          <span class="tag">🏷️#Subjective</span>
+        </div>
+
+        <div class="tags">
+          <span class="tag">🏷️#opinion</span>
+        </div>
+
+
+      </main>
+<footer>
+  © 2026 Steven Ignacio
+</footer>
+
+</div>
+ <script>
+    const toggle = document.getElementById("themeToggle");
+    if (localStorage.theme === "dark") { document.body.classList.add("dark"); toggle.textContent = "☀️"; }
+    toggle.onclick = () => { document.body.classList.toggle("dark"); localStorage.theme = document.body.classList.contains("dark") ? "dark" : "light"; toggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙"; }
+    document.getElementById("search").oninput = e => {
+      let t = e.target.value.toLowerCase();
+      document.querySelectorAll(".post").forEach(p => p.style.display = p.innerText.toLowerCase().includes(t) ? "" : "none");
+    };
+  </script>
+
+  <script>
+    document.querySelectorAll(".clickable").forEach(row => {
+      row.addEventListener("click", function () {
+        let nextRow = this.nextElementSibling;
+
+        if (nextRow.style.display === "table-row") {
+          nextRow.style.display = "none";
+        } else {
+          nextRow.style.display = "table-row";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

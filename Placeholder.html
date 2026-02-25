@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Steven — Personal Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#655e79;
+  --card:#ffffff;
+  --text:#2d2a3a;
+  --border:#7a4f8a;
+  --accent:#af9ff4;
+}
+
+body.dark{ 
+  --bg:#0c032b;
+  --card:#19243be3;
+  --text:#f3f1ff;
+  --border:#d5c8b5;
+  --accent:#000000;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Inter,sans-serif;
+  color:var(--text);
+  transition:.3s;
+  background:
+    url("left.png") left center fixed,
+    url("right.png") right center fixed;
+  background-repeat:no-repeat;
+  background-size:auto 100vh;
+  background-color:var(--bg);
+}
+
+@media(max-width:900px){
+  body{background:#0f1115;}
+}
+
+.site-wrapper{
+  margin:auto;
+  max-inline-size:1260px;
+  background:
+    radial-gradient(circle at top, rgba(210,205,255,.25), transparent 60%),
+    linear-gradient(180deg,#f7f6ff 0%,#e9e6ff 40%,#d7d4f1 100%);
+  backdrop-filter:blur(8px);
+  min-height:100vh;
+  padding:20px;
+  border-radius:16px;
+}
+
+body.dark .site-wrapper{
+  background:
+    radial-gradient(circle at top, rgba(120,110,255,.18), transparent 60%),
+    linear-gradient(180deg,#141624 0%,#171a2b 50%,#1b1f33 100%);
+}
+
+/* TOP BANNER */
+.top-banner img{
+  width:100%;
+  max-height:180px;
+  object-fit:cover;
+  border-radius:12px;
+  margin-bottom:10px;
+}
+
+/* HEADER */
+header{
+  background:var(--card);
+  padding:10px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:2px solid var(--border);
+}
+
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.avatar-wrapper{
+  width:60px;
+  height:60px;
+  position:relative;
+}
+
+.avatar{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  position:absolute;
+  inset:0;
+}
+
+.avatar-smile{opacity:0;}
+.avatar-wrapper:hover .avatar-smile{opacity:1;}
+.avatar-wrapper:hover .avatar-normal{opacity:0;}
+
+.toggle{cursor:pointer;font-size:20px;}
+.search{padding:6px;border-radius:4px;border:1px solid #aaa;}
+
+/* HERO */
+.hero{padding:40px 10px;}
+.hero h1{font-size:3rem;}
+.hero p{max-width:800px;line-height:1.6;}
+
+/* GRID */
+.layout{
+  max-width:1200px;
+  margin:30px auto;
+  display:grid;
+  grid-template-columns:1fr 300px;
+  gap:20px;
+}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;}
+}
+
+/* POSTS */
+.post{
+  background:var(--card);
+  border-radius:14px;
+  border:2px solid var(--border);
+  padding:20px;
+  margin-bottom:18px;
+  transition:.25s;
+  position:relative;
+}
+.post:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 25px rgb(122,121,119);
+}
+.pinned{
+  border:3px dashed var(--accent);
+  background:linear-gradient(180deg,rgba(175,159,244,.2),transparent);
+}
+.post-tag{
+  position:absolute;
+  top:12px;
+  right:12px;
+  background:var(--border);
+  color:white;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 10px;
+  border-radius:12px;
+}
+body.dark .post-tag{
+  background:#d5c8b5;
+  color:#655e79;
+}
+
+.date{font-size:12px;opacity:.6;margin-top:6px;}
+.post-link{color:inherit;text-decoration:none;display:block;}
+
+/* SIDEBAR */
+.sidebar-box{
+  background:var(--card);
+  border-radius:14px;
+  border:2px solid var(--border);
+  margin-bottom:16px;
+}
+.sidebar-box h3{
+  text-align:center;
+  padding:6px;
+  font-size:12px;
+  background:rgba(0,0,0,.05);
+}
+.sidebar-box a{
+  display:block;
+  margin:6px;
+  padding:6px;
+  border:1px solid var(--border);
+  text-align:center;
+}
+
+.tag{
+  display:inline-block;
+  margin:4px;
+  padding:4px 8px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  cursor:pointer;
+  font-size:12px;
+}
+
+button.random{
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  cursor:pointer;
+}
+
+/* SOCIALS */
+.social-icons{
+  display:flex;
+  justify-content:space-around;
+  padding:10px;
+}
+.social-icons img{
+  width:32px;
+  height:32px;
+  opacity:.8;
+  filter:grayscale(100%);
+}
+.social-icons img:hover{
+  filter:none;
+  opacity:1;
+}
+
+/* FOOTER */
+.site-footer{
+  margin-top:40px;
+  padding:20px;
+  border-top:2px solid var(--border);
+  background:var(--card);
+  border-radius:14px;
+}
+.footer-inner{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1.5fr 1fr 1fr;
+  gap:20px;
+}
+@media(max-width:900px){
+  .footer-inner{grid-template-columns:1fr;text-align:center;}
+}
+.footer-bottom{
+  text-align:center;
+  font-size:12px;
+  opacity:.6;
+  margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+<div class="site-wrapper">
+
+<div class="top-banner">
+  <img src="banner.png">
+</div>
+
+<header>
+  <div class="header-left">
+    <div class="avatar-wrapper">
+      <img src="smirk.png" class="avatar avatar-normal">
+      <img src="smile.jpg" class="avatar avatar-smile">
+    </div>
+    <h3>Paragon luck</h3>
+    <span class="toggle" id="themeToggle">🌙</span>
+  </div>
+  <input class="search" id="search" placeholder="Search posts...">
+</header>
+
+<section class="hero">
+  <h1>Welcome 👋</h1>
+  <p>Hi, I’m Steven and this is my corner of the web. Part blog, part soapbox.</p>
+</section>
+
+<div class="layout">
+<main id="posts">
+
+<article class="post pinned" data-tags="intro">
+  <h2>START HERE — About Me</h2>
+  <p>If you're new, read this first.</p>
+</article>
+
+<article class="post" data-tags="rant">
+  <div class="post-tag">BLOG</div>
+  <h2>A Random List of Silly Things I Hate</h2>
+  <div class="date">🗓️Feb 12, 2026 | ~2 min read</div>
+</article>
+
+<article class="post" data-tags="music">
+  <h2>My Top Music Tracks</h2>
+  <div class="date">🗓️Feb 12, 2026 | ~4 min read</div>
+</article>
+
+</main>
+
+<aside>
+
+<div class="sidebar-box">
+  <h3>FILTER</h3>
+  <div class="tag" data-filter="all">All</div>
+  <div class="tag" data-filter="music">Music</div>
+  <div class="tag" data-filter="rant">Rants</div>
+</div>
+
+<div class="sidebar-box">
+  <h3>🎲 Random Post</h3>
+  <button class="random" id="randomBtn">Surprise me</button>
+</div>
+
+<div class="sidebar-box">
+  <h3>NAVIGATION</h3>
+  <a href="#">Blog</a>
+  <a href="#">About</a>
+  <a href="#">Projects</a>
+  <a href="#">Contact</a>
+</div>
+
+</aside>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <h4>Steven Ignacio</h4>
+      <p>Reflecting, questioning, still becoming.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Steven Ignacio</div>
+</footer>
+
+</div>
+
+<script>
+const toggle=document.getElementById("themeToggle");
+if(localStorage.theme==="dark"){
+  document.body.classList.add("dark");
+  toggle.textContent="☀️";
+}
+toggle.onclick=()=>{
+  document.body.classList.toggle("dark");
+  localStorage.theme=document.body.classList.contains("dark")?"dark":"light";
+  toggle.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
+};
+
+// search
+document.getElementById("search").oninput=e=>{
+  let t=e.target.value.toLowerCase();
+  document.querySelectorAll(".post").forEach(p=>{
+    p.style.display=p.innerText.toLowerCase().includes(t)?"":"none";
+  });
+};
+
+// tag filter
+document.querySelectorAll(".tag").forEach(btn=>{
+  btn.onclick=()=>{
+    let f=btn.dataset.filter;
+    document.querySelectorAll(".post").forEach(p=>{
+      p.style.display=f==="all"||p.dataset.tags?.includes(f)?"":"none";
+    });
+  };
+});
+
+// random post
+document.getElementById("randomBtn").onclick=()=>{
+  let posts=[...document.querySelectorAll(".post:not(.pinned)")];
+  let r=posts[Math.floor(Math.random()*posts.length)];
+  window.scrollTo({top:r.offsetTop-100,behavior:"smooth"});
+  r.style.outline="4px solid gold";
+  setTimeout(()=>r.style.outline="",1500);
+};
+</script>
+
+</body>
+</html>

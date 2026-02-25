@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steven — Anime Tierlist</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --ice-white: #eaf6ff;
+            --snow: #f7fbff;
+            --frost: #cfe9ff;
+            --cold-blue: #9fd4ff;
+            --deep-ice: #6aaed6;
+            --lake: #2e3f4a;
+            --fog: #bfc9cf;
+        }
+
+        /* ================= GLOBAL ================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #e8e8e8;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* VIDEO BG */
+        .bg-video {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -3;
+        }
+
+
+
+        /* ================= PANEL ================= */
+
+        .site-wrapper {
+            max-width: 950px;
+            margin: 80px auto;
+            padding: 20px;
+        }
+
+        .pixel-panel {
+            background: rgba(20, 35, 45, .45);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(200, 230, 255, .35);
+            border-radius: 18px;
+            padding: 30px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow:
+                0 0 40px rgba(140, 200, 255, .15),
+                inset 0 0 20px rgba(255, 255, 255, .04);
+        }
+
+        /* TITLE */
+        .pixel-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 20px;
+            color: var(--ice-white);
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow:
+                0 0 6px rgba(255, 255, 255, .7),
+                0 0 18px rgba(140, 200, 255, .45);
+        }
+
+        /* BACK BUTTON */
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+
+            background: rgba(120, 170, 200, .15);
+            color: var(--snow);
+            padding: 8px 14px;
+
+            border: 1px solid rgba(200, 230, 255, .4);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        .back-btn:hover {
+            background: rgba(180, 220, 255, .25);
+            box-shadow: 0 0 12px rgba(170, 220, 255, .6);
+        }
+
+        /* META */
+        .meta {
+            text-align: center;
+            font-size: 13px;
+            opacity: .7;
+            margin-bottom: 30px;
+        }
+
+        /* IMAGE */
+        .tierlist-img {
+            width: 100%;
+            max-width: 800px;
+            display: block;
+            margin: 40px auto;
+            image-rendering: pixelated;
+        }
+
+        /* SECTION TITLE */
+        .section-title,
+        .tier,
+        .highlight {
+            color: var(--cold-blue);
+            text-shadow: 0 0 8px rgba(150, 210, 255, .35);
+        }
+
+        /* TEXT CONTENT */
+        .content {
+            font-size: 15px;
+            line-height: 1.9;
+            color: var(--fog);
+        }
+
+        .pixel-panel {
+            line-height: 1.6;
+        }
+
+        .content p {
+            margin-bottom: 22px;
+        }
+
+        /* TIER LABEL */
+        .tier {
+            font-weight: 700;
+            letter-spacing: .5px;
+            color: #ffb347;
+        }
+
+        /* WARM HIGHLIGHT */
+        .highlight {
+            color: #ffb347;
+            font-weight: 600;
+            text-shadow: 0 0 8px rgba(255, 179, 71, .25);
+        }
+
+        /* TAGS */
+        .tags {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .tags span {
+            font-size: 11px;
+            border: 1px solid rgba(200, 230, 255, .25);
+            padding: 6px 14px;
+            margin: 0 5px;
+            color: var(--frost);
+            background: rgba(160, 210, 255, .06);
+            backdrop-filter: blur(3px);
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 11px;
+            opacity: .6;
+        }
+
+        .post {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 10px;
+        }
+
+        /* individual entries */
+        .hate-item {
+            position: relative;
+            padding: 16px 18px 16px 54px;
+
+            background: linear-gradient(180deg,
+                    rgba(200, 230, 255, .10),
+                    rgba(140, 180, 210, .05));
+
+            border: 1px solid rgba(200, 230, 255, .25);
+            border-radius: 12px;
+
+            color: var(--snow);
+            line-height: 1.7;
+
+            backdrop-filter: blur(4px);
+            transition: .25s ease;
+
+            font-family: 'Press Start 2P', monospace;
+            font-size: small;
+        }
+
+        /* numbering bubbles */
+        .hate-item::before {
+            counter-increment: item;
+            content: counter(item);
+
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            color: #fff;
+            background: rgba(150, 210, 255, .25);
+            box-shadow: 0 0 10px rgba(161, 103, 32, 0.45);
+        }
+
+        /* activate numbering */
+        .post {
+            counter-reset: item;
+        }
+
+        /* hover frost shimmer */
+        .hate-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(220, 240, 255, .6);
+            box-shadow:
+                0 0 18px rgba(180, 230, 255, .25),
+                inset 0 0 10px rgba(255, 255, 255, .08);
+        }
+
+        .post {
+            background: var(--card);
+            border-radius: 14px;
+            position: relative;
+            padding: 16px;
+
+
+
+
+            border: 2px solid var(--border);
+
+            margin-bottom: 30px;
+            transition: .25s;
+        }
+
+        .post h2 {
+            margin: 0;
+            font-family: "Press Start 2P", monospace;
+            font-size: 14px;
+            animation: pixelColorShift 6s infinite ease-in-out;
+        }
+
+        .post-link {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
+
+        .post-tag {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--border);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <video class="bg-video" autoplay muted loop playsinline infinite>
+        <source src="Autumn.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <div class="site-wrapper">
+        <div class="pixel-panel">
+
+            <div class="panel-header">
+                <button onclick="window.history.back()" class="back-btn">← GO BACK</button>
+            </div>
+
+            <div class="pixel-title">
+                My website</div>
+            <div class="meta" style="font-size: large; color: #ffffff;"> James Patrick Sevidal | 11-ICT W. TORRES <img
+                    src="cat.png"></div>
+            <div class="meta">
+                Hope you find something interesting! </div>
+
+
+            <!-- BLOG CONTENT -->
+            <div class="post">
+                <article class="post">
+                    <div style="border: solid #d8971c; padding: 20px; border-radius: 20px;">
+                        <a href="Adespise.html" class="post-link">
+                            <h2>A Random List of My Talents</h2>
+                            <p>Apparently this is a thing now, so I'm gonna join in. <img src="cat.png"></p>
+                            <div class="date">🗓️Feb 06, 2026 |⏱️~2 minute read</div>
+                        </a>
+                    </div>
+                </article>
+            </div>
+
+
+
+            <div class="tags">
+                <span>#fun</span>
+                <span>#opinion</span>
+            </div>
+
+            <footer>© 2026 Patrick Sevidal</footer>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

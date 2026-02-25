@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steven — About Me</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+
+<style>
+
+/* ================= ROOT ================= */
+:root{
+  --text:#eae6ff;
+  --border:#8c7cc2;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif monospace;
+  color:var(--text);
+  overflow-x:hidden;
+  font-size:17px;       /* pixel fonts need smaller size */
+  line-height:1;      /* improves readability */
+}
+
+/* ================= VIDEO BG ================= */
+.bg-video{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-2;
+}
+
+
+/* ================= MAIN WRAPPER ================= */
+.site-wrapper{
+  max-width:900px;
+  margin:auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+}
+
+/* ================= PANEL ================= */
+.pixel-panel{
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(3px);
+  border:3px solid #888;
+  border-radius:18px;
+  padding:30px;
+  width:100%;
+  max-width:800px;
+}
+
+/* ================= TITLE ================= */
+.pixel-title{
+  font-family:"Press Start 2P",monospace;
+  font-size:18px;
+  color:#c575b8fd;
+  text-shadow:2px 2px #05063a;
+  margin-bottom:20px;
+}
+
+/* ================= BACK BUTTON ================= */
+/* ================= BACK BUTTON (SAKURA THEME) ================= */
+
+.back-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  z-index:1000;
+
+  font-family:'Press Start 2P', monospace;
+  font-size:10px;
+
+  padding:10px 16px;
+
+  background:rgba(255,182,193,.12); /* soft pink glass */
+  color:#ffddee;
+
+  border:1px solid rgba(255,192,203,.6);
+  border-radius:10px;
+
+  backdrop-filter:blur(6px);
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+/* Hover */
+.back-btn:hover{
+  background:rgba(255,192,203,.35);
+  box-shadow:
+    0 0 14px rgba(255,182,193,.7),
+    0 0 30px rgba(255,182,193,.3);
+  color:#ffffff;
+}
+
+/* Press */
+.back-btn:active{
+  transform:translateY(2px);
+}
+
+/* ================= CONTENT ================= */
+.content-center{
+  max-width:650px;
+  margin:auto;
+}
+
+/* ================= SLIDER ================= */
+.slider{
+  position:relative;
+  max-width:600px;
+  margin:25px auto;
+  overflow:hidden;
+}
+
+.slides{
+  display:flex;
+  transition:transform .5s ease;
+}
+
+.slides img{
+  min-width:100%;
+  height: 500px;
+  object-fit:cover;
+  border-radius:12px;
+}
+
+/* BUTTONS */
+.slider-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(0,0,0,.6);
+  border:none;
+  color:white;
+  font-size:22px;
+  padding:10px 14px;
+  cursor:pointer;
+  border-radius:8px;
+  z-index:5;
+}
+
+.slider-btn:hover{
+  background:rgba(0,0,0,.85);
+}
+
+.prev{left:10px;}
+.next{right:10px;}
+
+/* ================= TEXT ================= */
+p{
+  line-height:1.7;
+  margin:14px 0;
+}
+
+/* ================= TAG ================= */
+.tag{
+  display:inline-block;
+  margin-top:20px;
+  padding:6px 12px;
+  border-radius:20px;
+  border:1px solid var(--border);
+  color:#b3ad65fd;
+}
+
+/* ================= FOOTER ================= */
+footer{
+  margin-top:30px;
+  font-size:13px;
+  opacity:.7;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- VIDEO BACKGROUND -->
+<video class="bg-video" autoplay muted loop playsinline>
+  <source src="Sakura.mp4" type="video/mp4">
+</video>
+<div class="video-overlay"></div>
+
+<div class="site-wrapper">
+
+<div class="pixel-panel">
+
+<button onclick="window.history.back()" class="back-btn">← Go Back</button>
+
+<div class="pixel-title">My Cute Puppies</div>
+
+<h4>This is a special place I write about them</h4>
+<p>🗓️ 12 Feb 2026 | ⏱️ ~3 minute read</p>
+
+<div class="content-center">
+
+<h2>Bella & Chloe</h2>
+
+<!-- ===== IMAGE SLIDER ===== -->
+<div class="slider">
+
+<button class="slider-btn prev">&#10094;</button>
+
+<div class="slides">
+  <img src="Bella.png">
+  <img src="Bella2.png">
+  <img src="Chloe.jpg">
+  <img src="Chloe2.png">
+  <img src="Bella3.png">
+  <img src="Bella4.png">
+</div>
+
+<button class="slider-btn next">&#10095;</button>
+
+</div>
+
+<!-- TEXT BELOW PHOTOS -->
+<p>Bella and Chloe were more than just pets, they were family. They were part of my everyday life.</p>
+
+<p>It’s been a long time since they passed, but I still remember the pain so clearly.</p>
+
+<p>But when I think of them now, I don’t just think about the sadness.</p>
+
+<p>They may be gone, but the love never left.</p>
+
+<p>Thank you for the memories, Bella and Chloe. May you both rest in peace. 🤍</p>
+
+<div class="tag">🏷️ LOVE</div>
+
+</div>
+
+<footer>
+© 2026 Steven Ignacio
+</footer>
+
+</div>
+</div>
+
+<!-- ================= SLIDER SCRIPT ================= -->
+<script>
+
+const slides = document.querySelector(".slides");
+const images = document.querySelectorAll(".slides img");
+const nextBtn = document.querySelector(".next");
+const prevBtn = document.querySelector(".prev");
+
+let index = 0;
+
+function updateSlider(){
+  slides.style.transform = `translateX(-${index * 100}%)`;
+}
+
+nextBtn.onclick = () => {
+  index++;
+  if(index >= images.length) index = 0;
+  updateSlider();
+};
+
+prevBtn.onclick = () => {
+  index--;
+  if(index < 0) index = images.length - 1;
+  updateSlider();
+};
+
+</script>
+
+</body>
+</html>

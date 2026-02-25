@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steven — Personal Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+
+  <style>
+    
+    :root {
+      --bg: #655e79;
+      /* soft white lavender background */
+      --card: #ffffff;
+      /* pure white cards */
+      --text: #2d2a3a;
+      /* soft dark purple-gray text */
+      --border: #7a4f8a;
+      /* light lavender border */
+      --accent: #af9ff4;
+      /* pastel purple accent */
+    }
+
+
+    body.dark {
+  background: #000 !important;
+  background-image: none !important;
+      --card: #19243be3;
+      --text: #f3f1ff;
+      --border: #d5c8b5;
+      --accent: #000000;
+      --neon-border: #1a131f;
+    }
+body.dark .pixel-panel,
+body.dark .post,
+body.dark .star-menu-panel {
+  border: 2px solid var(--neon-border);
+  border-radius: 4px;
+  box-shadow:
+    0 0 6px var(--neon-border),
+    0 0 14px rgba(138,255,255,.4);
+}
+body.dark .snowflake {
+  animation-duration: 4s; /* faster */
+  opacity: 0.9;
+  filter: drop-shadow(0 0 4px white);
+}
+/* INTRO ROW FIX: Pixel intro + Stars */
+.intro-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* ensure pixel panel & stars panel scale nicely */
+.pixel-panel {
+  flex: 2;  /* main panel wider */
+  min-width: 300px;
+}
+
+.star-menu-panel {
+  flex: 1;  /* smaller panel */
+  min-width: 200px;
+  width: 100%;
+  margin-bottom: -14px;
+  margin-top: 20px;
+}
+#snow-ground {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+    * {
+      box-sizing: border-box;
+    }
+    body.dark .post h2 {
+  animation: pixelColorShift 6s infinite ease-in-out;
+}
+body.dark .site-wrapper {
+  border-radius: 3px;
+  background: transparent;
+  backdrop-filter: none;
+  padding: 40px 20px;
+   max-inline-size: 900px;
+   
+}
+
+a, button, .post {
+  cursor: url("pointer.png"), pointer;
+}
+
+    body {
+        cursor: url("cursor.png"), auto;
+      margin: 0;
+      font-family: Inter, sans-serif;
+      color: var(--text);
+      transition: 0.3s;
+      /* JOJO LEFT + RIGHT LOCK */
+      background:
+
+        url("left.png") left center fixed,
+        url("right.png") right center fixed;
+      background-repeat: no-repeat, no-repeat;
+      background-size: auto 100vh, auto 100vh;
+      background-color: var(--bg)
+    }
+
+    /* Hide JoJo on small screens */
+    @media(max-width:900px) {
+      body {
+        background: #0f1115;
+      }
+    }
+
+    /* CENTER WEBSITE WRAPPER */
+    .site-wrapper {
+      
+      margin: auto;
+      max-inline-size: 1260px;
+
+      /* soft violet + white harmony */
+      background:
+        radial-gradient(circle at top, rgba(210, 205, 255, 0.25), transparent 60%),
+        linear-gradient(180deg, #f7f6ff 0%, #e9e6ff 40%, #d7d4f1 100%);
+
+      backdrop-filter: blur(8px);
+
+      min-height: 100vh;
+      padding: 14px;
+      border-radius: 16px;
+    }
+
+
+    /* HEADER */
+    header {
+      padding: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: transparent;
+      /* remove white block */
+    }
+
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* AVATAR CARD */
+    /* AVATAR CARD (like reference image) */
+    /* AVATAR CARD - matches site theme */
+    .avatar-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      padding: 7px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg,
+          rgba(0, 0, 0, 0.04),
+          transparent);
+
+
+      transition: 0.3s ease;
+    }
+
+    /* subtle hover like posts */
+    .avatar-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, .15);
+    }
+
+    .avatar-img {
+      width: 80px;
+      height: 80px;
+      image-rendering: pixelated;
+      display: block;
+      border-radius: 4px;
+    }
+
+    /* numbers under avatar */
+    .avatar-stats {
+      margin-top: 4px;
+      font-size: 12px;
+      font-family: monospace;
+      display: flex;
+      gap: 12px;
+    }
+
+
+    .avatar-stats a {
+      color: var(--text);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: 0.2s;
+    }
+
+    .avatar-stats a:hover {
+      color: var(--accent);
+      opacity: 1;
+    }
+
+    @keyframes flicker {
+      0% {
+        opacity: 0.9;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0.95;
+      }
+    }
+
+    .avatar-stats-panel {
+      animation: flicker 3s infinite alternate;
+    }
+
+
+
+
+
+
+    .toggle {
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .search {
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #aaa;
+    }
+
+
+
+
+
+    /* MAIN GRID */
+    .layout {
+      max-width: 1200px;
+      margin: 30px auto;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 20px;
+    }
+
+    @media(max-width:900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* POSTS */
+    .post {
+      background: var(--card);
+      border-radius: 14px;
+      position: relative;
+      
+
+
+      border: 2px solid var(--border);
+      padding: 28px;
+      margin-bottom: 30px;
+      transition: .25s;
+    }
+
+    .post:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgb(122, 121, 119);
+    }
+
+    .post-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--border);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 12px;
+    }
+
+    body.dark .post-tag {
+      background: #d5c8b5;
+      color: #655e79;
+    }
+
+
+    .post h2 {
+  margin: 0;
+  font-family: "Press Start 2P", monospace;
+  font-size: 14px;
+  animation: pixelColorShift 6s infinite ease-in-out;
+}
+
+    .date {
+      font-size: 12px;
+      opacity: .6;
+      margin-top: 6px;
+    }
+
+    .post-link {
+      color: inherit;
+      text-decoration: none;
+      display: block;
+    }
+
+    /* SIDEBAR */
+    .sidebar-box {
+      background: var(--card);
+      border-radius: 4px;
+      border: 2px solid var(--border);
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+    .socials {
+      background: var(--card);
+      border-radius: 4px;
+      border: 2px solid var(--border);
+      margin-bottom: 18px;
+      overflow: hidden;
+        margin: 0;
+  padding: 10px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-align: center;
+  background: rgba(0, 0, 0, .05);
+  font-family: "Press Start 2P", monospace;
+  animation: pixelColorShift 8s infinite ease-in-out;
+    }
+
+    .sidebar-box h3 {
+  margin: 0;
+  padding: 10px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-align: center;
+  background: rgba(0, 0, 0, .05);
+  font-family: "Press Start 2P", monospace;
+  animation: pixelColorShift 8s infinite ease-in-out;
+}
+
+    .sidebar-box a {
+      display: block;
+      padding: 10px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      transition: 0.2s;
+    }
+
+    .sidebar-box a:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .pinned {
+      border: 3px dashed var(--accent);
+      background: linear-gradient(180deg, rgba(175, 159, 244, .2), transparent);
+      position: relative;
+    }
+
+    .tag {
+      display: inline-block;
+      margin: 4px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    button.random {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+
+    /* SOCIALS */
+    .social-icons {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+    }
+
+    .social-icons img {
+      width: 32px;
+      height: 32px;
+      opacity: .8;
+      filter: grayscale(100%);
+    }
+
+    .social-icons img:hover {
+      filter: none;
+      opacity: 1;
+    }
+
+    /* FOOTER */
+   /* ================= RETRO FOOTER ================= */
+
+.retro-footer{
+  margin-top:40px;
+  padding:20px 10px 14px;
+  text-align:center;
+
+  background: var(--card);
+  border-top:2px solid var(--border);
+
+  font-family: monospace;
+  image-rendering: pixelated;
+  transition: background .3s ease;
+}
+
+/* Dark mode override */
+body.dark .retro-footer{
+  background:#000;
+  border-top:2px solid #888;
+}
+
+/* Button strip container */
+.retro-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  overflow:hidden; /* important for disappear effect */
+  margin-bottom:10px;
+}
+
+/* Each moving row */
+.button-row{
+  display:flex;
+  gap:6px;
+  width:max-content;
+}
+
+/* Button size */
+.button-row img{
+  height:31px;
+  image-rendering:pixelated;
+}
+
+/* Credit text */
+.retro-credit{
+  font-size:12px;
+  opacity:.8;
+}
+
+    @media (max-width: 900px) {
+  .intro-row {
+    flex-direction: column;
+  }
+
+}
+
+    /* ================= PIXEL INTRO PANEL ================= */
+.intro-row {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+  margin-bottom: 30px;
+}
+    .pixel-panel {
+      position: relative;
+      background: var(--bg);
+      color: #d9d9d9;
+      padding: 16px;
+      border: 3px solid #888;
+      box-shadow: inset 0 0 0 2px var(--card);
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 25px;
+      font-family: monospace;
+        flex: 1;
+  min-height: 260px;
+    }
+
+    /* CRT scanlines */
+    .pixel-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(to bottom,
+          rgba(255, 255, 255, 0.03),
+          rgba(255, 255, 255, 0.03) 1px,
+          transparent 1px,
+          transparent 3px);
+      pointer-events: none;
+    }
+    
+
+    /* Pixel avatar box */
+    .pixel-avatar {
+  width: 112px;
+  height: 120px;
+  border: 1px solid #ff00bf;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.pixel-avatar img {
+  width: 107px;
+  height: 100px;
+  image-rendering: pixelated;
+  border: none; /* REMOVE IMAGE BORDER */
+  display: block;
+}
+
+.pixel-avatar small {
+  margin-top: 4px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 7px;
+  color: #c99915;
+}
+
+    /* Pixel heading */
+    .pixel-title {
+      font-family: "Press Start 2P", monospace;
+      font-size: 20px;
+      color: #ff00bf;
+      text-shadow: 2px 2px #004d4d, 4px 4px var(--bg);
+      margin-bottom: 10px;
+    }
+
+    /* Pixel bullets */
+    .pixel-list {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 10px;
+    }
+
+    .pixel-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 6px;
+    }
+
+    .pixel-list li::before {
+      content: "■";
+      position: absolute;
+      left: 0;
+      color: #ff00bf;
+    }
+    @media (max-width: 600px) {
+  .pixel-panel {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+.STAR {
+  position: absolute;
+  top: -20px;     /* move above the card edge */
+  left: -20px;    /* move outside left edge */
+
+  width: 50px;
+  height: auto;
+
+  pointer-events: none; /* clicking still works */
+  z-index: 5;
+}
+.poster-box {
+  padding: 10px;
+  text-align: center;
+}
+
+.poster-link {
+  display: block;
+}
+
+.poster-video {
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  transition: .25s;
+  image-rendering: pixelated;
+}
+
+/* hover effect */
+.poster-video:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 18px rgba(255,0,200,.6);
+  cursor: pointer;
+}
+.toggle-icon {
+  width: 70px;       /* adjust to fit your sidebar nicely */
+  height: 70px;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto;  /* center in the box */
+  transition: transform 0.2s;
+}
+
+.toggle-icon:hover {
+  transform: scale(1.1); /* slight hover pop */
+}
+.theme {
+  background: var(--card);
+  border: 1px solid var(--border); /* thinner, consistent border */
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 18px; /* same spacing as other sidebar boxes */  
+}
+
+.theme h3 {
+  margin: 0 0 10px 0;
+  font-size: 12px;
+  letter-spacing: 1px;
+  background: rgba(0,0,0,0.05);
+  padding: 6px 0;
+  border-radius: 8px;
+  font-family: "Press Start 2P", monospace;
+  color: #d38929 ;
+}
+/* ===== PIXEL COLOR FADE ANIMATION ===== */
+
+/* ===== LEFT → RIGHT ORANGE SWEEP ===== */
+
+  @keyframes orangeSweep {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 200% 50%;
+    }
+  }
+
+  .post h2 {
+    font-family: "Press Start 2P", monospace;
+    font-size: 14px;
+
+    background: linear-gradient(
+      90deg,
+      #989da5 0%,
+      var(--accent) 40%,
+      var(--border) 50%,
+      var(--accent) 60%,
+      #989da5 100%
+    );
+
+    background-size: 200% 100%;
+
+    background-clip: text;
+    -webkit-background-clip: text;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+
+    animation: orangeSweep 4s linear infinite;
+
+    transition: text-shadow 0.25s ease;
+  }
+  .post:nth-child(1) h2 { animation-delay: 0s; }
+  .post:nth-child(2) h2 { animation-delay: 0.6s; }
+  .post:nth-child(3) h2 { animation-delay: 1.2s; }
+  .post:nth-child(4) h2 { animation-delay: 1.8s; }
+  .post:nth-child(5) h2 { animation-delay: 2s; }
+
+  
+  .animate-pixel {
+    font-family: "Press Start 2P", monospace;
+    animation: pixelColorShift 5s infinite ease-in-out;
+  }
+  .post h2:hover,
+  .sidebar-box h3:hover {
+    text-shadow:
+      0 0 2px #c9cab4ef,
+      0 0 2px #989da5;
+  }
+  body.dark .post h2 {
+  background: linear-gradient(
+    90deg,
+    #1b1f33 0%,       /* dark background color */
+    #af9ff4 40%,      /* pastel accent */
+    #655e79 50%,      /* mid-tone purple */
+    #af9ff4 60%,      /* pastel accent */
+    #141624 100%      /* dark background end */
+  );
+
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  animation: orangeSweep 4s linear infinite;
+  
+}/* ===== ONLINE STATUS PANEL ===== */
+
+.status-box {
+  padding: 0;
+  background: #000;   
+  border: 2px solid #888; 
+  border-radius: 4px;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  margin: 20px;
+  height: 80px;
+    image-rendering: pixelated;     /* pixel feel */
+    margin-top: -20px;
+    margin-bottom: -23px;
+}
+
+/* inner panel */
+.status-inner {
+  font-family: "Press Start 2P", monospace;
+  padding: 12px 10px;
+  letter-spacing:-1px;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 255, 100, 0.05),
+    transparent 60%
+  );
+  color: white;
+}
+
+/* normal pixel size for "I'm" */
+.im-text {
+  font-size: 12px;
+  display: block;
+}
+
+/* BIG ONLINE/OFFLINE */
+.status {
+  display: block;
+  font-size: 28px; /* 2x+ bigger */
+  margin-top: 6px;
+}
+
+/* ONLINE glow */
+.status.online {
+  color: #00ff66; text-shadow:
+    0 0 14px #00ff66;
+  animation: onlinePulse 1.4s infinite alternate;
+}
+
+/* OFFLINE glow */
+.status.offline {
+  color: #ff2b2b;
+  text-shadow:
+    0 0 8px #ff2b2b;
+}
+
+@keyframes onlinePulse {
+  from { opacity: 0.8; }
+  to { opacity: 1; }
+}
+.status-inner::after {
+  content: "_";
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+/* ================= MOBILE FIX ================= */
+@media (max-width: 600px) {
+
+
+  .pixel-title {
+    font-size: 14px;
+  }
+
+  .pixel-panel {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .pixel-avatar {
+    width: 90px;
+    height: auto;
+  }
+
+  .pixel-avatar img {
+    width: 80px;
+    height: auto;
+  }
+
+  .layout {
+    gap: 14px;
+  }
+
+  .post {
+    padding: 16px;
+  }
+
+  .post h2 {
+    font-size: 12px;
+  }
+
+  .status-box {
+    margin: 10px 0;
+  }
+
+}
+/* ===== CURRENT OBSESSION ===== */
+
+.obsession-panel{
+  overflow:hidden;  border: 2px solid #888;        /* grey neon border */
+    text-align: center;
+      color: #d9d9d9;                /* grey text for pixel style */
+        image-rendering: pixelated;     /* pixel feel */
+          vertical-align: top;
+            width: 290px;       
+            margin-bottom: -7px;
+}
+
+/* Header */
+/* Header */
+.obsession-header{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  font-size: 8px;
+  margin-bottom: 6px;
+  color: #fdfcfd;
+  font-family: "Press Start 2P", monospace;
+}
+#modeIndicator{
+  margin-left:1px;
+  color:#00f7ff;
+}
+
+
+/* Layout */
+.obsession-body{
+  display:flex;
+  gap:25px;
+  align-items:flex-start;
+  justify-content:center;
+  height:170px;      /* fixed */
+  overflow:hidden;   /* prevents stretching */
+}
+
+.obsession-body img{
+  width:90px;
+  height:90px;
+  object-fit:cover;
+  image-rendering:pixelated;
+  border:3px solid #888;
+}
+
+.obsession-text{
+  max-width:450px;
+  text-align:left;
+  font-family:'Inter',sans-serif;
+
+  height:100px;
+  overflow-y:auto;
+  padding-right:10px;
+}
+.obsession-text h3{
+  font-size:18px;
+  margin-bottom:1px;
+  color:#fff;
+}
+
+.obsession-text p{
+  font-size:13px;
+  line-height:1.7;
+  opacity:.85;
+}
+.obsession-panel{
+  margin-top:40px;
+  overflow:hidden;
+  height:170px;        /* fixed screen height */
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  border-radius: 4px;
+}
+
+/* VHS SWITCH GLITCH */
+.glitch-switch{
+  animation:channelSwitch .35s steps(2,end);
+}
+
+@keyframes channelSwitch{
+  0%{transform:translateX(-30px); filter:brightness(2);}
+  20%{transform:translateX(30px);}
+  40%{transform:translateY(10px);}
+  60%{transform:translateY(-10px);}
+  80%{opacity:.3;}
+  100%{transform:none; opacity:1;}
+}
+/* Make mode indicator white on panel hover */
+.obsession-panel:hover #modeIndicator {
+  color: #ffffff !important;  /* turn text white */
+  text-shadow: none;           /* remove any glow/shadow */
+  transition: 0.3s ease-in-out;
+}
+
+
+.media-card{
+  max-width:300px;   /* keeps everything compact */
+}
+
+.media-card img{
+  width:100%;
+  max-height:220px;  /* prevents it from being too tall */
+  object-fit:cover;
+  display:block;
+}
+
+.media-card h2{
+  margin:12px 0 6px;
+}
+
+.media-card p{
+  margin:0;
+  line-height:1.6;
+}
+.obsession-text::-webkit-scrollbar{
+  width:6px;
+}
+
+.obsession-text::-webkit-scrollbar-track{
+  background:#111;
+}
+
+.obsession-text::-webkit-scrollbar-thumb{
+  background:#ff00bf;
+  border:1px solid #000;
+}
+/* ===== GLOBAL SNOW OVERLAY ===== */
+#snow {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;            /* above your entire UI */
+  pointer-events: none;     /* clicks pass through */
+  user-select: none;        /* prevents highlight dragging */
+
+  opacity: 0.9;
+}
+
+/* prevents blending weirdness on some browsers */
+canvas {
+  display: block;
+}
+/* ===== HEARTBEAT TITLE ===== */
+
+.obsession-label{
+  font-family: "Press Start 2P", monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  display:inline-block;
+
+  animation: obsessionBeat 1.2s infinite ease-in-out;
+}
+/* ================= TOP PANEL ================= */
+.top-panel{
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;
+  padding:15px 25px;
+  background:rgba(40,10,40,.55); /* sakura-themed semi-transparent panel */
+  border-bottom:2px solid rgba(255,182,193,.5);
+  backdrop-filter:blur(6px);
+  box-shadow:0 0 20px rgba(255,182,193,.2);
+  width:100%;
+  max-height:200px;
+  gap:20px; /* space between welcome and menu */
+  z-index:999;
+}
+
+.welcome-panel{
+  font-family:'Press Start 2P', monospace;
+  font-size:18px;
+  color:#ffc0e0;
+  text-shadow:0 0 6px rgba(255,182,193,.8);
+  flex-shrink:0; /* keep fixed width */
+  padding:10px 20px;
+  background:rgba(50,20,50,.5);
+  border-radius:12px;
+}
+
+.menu-panel{
+  flex-grow:1;
+  overflow-y:auto;
+  max-height:180px; /* scroll if menu is too tall */
+}
+
+.menu-items{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-family:'Press Start 2P', monospace;
+  font-size:12px;
+  color:#ffe0f0;
+}
+
+.menu-items li{
+  display:flex;
+  align-items:center;
+}
+
+.menu-items li .star-icon{
+  width:14px;
+  height:14px;
+  margin-right:6px;
+}
+
+.menu-items li .alert{
+  color:#ff4444;
+  margin-left:4px;
+}
+
+/* heartbeat animation */
+@keyframes obsessionBeat{
+
+  /* relaxed */
+  10%{
+    transform:scaleX(1) scaleY(1);
+    color:#ffffff;
+    text-shadow:0 0 6px #ffffff;
+  }
+
+  /* first beat */
+  5%{
+    transform:scaleX(1.15) scaleY(1.25);
+    color:#ff2a2a;
+    text-shadow:
+      0 0 6px #ff2a2a,
+      0 0 12px #ff0000,
+      0 0 24px #ff0000;
+  }
+
+  /* return */
+  10%{
+    transform:scaleX(1) scaleY(1);
+    color:#ffffff;
+    text-shadow:0 0 6px #ffffff;
+  }
+
+  /* second smaller beat */
+  20%{
+    transform:scaleX(1.08) scaleY(1.15);
+    color:#ff4d4d;
+    text-shadow:
+      0 0 6px #ff4d4d,
+      0 0 14px #ff0000;
+  }
+
+  /* rest */
+  20%{
+    transform:scaleX(1) scaleY(1);
+    color:#ffffff;
+    text-shadow:0 0 6px #ffffff;
+  }
+}
+
+/* ================= STARS PANEL ================= */
+
+/* ================= STARS PANEL (Screenshot Accurate) ================= */
+
+.star-menu-panel{
+  position: relative;
+  background: #03060a;
+  border: 2px solid #f8fafa;
+  border-radius: 4px;
+  padding: 0;
+  overflow: hidden;
+
+  font-family: "Press Start 2P", monospace;
+
+  box-shadow:
+    0 0 8px #ffffff,
+    inset 0 0 12px rgba(245, 245, 245, 0.842);
+}
+
+/* subtle pixel inner frame */
+.star-menu-panel::before{
+  content:"";
+  position:absolute;
+  inset:3px;
+  border:1px solid rgba(206, 206, 206, 0.973);
+  pointer-events:none;
+}
+
+/* ===== HEADER ===== */
+
+.star-menu-header{
+  padding:12px;
+  font-size:13px;
+  letter-spacing:3px;
+  color:#ede6ee;
+  text-align:left;
+
+  border-bottom:1px solid rgba(0,240,255,0.4);
+
+  text-shadow:
+    0 0 6px #67636b,
+    0 0 12px #fcf0ff;
+}
+
+/* ===== CONTENT ===== */
+
+.star-menu-content{
+  padding:14px 16px;
+}
+
+/* list */
+.star-menu-content ul{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  font-size:9px;
+}
+
+/* item */
+.star-menu-content li{
+  display:flex;
+  align-items:center;
+  color:#f5f5f5;
+  cursor:pointer;
+  transition:0.2s ease;
+}
+
+/* star icon */
+.star-menu-content li .star-icon{
+  width:13px;
+  height:13px;
+  margin-right:10px;
+  filter: drop-shadow(0 0 5px #faf9ff);
+}
+
+/* hover */
+.star-menu-content li:hover{
+  color:#eff9fa;
+  transform:translateX(8px);
+  text-shadow:0 0 6px #effeff;
+}
+
+/* alert */
+.star-menu-content .alert{
+  color:#ff2b2b;
+  margin-left:6px;
+  text-shadow:0 0 6px red;
+}
+/* ===== DARK MODE: Theme + Filter Side by Side ===== */
+body.dark .sidebar-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+body.dark .theme,
+body.dark .sidebar-box {
+  background: #000;              /* pure black */
+  border: 2px solid #888;        /* grey neon border */
+  border-radius: 4px;
+  padding: 10px;
+  text-align: center;
+  font-family: "Press Start 2P", monospace;
+  color: #d9d9d9;                /* grey text for pixel style */
+  image-rendering: pixelated;     /* pixel feel */
+  display: inline-block;
+  vertical-align: top;
+  width: calc(50% - 10px);       /* side by side with gap */
+  margin-right: 10px;
+}
+
+body.dark .theme h3,
+body.dark .sidebar-box h3 {
+  color: #d9d9d9;
+  background: transparent;
+  text-shadow: none;             /* remove glow */
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+body.dark .sidebar-box:last-child {
+  margin-right: 0; /* fix last panel spacing */
+}
+/* ================= DARK MODE PIXEL PANEL ================= */
+body.dark .pixel-panel {
+  max-inline-size: 900px;       /* max width in dark mode */
+  background: #000;             /* pixel black */
+  border: 2px solid #888;       /* grey neon border */
+  padding: 16px;                /* inner padding */
+  box-shadow: inset 0 0 0 2px var(--card);
+  color: #d9d9d9;
+  image-rendering: pixelated;
+  flex: 1;
+  min-height: 260px;
+}
+
+/* Pixel heading padding so it doesn't touch the border */
+.pixel-panel .pixel-title {
+  margin: 0 0 10px 0;
+  padding: 4px 6px;           /* spacing from edges */
+  display: inline-block;
+  border-radius: 2px;
+}
+
+/* ================= STAR LIST BACKGROUND ================= */
+
+/* Light mode: stars panel inherits pixel-panel bg color */
+.star-menu-panel {
+  background: var(--card);    /* light mode bg */
+}
+
+/* Dark mode overrides */
+body.dark .star-menu-panel {
+  background: #000;           /* dark mode black */
+}
+
+/* Ensure star icons are visible in dark mode */
+body.dark .star-menu-content li .star-icon {
+  filter: brightness(1) invert(1); /* white visible stars */
+}
+/* ================= STARS MARQUEE ================= */
+
+.star-menu-panel {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(0,234,255,0.3);
+}
+
+
+/* Each row wrapper */
+.star-menu-panel  {
+  overflow: hidden;
+}
+
+/* Moving strip */
+.star-menu-panel .track-inner {
+  display: flex;
+  gap: 4px;
+  width: max-content;
+}
+.button-marquee{
+  width:100%;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  padding:8px 0;
+}
+/* Default running */
+.slide-left,
+.slide-right{
+  animation-play-state: running;
+}
+
+/* Pause only when hovering the track itself */
+.track-inner:hover{
+  animation-play-state: paused;
+}
+
+
+.button-track{
+  overflow:hidden;
+}
+
+.track-inner{
+  display:flex;
+  gap:6px;
+  width:max-content;
+}
+
+.track-inner img{
+  height:36px;   /* try 36–45 range */
+  image-rendering: pixelated;
+}
+
+
+/* Button size */
+.star-menu-panel .track-inner img {
+  height: 26px;
+  image-rendering: pixelated;
+}
+
+/* TOP → RIGHT */
+.star-menu-panel .track-top .track-inner {
+  animation: scrollRight 22s linear infinite;
+}
+/* ===== SLIDE LEFT (top row) ===== */
+.slide-left{
+  animation: moveLeft 23s linear infinite;
+}
+
+@keyframes moveLeft{
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ===== SLIDE RIGHT (bottom row) ===== */
+.slide-right{
+  animation: moveRight 18s linear infinite;
+}
+
+@keyframes moveRight{
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* BOTTOM → LEFT */
+.star-menu-panel .track-bottom .track-inner {
+  animation: scrollLeft 22s linear infinite;
+}
+
+/* Animations */
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes scrollRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+
+  </style>
+</head>
+
+<body>
+<canvas id="snow"></canvas>
+  
+  <div class="site-wrapper">
+
+    <div class="pixel-panel">
+
+      <div class="pixel-avatar">
+        <img src="BIRB.gif">
+        <a href="MOOD.html" class="post-link">
+          <small>0.51 / 0.40</small> </a>
+
+      </div>
+
+      <div>
+        <div class="pixel-title">WELCOME TO SEVEN.C0RP!</div>
+
+        <p>This is my little website and blog. Inspired by what i like (e.g. JJBA, Undertale, Neocities).</p>
+        <p>I’m a programmer who codes random stuff when I feel like it.</p>
+
+        <ul class="pixel-list">
+          <li>From somewhere, joined in 2026</li>
+          <li>Main language: JavaScript (sometimes Python)</li>
+          <li>I love the SUN</li>
+          <li>I'm an ICT-student in some random Philippine high school.</li>
+          <li>I make websites, bots, servers, scripts</li>
+        </ul>
+      </div>
+
+    </div>
+
+
+<div class="layout">
+      <main id="posts">
+
+        <article class="post pinned" data-tags="intro">
+                  <img src="STAR.gif" class="STAR" width="40px">
+  <a href="Start.html" class="post-link">
+    <h2>START HERE — About Me</h2>
+    <p>If you're new, read this first.</p>
+    <div class="date">🗓️Feb 21, 2026 |⏱️~4 minute read</div>
+  </a>
+</article>
+        <article class="post">
+          
+          <div class="post-tag" data-tags="rant">BLOG POST</div>
+          <a href="Adespise.html" class="post-link">
+            <h2>A Random List of Silly Things I Hate</h2>
+            <p>Apparently this is a thing now, so I'm gonna join in. <img src="cat.png"></p>
+            <div class="date">🗓️Feb 06, 2026 |⏱️~2 minute read</div>
+          </a>
+        </article>
+
+        <article class="post" data-tags="music">
+          <a href="Musicprot.html" class="post-link">
+            <h2>My Top Music Tracks</h2>
+            <p>Ive figured putting my top tracks in this blog.</p>
+            <div class="date">🗓️Feb 07, 2026 |⏱️~4 minute read</div>
+          </a>
+        </article>
+
+        <article class="post">
+          <a href="Dogs.html" class="post-link">
+            <h2>My cute puppies</h2>
+            <p>Here I write everything about these guys.</p>
+            <div class="date">🗓️Feb 02, 2026 |⏱️~3 minute read </div>
+          </a>
+        </article>
+
+        <article class="post" data-tags="anime">
+          <a href="JOJO.html" class="post-link">
+            <h2>Anime Tierlist</h2>
+            <p>Purely subjective.</p>
+            <div class="date">🗓️Jan 29, 2026 |⏱️~5 minute read</div>
+          </a>
+        </article>
+
+        <article class="post">
+          <a href="Family.html" class="post-link">
+            <h2>Family Outings</h2>
+            <p>Stories and warm moments.</p>
+            <div class="date">🗓️Feb 12, 2026 |⏱️~??? minute read</div>
+          </a>
+        </article>
+
+        <article class="post"><a class="post-link">
+            <h2>My Hobbies</h2>
+            <p>Things I developed and dropped.</p>
+            <div class="date">🗓️Feb 12, 2026 |⏱️~5 minute read</div>
+          </a></article>
+        <article class="post"><a class="post-link">
+            <h2>Reflections</h2>
+            <p>Philosophy, psychology, life thoughts.</p>
+            <div class="date">🗓️Feb 1, 2026 |⏱️~10 minute read</div>
+          </a></article>
+
+      </main>
+     <aside>
+  <!-- ================= TOP ROW: Pixel intro + Stars ================= -->
+  <div class="intro-row">
+    <!-- Pixel Intro Panel -->
+
+    <!-- Stars Panel -->
+     <div class="button-marquee">
+
+  <!-- TOP ROW (slides left) -->
+  <div class="button-track">
+    <div class="track-inner slide-left">
+      <!-- FIRST SET -->
+      <a href="#"><img src="noweb3.gif"></a>
+      <a href="#"><img src="1080p.gif"></a>
+      <a href="#"><img src="windows.gif"></a>
+      <a href="#"><img src="vscode.gif"></a>
+      <a href="#"><img src="https://nekoweb.org/assets/buttons/button11.gif"></a>
+      <a href="#"><img src="made.gif"></a>
+      <a href="#"><img src="valid-css.gif"></a>
+      <a href="#"><img src="waifu.gif"></a>
+      <a href="#"><img src="valid-rss.gif"></a>
+      <a href="#"><img src="anybrow.gif"></a>
+
+
+  </div>
+
+  <!-- BOTTOM ROW (slides right) -->
+  <div class="button-track">
+    <div class="track-inner slide-right">
+      <!-- FIRST SET -->
+    <a href="#"><img src="cool.gif"></a>
+    <a href="#"><img src="maid.gif"></a>
+    <a href="#"><img src="ukraine.gif"></a>
+    <a href="#"><img src="PROUDLY.gif"></a>
+    <a href="#"><img src="soon.gif"></a>
+    <a href="#"><img src="BREAKDOWN.gif" width="88px" height="31px"></a>
+    <a href="#"><img src="plasma.gif"></a>
+    <a href="#"><img src="calciume.gif"></a>
+    </div>
+  </div>
+
+</div>
+    <div class="star-menu-panel" style="flex:1">
+      <div class="star-menu-header">STARS</div>
+      
+      <div class="star-menu-content">
+        <ul>
+          <li><img src="starp.png" class="star-icon"> Home</li>
+          <li><img src="starp.png" class="star-icon"> About</li>
+          <li><img src="starp.png" class="star-icon"> Diary</li>
+          <li><img src="starp.png" class="star-icon"> Photo Album <span class="alert">(!)</span></li>
+          <li><img src="starp.png" class="star-icon"> Blog</li>
+          <li><img src="starp.png" class="star-icon"> Contact</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="sidebar-row">
+  <div class="theme">
+    <h3>THEME</h3>
+    <img id="themeToggle" src="moon.gif" class="toggle-icon" alt="Toggle Theme">
+  </div>
+
+  <div class="sidebar-box">
+    <h3>FILTER</h3>
+    <div class="tag" data-filter="all">All</div>
+    <div class="tag" data-filter="music">Music</div>
+    <div class="tag" data-filter="rant">Rants</div>
+  </div>
+</div>
+
+  <!-- ================= STATUS ================= -->
+  <div class=" status-box">
+    <div class="status-inner">
+      <span class="im-text">I'm</span>
+      <span class="status online">ONLINE!</span>
+    </div>
+  </div>
+
+  <!-- ================= OBSESSION PANEL ================= -->
+  <div class="obsession-panel" id="obsessionPanel">
+    <div class="obsession-header">
+      <span class="obsession-label crt-text" data-text="CURRENT OBSESSION">CURRENT OBSESSION:</span>
+    </div>
+    <div class="obsession-body glitch-switch" id="obsessionContent">
+      <img id="obsessionImage" src="song.jpg">
+      <div class="obsession-text">
+        <h3 id="obsessionTitle">Song Title</h3>
+        <p id="obsessionSub">Artist Name</p>
+        <p id="obsessionDesc">Short description about why you're addicted.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= RANDOM POST ================= -->
+  <div class="sidebar-box">
+    <h3>🎲 Random Post</h3>
+    <button class="random" id="randomBtn">Surprise me</button>
+  </div>
+
+  <!-- ================= SOCIALS ================= -->
+  <div class="socials">
+    <h3>SOCIALS</h3>
+    <div class="social-icons">
+      <a href="https://www.facebook.com/sevencorpse"><img src="fblogo.avif"></a>
+      <a href="https://www.instagram.com/sevenc0rp"><img src="instaglogo.jpg"></a>
+      <a href="https://www.tiktok.com/@boolean.str"><img src="tiklogo.avif"></a>
+      <a href="https://www.discord.com/user/loadstring.json"><img src="disc.avif"></a>
+    </div>
+  </div>
+
+  <!-- ================= CLAP SYSTEM ================= -->
+  <div class="clap-box">
+    <iframe src="https://clap.fc2.com/post/YOUR_ID_HERE" 
+            scrolling="no" frameborder="0" 
+            style="width:100px;height:30px;">
+    </iframe>
+  </div>
+</aside>
+
+    </div>
+<footer class="retro-footer">
+
+  <div class="retro-buttons">
+
+    <!-- TOP ROW (slides left) -->
+    <div class="button-row slide-left">
+      <a href="#"><img src="anybrow.gif"></a>
+      <a href="#"><img src="1080p.gif"></a>
+      <a href="#"><img src="windows.gif"></a>
+      <a href="#"><img src="vscode.gif"></a>
+      <a href="#"><img src="noweb3.gif"></a>
+    </div>
+
+    <!-- BOTTOM ROW (slides right) -->
+    <div class="button-row slide-right">
+      <a href="#"><img src="valid-html5.gif"></a>
+      <a href="#"><img src="valid-css.gif"></a>
+      <a href="#"><img src="valid-rss.gif"></a>
+      <a href="#"><img src="made.gif"></a>
+    </div>
+
+  </div>
+
+  <div class="retro-credit">
+    website, artwork, and writing created by Steven Ignacio
+  </div>
+
+</footer>
+
+  </div>
+
+  <script>
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById("themeToggle");
+
+  // Ensure the element exists
+  if (!toggle) return;
+
+  // Set initial theme and icon
+  if (localStorage.theme === "dark") {
+    document.body.classList.add("dark");
+    toggle.src = "sun.gif"; // GIF for dark mode
+  } else {
+    document.body.classList.remove("dark");
+    toggle.src = "moon.gif"; // GIF for light mode
+  }
+
+  // Toggle theme on click
+  toggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    if (document.body.classList.contains("dark")) {
+      localStorage.theme = "dark";
+      toggle.src = "sun.gif";
+    } else {
+      localStorage.theme = "light";
+      toggle.src = "moon.gif";
+    }
+  });
+
+  // TAG FILTER
+  document.querySelectorAll(".tag").forEach(btn => {
+    btn.onclick = () => {
+      let f = btn.dataset.filter;
+
+      document.querySelectorAll(".post").forEach(p => {
+        p.style.display = f === "all" || p.dataset.tags?.includes(f) ? "" : "none";
+      });
+    };
+  });
+
+
+  // RANDOM POST (final reliable version)
+  const randomBtn = document.getElementById("randomBtn");
+
+  randomBtn.addEventListener("click", () => {
+
+    let posts = [...document.querySelectorAll(".post:not(.pinned)")]
+      .filter(p => getComputedStyle(p).display !== "none");
+
+    if (!posts.length) {
+      alert("No posts available!");
+      return;
+    }
+
+    let r = posts[Math.floor(Math.random() * posts.length)];
+    let link = r.querySelector("a.post-link")?.getAttribute("href");
+
+    if (!link) {
+      alert("This post has no page yet.");
+      return;
+    }
+
+    window.location.href = link;
+  });
+
+});
+// STATUS TOGGLE (example logic)
+const statusEl = document.getElementById("userStatus");
+
+// Example: offline between 1am–7am
+const hour = new Date().getHours();
+
+if (hour >= 1 && hour <= 7) {
+  statusEl.textContent = "OFFLINE";
+  statusEl.classList.remove("online");
+  statusEl.classList.add("offline");
+}
+/* ===== CURRENT OBSESSION SYSTEM ===== */
+
+const modes = [
+{
+  id:"song",
+  label:"[ SONG MODE ]",
+  img:"mr.jpg",
+  title:"Mr. Incorrect",
+  sub:"Malcolm Todd",
+  desc:"The song has this vibey and dreamy vibe i can't get enough of. It also reminds me of something..."
+},
+{
+  id:"show",
+  label:"[ SHOW MODE ]",
+  img:"TVD.png",
+  title:"The Vampire Diaries",
+  sub:"Season 5",
+  desc:"IM SO OBSESSED WITH THIS SHOW ITS CRAZY."
+}
+];
+
+let current=0;
+let autoRotate=true;
+const panel=document.getElementById("obsessionPanel");
+function switchMode(index){
+
+  const data=modes[index];
+
+  panel.classList.remove("mode-song","mode-anime","mode-show");
+  panel.classList.add("mode-"+data.id);
+
+  document.getElementById("obsessionImage").src=data.img;
+  document.getElementById("obsessionTitle").textContent=data.title;
+  document.getElementById("obsessionSub").textContent=data.sub;
+  document.getElementById("obsessionDesc").textContent=data.desc;
+
+  const body=document.getElementById("obsessionContent");
+  body.classList.remove("glitch-switch");
+  void body.offsetWidth;
+  body.classList.add("glitch-switch");
+
+  current=index;
+  const label=document.querySelector(".crt-text");
+label.style.animation="none";
+label.offsetHeight;
+label.style.animation=null;
+}
+
+/* Auto rotation */
+setInterval(()=>{
+  if(!autoRotate) return;
+  current=(current+1)%modes.length;
+  switchMode(current);
+},5000);
+
+/* Buttons */
+document.querySelectorAll(".obsession-controls button")
+.forEach(btn=>{
+  btn.onclick=()=>{
+    autoRotate=false;
+    switchMode(
+      modes.findIndex(m=>m.id===btn.dataset.mode)
+    );
+  };
+});
+
+/* start */
+switchMode(0);
+
+
+/* ================= SNOW OVERLAY ENGINE ================= */
+
+const canvas = document.getElementById("snow");
+const ctx = canvas.getContext("2d");
+
+let flakes = [];
+const FLAKE_COUNT = document.body.classList.contains("dark") ? 300 : 160;
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+/* snowflake */
+class Flake {
+  constructor() {
+    this.reset(true);
+  }
+
+  reset(initial=false) {
+    this.x = Math.random() * canvas.width;
+    this.y = initial ? Math.random()*canvas.height : -20;
+
+    this.size = Math.random()*3 + 0.5;
+
+    this.speedY = Math.random()*0.8 + 0.25;  // falling speed
+    this.speedX = Math.random()*0.6 - 0.3;   // wind drift
+
+    this.swing = Math.random()*0.02 + 0.005; // float motion
+    this.angle = Math.random()*Math.PI*2;
+
+    this.opacity = Math.random()*0.5 + 0.25;
+  }
+
+  update() {
+    this.angle += this.swing;
+    this.x += Math.cos(this.angle) + this.speedX;
+    this.y += this.speedY;
+
+    if (this.y > canvas.height+10 || this.x < -20 || this.x > canvas.width+20) {
+      this.reset();
+    }
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+/* create flakes */
+for (let i=0;i<FLAKE_COUNT;i++){
+  flakes.push(new Flake());
+}
+
+/* animation */
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  flakes.forEach(f=>{
+    f.update();
+    f.draw();
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+  </script>
+ <script>
+const groundCanvas = document.getElementById("snow-ground");
+const gctx = groundCanvas.getContext("2d");
+
+function resizeGround() {
+  groundCanvas.width = window.innerWidth;
+  groundCanvas.height = 150;
+}
+resizeGround();
+window.addEventListener("resize", resizeGround);
+
+let snowLevels = new Array(groundCanvas.width).fill(0);
+const MAX_HEIGHT = 140;
+
+function addSnow() {
+  if (!document.body.classList.contains("dark")) return;
+
+  for (let i = 0; i < 200; i++) {
+    const x = Math.floor(Math.random() * groundCanvas.width);
+    if (snowLevels[x] < MAX_HEIGHT) {
+      snowLevels[x] += Math.random() * 2;
+    }
+  }
+}
+
+function smoothSnow() {
+  for (let i = 1; i < snowLevels.length - 1; i++) {
+    snowLevels[i] =
+      (snowLevels[i - 1] + snowLevels[i] + snowLevels[i + 1]) / 3;
+  }
+}
+
+function drawSnow() {
+  gctx.clearRect(0, 0, groundCanvas.width, groundCanvas.height);
+  gctx.fillStyle = "white";
+
+  gctx.beginPath();
+  gctx.moveTo(0, groundCanvas.height);
+
+  for (let x = 0; x < snowLevels.length; x++) {
+    gctx.lineTo(x, groundCanvas.height - snowLevels[x]);
+  }
+
+  gctx.lineTo(groundCanvas.width, groundCanvas.height);
+  gctx.closePath();
+  gctx.fill();
+}
+
+function snowLoop() {
+  addSnow();
+  smoothSnow();
+  drawSnow();
+  requestAnimationFrame(snowLoop);
+}
+
+snowLoop();
+</script>
+
+</body>
+
+</html>
+
