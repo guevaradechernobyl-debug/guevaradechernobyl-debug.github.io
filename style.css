@@ -1772,7 +1772,14 @@
       margin: 0;
     }
 
-   
+    @media (max-width: 900px) {
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
     @media (max-width: 600px) {
 
       .sidebar-row {
@@ -1810,25 +1817,24 @@
   display: grid;
   grid-template-columns: 1fr 210px;
 }
-    /* =========================
-   MOBILE FIXES ONLY
-   DOES NOT TOUCH DESKTOP
+/* =========================
+   CLEAN MOBILE RULES
 ========================= */
 
 @media (max-width: 768px) {
 
-  /* Stack layout vertically */
-  @media (max-width: 768px) {
-
+  /* Keep 2-column layout like desktop but thinner sidebar */
   .layout {
-    grid-template-columns: 1fr 140px !important;
+    grid-template-columns: 1fr 140px;
     gap: 12px;
   }
 
-  .sidebar {
-    width: auto !important;
+  /* Stack intro panels */
+  .intro-row {
+    flex-direction: column;
   }
 
+  /* Slightly smaller spacing */
   .post,
   .pixel-panel,
   .star-menu-panel {
@@ -1836,33 +1842,7 @@
   }
 
   body {
-    font-size: 14px;
-  }
-
-}
-
-  /* Intro row becomes vertical */
-  .intro-row {
-    flex-direction: column !important;
-  }
-
-  /* Sidebar below content */
-  .sidebar {
-    width: 100% !important;
-    margin-top: 20px;
-  }
-
-  /* Panels full width */
-  .pixel-panel,
-  .star-menu-panel,
-  .sidebar-box,
-  .post {
-    width: 100% !important;
-  }
-
-  /* Prevent overflow */
-  body {
-    overflow-x: hidden;
+    font-size: 13px;
   }
 
   img {
@@ -1871,35 +1851,3 @@
   }
 
 }
-/* ================= CLEAN MOBILE GRID ================= */
-/* DESKTOP */
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 210px;
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-  .layout {
-    grid-template-columns: 1fr 140px;
-  }
-}
-  aside {
-    order: 0; /* cancel that rogue order rule */
-  }
-
-  .site-wrapper {
-    padding: 10px;
-  }
-
-  .post {
-    padding: 12px;
-  }
-
-  .pixel-panel {
-    padding: 12px;
-  }
-
-  body {
-    font-size: 13px;
-  }
