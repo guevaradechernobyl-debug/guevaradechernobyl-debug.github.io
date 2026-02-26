@@ -257,11 +257,7 @@
 
 
 
-    @media(max-width:900px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-    }
+
 
     /* POSTS */
     .post {
@@ -1776,14 +1772,7 @@
       margin: 0;
     }
 
-    @media (max-width: 900px) {
-
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-    }
-
+   
     @media (max-width: 600px) {
 
       .sidebar-row {
@@ -1817,6 +1806,10 @@
       }
 
     }
+    .layout {
+  display: grid;
+  grid-template-columns: 1fr 210px;
+}
     /* =========================
    MOBILE FIXES ONLY
    DOES NOT TOUCH DESKTOP
@@ -1879,13 +1872,18 @@
 
 }
 /* ================= CLEAN MOBILE GRID ================= */
-@media (max-width: 768px) {
+/* DESKTOP */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 210px;
+}
 
+/* MOBILE */
+@media (max-width: 768px) {
   .layout {
     grid-template-columns: 1fr 140px;
-    gap: 14px;
   }
-
+}
   aside {
     order: 0; /* cancel that rogue order rule */
   }
@@ -1905,5 +1903,3 @@
   body {
     font-size: 13px;
   }
-
-}
