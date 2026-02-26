@@ -1824,7 +1824,7 @@
 @media (max-width: 768px) {
 
   .layout {
-    grid-template-columns: 1fr 125px;
+    grid-template-columns: 1fr 165px;
     gap: 10px;
   }
 
@@ -1857,3 +1857,4 @@
   }
 
 }
+
