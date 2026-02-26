@@ -1843,3 +1843,9 @@
     font-size: 12px;
   }
 }
+@media (max-width: 900px) {
+  body {
+    background: red !important;
+  }
+}
+
