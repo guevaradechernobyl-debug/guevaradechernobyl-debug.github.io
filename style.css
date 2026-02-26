@@ -1848,12 +1848,26 @@
 
 @media (max-width: 900px) {
 
+  /* Remove JoJo side images */
+  body {
+    background: #0f1115;   /* or var(--bg) if you prefer */
+    background-image: none;
+  }
+
+  /* Make wrapper truly full width */
   .site-wrapper {
-    max-width: 100%;
+    max-inline-size: none;
     width: 100%;
     margin: 0;
-    padding-left: 10px;
-    padding-right: 10px;
+    border-radius: 0;
+    padding: 14px;
+  }
+
+  /* Prevent inner grid from constraining width */
+  .layout {
+    max-width: none;
+    margin: 20px 0;
   }
 
 }
+
