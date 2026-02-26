@@ -1843,9 +1843,34 @@
     font-size: 12px;
   }
 }
-@media (max-width: 900px) {
-  body {
-    background: red !important;
+/* ================= CLEAN MOBILE GRID ================= */
+@media (max-width: 768px) {
+
+  .layout {
+    grid-template-columns: 1fr 140px;
+    gap: 14px;
   }
+
+  aside {
+    order: 0; /* cancel that rogue order rule */
+  }
+
+  .site-wrapper {
+    padding: 10px;
+  }
+
+  .post {
+    padding: 12px;
+  }
+
+  .pixel-panel {
+    padding: 12px;
+  }
+
+  body {
+    font-size: 13px;
+  }
+
 }
+
 
