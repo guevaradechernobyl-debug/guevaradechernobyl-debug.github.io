@@ -1829,10 +1829,26 @@
 
 @media (max-width: 768px) {
 
-  /* Stack layout vertically */
   .layout {
-    display: block !important;
+    grid-template-columns: 1fr 140px !important;
+    gap: 12px;
   }
+
+  .sidebar {
+    width: auto !important;
+  }
+
+  .post,
+  .pixel-panel,
+  .star-menu-panel {
+    padding: 12px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+}
 
   /* Intro row becomes vertical */
   .intro-row {
@@ -1863,4 +1879,4 @@
     height: auto;
   }
 
-}
+
