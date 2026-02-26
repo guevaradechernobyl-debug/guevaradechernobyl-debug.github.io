@@ -1823,23 +1823,22 @@
 
 @media (max-width: 768px) {
 
-  /* Keep 2-column layout like desktop but thinner sidebar */
   .layout {
-    grid-template-columns: 1fr 140px;
-    gap: 12px;
+    grid-template-columns: 1fr 125px;
+    gap: 10px;
   }
 
-  /* Stack intro panels */
-  .intro-row {
-    flex-direction: column;
+  body {
+    font-size: 13px;
   }
 
-  /* Slightly smaller spacing */
   .post,
   .pixel-panel,
   .star-menu-panel {
-    padding: 12px;
+    padding: 10px;
   }
+
+}
 
   body {
     font-size: 13px;
@@ -1858,4 +1857,3 @@
   }
 
 }
-
