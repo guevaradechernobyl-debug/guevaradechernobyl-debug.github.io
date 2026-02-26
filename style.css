@@ -1,4 +1,4 @@
- :root {
+:root {
       --bg: #655e79;
       /* soft white lavender background */
       --card: #ffffff;
@@ -94,11 +94,11 @@
     }
 
     /* Hide JoJo on small screens */
-    @media(max-width:900px) {
+     
       body {
         background: #0f1115;
       }
-    }
+    
 
     /* CENTER WEBSITE WRAPPER */
     .site-wrapper {
@@ -257,7 +257,11 @@
 
 
 
-
+    @media(max-width:900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
 
     /* POSTS */
     .post {
@@ -1778,6 +1782,11 @@
         grid-template-columns: 1fr;
       }
 
+      aside {
+        order: -1;
+        /* puts sidebar above posts */
+      }
+
     }
 
     @media (max-width: 600px) {
@@ -1813,55 +1822,83 @@
       }
 
     }
-    .layout {
-  display: grid;
-  grid-template-columns: 1fr 210px;
+    #snow {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1111;            /* above your entire UI */
+  pointer-events: none;     /* clicks pass through */
+  user-select: none;        /* prevents highlight dragging */
+
+  opacity: 0.9;
 }
-/* =========================
-   CLEAN MOBILE RULES
-========================= */
+#snow-ground {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  pointer-events: none;
+  z-index: 9998;
+}
 
-@media (max-width: 768px) {
+/* ========================= */
+/* 📱 MOBILE FIXES */
+/* ========================= */
 
+@media (max-width: 900px) {
+
+  /* Stack main layout */
   .layout {
-    grid-template-columns: 1fr 190px;
+    grid-template-columns: 1fr;
+  }
+
+  /* Stack intro section */
+  .intro-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Make sidebars full width */
+  .sidebar {
+    width: 100%;
+  }
+
+  /* Adjust obsession section */
+  .obsession-box {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* Social icons spacing */
+  .socials {
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
   }
 
+  /* Slight font adjustment */
+  body {
+    font-size: 14px;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  /* Extra small screen adjustments */
+
   body {
     font-size: 13px;
   }
 
-  .post,
-  .pixel-panel,
-  .star-menu-panel {
-    padding: 10px;
+  .welcome-title {
+    font-size: 18px;
   }
 
-}
-
-  body {
-    font-size: 13px;
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-
-
-@media (max-width: 768px) {
-
-  body {
-    zoom: 0.85;
-  }
-
-}
-@media (max-width: 768px) {
-  .layout {
-    border: 5px solid red;
+  .filter-buttons {
+    flex-wrap: wrap;
+    gap: 8px;
   }
 }
-
-
-
