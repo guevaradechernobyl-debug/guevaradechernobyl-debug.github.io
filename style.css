@@ -1850,4 +1850,12 @@
     height: auto;
   }
 
+
+@media (max-width: 768px) {
+
+  body {
+    zoom: 0.85;
+  }
+
 }
+
