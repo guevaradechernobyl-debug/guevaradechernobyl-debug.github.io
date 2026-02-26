@@ -1857,5 +1857,11 @@
   }
 
 }
+@media (max-width: 768px) {
+  .layout {
+    border: 5px solid red;
+  }
+}
+
 
 
