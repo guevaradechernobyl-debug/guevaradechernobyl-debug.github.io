@@ -1843,62 +1843,17 @@
 }
 
 /* ========================= */
-/* 📱 MOBILE FIXES */
+/* 📱 Mobile Full Width Fix */
 /* ========================= */
 
 @media (max-width: 900px) {
 
-  /* Stack main layout */
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  /* Stack intro section */
-  .intro-row {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  /* Make sidebars full width */
-  .sidebar {
+  .site-wrapper {
+    max-width: 100%;
     width: 100%;
+    margin: 0;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
-  /* Adjust obsession section */
-  .obsession-box {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  /* Social icons spacing */
-  .socials {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  /* Slight font adjustment */
-  body {
-    font-size: 14px;
-  }
-}
-
-
-@media (max-width: 600px) {
-
-  /* Extra small screen adjustments */
-
-  body {
-    font-size: 13px;
-  }
-
-  .welcome-title {
-    font-size: 18px;
-  }
-
-  .filter-buttons {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
 }
