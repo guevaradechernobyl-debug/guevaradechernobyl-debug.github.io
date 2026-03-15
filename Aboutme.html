@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steven — Personal Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: rgba(18, 22, 40, .75);
+      --text: #e6f1ff;
+      --border: rgba(100, 150, 255, .4);
+      --accent: #5fd3ff;
+    }
+
+    body.dark {
+      --bg: #170c3f;
+      --card: #251c46;
+      --text: #f3f1ff;
+      --border: #b5bad5;
+      --accent: #a999ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, sans-serif;
+      color: var(--text);
+      background: #000;
+      overflow-x: hidden;
+    }
+
+    /* CENTER WEBSITE WRAPPER */
+    .site-wrapper {
+      max-width: 1200px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 30px;
+      border-radius: 18px;
+
+      background: rgba(10, 14, 28, .75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(120, 170, 255, .25);
+
+      box-shadow:
+        0 0 40px rgba(90, 150, 255, .15),
+        inset 0 0 30px rgba(255, 255, 255, .03);
+    }
+
+    /* HEADER */
+    header,
+    .sidebar-box,
+    .site-footer {
+      background: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    header {
+      backdrop-filter: blur(6px);
+    }
+
+    h1,
+    h2 {
+      color: var(--text);
+      text-shadow: 0 0 12px rgba(95, 211, 255, .35);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar-wrapper {
+      width: 60px;
+      height: 60px;
+      position: relative;
+
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: absolute;
+      inset: 0;
+
+
+    }
+
+    .avatar-smile {
+      opacity: 0;
+    }
+
+    .avatar-wrapper:hover .avatar-smile {
+      opacity: 1;
+    }
+
+    .avatar-wrapper:hover .avatar-normal {
+      opacity: 0;
+    }
+
+    .toggle {
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .search {
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #aaa;
+    }
+
+    /* TOP BANNER */
+    .top-banner img {
+      width: 100%;
+      max-height: 150px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 40px 10px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+    }
+
+    .hero p {
+      max-width: 800px;
+      line-height: 1.6;
+    }
+
+    /* MAIN GRID */
+    .layout {
+      max-width: 1200px;
+      margin: 30px auto;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 20px;
+    }
+
+    @media(max-width:900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* POSTS */
+    .post {
+      background: var(--card);
+      border: 2px solid var(--border);
+      padding: 18px;
+      margin-bottom: 16px;
+      transition: .25s;
+    }
+
+    .post:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+    }
+
+    .post h2 {
+      margin: 0;
+    }
+
+    .date {
+      font-size: 12px;
+      opacity: .6;
+      margin-top: 6px;
+    }
+
+    .post-link {
+      color: inherit;
+      text-decoration: none;
+      display: block;
+    }
+
+    /* SIDEBAR */
+    .sidebar-box {
+      border: 2px solid var(--border);
+      background: var(--card);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-box h3 {
+      text-align: center;
+      padding: 6px;
+      font-size: 12px;
+      background: rgba(0, 0, 0, .05);
+    }
+
+    .sidebar-box a {
+      display: block;
+      margin: 6px;
+      padding: 6px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    /* SOCIALS */
+    .social-icons {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+    }
+
+    .social-icons img {
+      width: 32px;
+      height: 32px;
+      opacity: .8;
+      filter: grayscale(100%);
+    }
+
+    .social-icons img:hover {
+      filter: none;
+      opacity: 1;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      margin-top: 40px;
+      padding: 20px;
+      background: rgba(15, 17, 21, 0.9);
+      border-top: 2px solid var(--border);
+      background: var(--card);
+      border-radius: 14px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media(max-width:900px) {
+      .footer-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 12px;
+      opacity: .6;
+      margin-top: 10px;
+    }
+
+    body.dark .site-wrapper {
+      background:
+        radial-gradient(circle at top, rgba(120, 110, 255, 0.18), transparent 60%),
+        linear-gradient(180deg, #141624 0%, #171a2b 50%, #1b1f33 100%);
+    }
+
+    .hero-image {
+      display: block;
+      margin: 10px auto;
+      max-width: 70%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+    .hero-image {
+      box-shadow: 0 0 25px rgba(95, 211, 255, .25);
+      border: 1px solid rgba(120, 170, 255, .3);
+    }
+
+    /* Make paragraphs more readable */
+    .hero p {
+      font-size: 1.125rem;
+      /* slightly bigger text */
+      line-height: 1.9;
+      /* more spacing between lines */
+      margin-bottom: 1.5rem;
+      /* space between paragraphs */
+      max-width: 800px;
+      /* keeps line length comfortable */
+    }
+
+    /* Optional: improve header spacing */
+    .hero h2 {
+      font-size: 2.2rem;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+
+    /* Optional: make the hero section padding more airy */
+    .hero {
+      padding: 40px 20px;
+    }
+
+    /* BACK BUTTON */
+    .back-btn {
+      background: rgba(95, 211, 255, .15);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .back-btn:hover {
+      background: rgba(95, 211, 255, .3);
+      box-shadow: 0 0 12px rgba(95, 211, 255, .6);
+    }
+
+    .bg-video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    .skills {
+      margin-top: 50px;
+    }
+
+    .skills h2 {
+      margin-bottom: 25px;
+    }
+
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
+
+    .skill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      background: rgba(18, 22, 40, .7);
+      padding: 20px;
+      border-radius: 16px;
+
+      border: 1px solid rgba(120, 170, 255, .25);
+      backdrop-filter: blur(8px);
+
+      transition: .3s ease;
+    }
+
+    .skill img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+
+    .skill span {
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    .skill:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 20px rgba(95, 211, 255, .4);
+    }
+
+    .glow-name {
+      color: #5fd3ff;
+      animation: glowPulse 2.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      from {
+        text-shadow:
+          0 0 6px rgba(95, 211, 255, .6),
+          0 0 12px rgba(95, 211, 255, .4);
+      }
+
+      to {
+        text-shadow:
+          0 0 10px rgba(95, 211, 255, 1),
+          0 0 20px rgba(95, 211, 255, .8),
+          0 0 30px rgba(95, 211, 255, .6);
+      }
+    }
+
+    .highlight {
+      color: #5fd3ff;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="Night.mp4" type="video/mp4">
+  </video>
+  <div class="site-wrapper">
+
+    <div class="top-banner">
+      <img src="banner.png">
+    </div>
+
+
+    <button onclick="window.history.back()" class="back-btn">← Go Back</button>
+    <h1>About Me</h1>
+    <p>🗓️ 14 Feb 2026 | ⏱️~3 minute read</p>
+
+    <div class="layout">
+
+      <main id="posts">
+        <img src="Steve.jpeg" class="hero-image" width="200px">
+        <section class="hero">
+          <h2>Hi there 👋🏻 This is <span class="glow-name">Steven Lian</span>. Here you can learn a bit about him, his
+            interests, and what makes him tick.</h2>
+
+          <p>He is a <span class="highlight">16-year-old Grade 11 student</span> at Commonwealth High School, currently
+            taking the <span class="highlight">ICT strand</span>. He has always been drawn to <span
+              class="highlight">technology</span>, especially <span class="highlight">coding</span>. There’s something
+            exciting to him about building things from scratch, solving problems, and seeing ideas come to life on a
+            screen.</p>
+
+          <p>These days, he lives in <span class="highlight">Quezon City, Philippines</span>. School keeps him busy, but
+            he is really looking forward to summer vacation so he can finally go back to his favorite place — home.
+            There’s just something about it that feels different and more peaceful to him.</p>
+
+          <p>He also has a few hobbies that he cares about a lot (he even made a separate blog post about them, so feel
+            free to check that out). He enjoys learning new things and improving little by little.</p>
+
+          <p>One thing about him? He absolutely loves watching <span class="highlight">movies and TV shows</span>. Once
+            he starts a good series, it’s actually hard for him to stop. He tells himself “just one more episode,” and
+            suddenly it’s much later than it should be. He enjoys getting invested in the characters, the storylines,
+            and the plot twists — especially when a show makes him think or feel something deeply. Whether it’s action,
+            drama, mystery, or something light and funny, he gets hooked easily. Binge-watching is definitely one of his
+            weaknesses.</p>
+
+          <p>As for his future, he is still undecided. Part of him wants to fully commit to the <span
+              class="highlight">IT path</span> and see how far he can go with coding and technology. But another part of
+            him is considering <span class="highlight">ministry</span>. His <span class="highlight">faith</span> is
+            important to him, and he believes in doing good and encouraging peace whenever he can.</p>
+
+          <p>He doesn’t have everything figured out yet, but he is doing his best to <span class="highlight">grow,
+              learn</span>, and stay open to where life leads him.</p>
+
+          <p><span class="highlight">Gratitude and Abundance</span> are both virtues.</p>
+        </section>
+        <section class="skills">
+          <h2>Skills</h2>
+
+          <div class="skills-grid">
+            <div class="skill">
+              <img src="html.png" alt="HTML" width="50px">
+              <span>HTML</span>
+            </div>
+
+            <div class="skill">
+              <img src="css.png" alt="CSS" width="35px">
+              <span>CSS</span>
+            </div>
+
+            <div class="skill">
+              <img src="js.png" alt="JavaScript" width="50px">
+              <span>JavaScript</span>
+            </div>
+
+            <div class="skill">
+              <img src="py.png" alt="Python" width="40px">
+              <span>Python</span>
+            </div>
+          </div>
+        </section>
+
+
+
+
+
+
+        </section>
+
+
+
+      </main>
+
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div>
+          <h4>Steven Ignacio</h4>
+          <p>Reflecting, questioning, still becoming.</p>
+        </div>
+        <div>
+          <a>Blog</a><a>About</a><a>Projects</a><a>Contact</a>
+        </div>
+        <div>
+          <a>Facebook</a><a>Instagram</a><a>TikTok</a><a>Discord</a>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Steven Ignacio</div>
+    </footer>
+
+  </div>
+
+
+
+</body>
+
+</html>

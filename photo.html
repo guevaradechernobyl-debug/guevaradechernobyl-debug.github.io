@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Steven — About Me</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="icon" href="leaf2-removebg-preview.png" type="image/png">
+<style>
+body {
+  margin: 0;
+  background: url("forest.png") center/cover fixed;
+  font-family: 'Cormorant Garamond', serif;
+  cursor: url("lily-cursor.png") 16 16, auto;
+  color: white;
+}
+
+.gallery-wrapper {
+  padding: 80px 60px;
+  text-align: center;
+}
+
+.big-title {
+  font-size: 6rem;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin: 60px 0 30px;
+  letter-spacing: 2px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+}
+
+.row.center {
+  justify-content: center;
+}
+
+.frame {
+  background: url("frame.png") no-repeat center/contain;
+  width: 260px;
+  height: 260px;
+  position: relative;
+  transition: transform 0.4s ease;
+}
+
+.frame img {
+  position: absolute;
+  top: 12%;
+  left: 12%;
+  width: 76%;
+  height: 76%;
+  object-fit: cover;
+}
+
+.frame:hover {
+  transform: translateY(-10px) scale(1.05);
+}
+
+/* Return button */
+.return-btn {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 140px;
+  transition: transform 0.3s ease;
+}
+
+.return-btn:hover {
+  transform: scale(1.1);
+}
+body {
+  margin: 0;
+  background: url("forest.png") center/cover fixed;
+  font-family: 'Cormorant Garamond', serif;
+  cursor: url("lily-cursor.png") 16 16, auto;
+  color: white;
+}
+
+.gallery-wrapper {
+  padding: 80px 60px;
+  text-align: center;
+}
+
+.big-title {
+  font-size: 6rem;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin: 60px 0 30px;
+  letter-spacing: 2px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+}
+
+.row.center {
+  justify-content: center;
+}
+
+.frame {
+  background: url("frame.png") no-repeat center/contain;
+  width: 260px;
+  height: 260px;
+  position: relative;
+  transition: transform 0.4s ease;
+}
+
+.frame img {
+  position: absolute;
+  top: 12%;
+  left: 12%;
+  width: 76%;
+  height: 76%;
+  object-fit: cover;
+}
+
+.frame:hover {
+  transform: translateY(-10px) scale(1.05);
+}
+
+/* Return button */
+.return-btn {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 140px;
+  transition: transform 0.3s ease;
+}
+
+.return-btn:hover {
+  transform: scale(1.1);
+}
+.leaves-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1; /* behind frames */
+}
+
+.leaf {
+  position: absolute;
+  top: -50px;
+  width: 40px;
+  opacity: 0.8;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}#lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  box-shadow: 0 0 40px black;
+}
+
+#closeLightbox {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
+#lightbox {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#lightbox.active {
+  display: flex;
+  opacity: 1;
+}
+.frame video {
+  position: absolute;
+  top: 12%;
+  left: 12%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* MODAL BACKGROUND */
+.media-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+
+/* CLOSE BUTTON */
+.media-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+/* CONTENT AREA */
+.media-content img,
+.media-content video {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+}
+.frame video {
+  position: absolute;
+  top: 12%;
+  left: 12%;
+  width: 76%;
+  height: 76%;
+  object-fit: cover;
+}.gallery-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.media-date {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+</style>
+</head>
+<body>
+    <div class="leaves-container"></div>
+   <div class="gallery-wrapper">
+
+  <h1 class="big-title">Gallery Wall</h1>
+
+  <h2 class="section-title">☆ Photos ☆</h2>
+
+  <div class="row">
+  <div class="photo-frame" 
+     data-album="gallery-data.js" 
+     data-full="images/blue-abstract.png">
+
+  <img src="images/blue-abstract-thumb.png" class="framed-photo">
+
+</div>
+<div class="gallery-item">
+  <div class="frame">
+    <img src="pic1.jpg">
+  </div>
+  <div class="media-date">Dec 17, 2025</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic22.jpg"></div>
+  <div class="media-date">Jan 3, 2026</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic31.jpg"></div>
+  <div class="media-date">Feb 23, 2026</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic7.jpg"></div>
+  <div class="media-date">Feb 27, 2026</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic11.jpg"></div>
+  <div class="media-date">Feb 1, 2026</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic3.jpg"></div>
+  <div class="media-date">Dec 17, 2025</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic9.jpg"></div>
+  <div class="media-date">Feb 1, 2026</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic19.jpg"></div>
+  <div class="media-date">Feb 4, 2026</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic5.jpg"></div>
+  <div class="media-date">Dec 17, 2025</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic35.jpg"></div>
+  <div class="media-date">Feb 26, 2026</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic25.jpg"></div>
+  <div class="media-date">Feb 15, 2026</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic29.jpg"></div>
+  <div class="media-date">Feb 16, 2026</div>
+</div>
+
+<div class="gallery-item">
+  <div class="frame"><img src="pic4.jpg"></div>
+  <div class="media-date">Dec 17, 2025</div>
+</div>
+
+  <div class="row center">
+   <div class="gallery-item">
+  <div class="frame"><img src="pic10.jpg"></div>
+  <div class="media-date">Feb 1, 2026</div>
+</div>
+
+    <div class="gallery-item">
+  <div class="frame"><img src="pic17.jpg"></div>
+  <div class="media-date">Feb 4, 2026</div>
+  </div>
+</div>
+
+<div>
+  <h2 class="section-title">☆ Videos ☆</h2>
+  <div class="row">
+
+
+    <div class="frame">
+  <video src="vid6.mp4" autoplay muted loop playsinline></video>
+</div>
+
+<div id="mediaModal" class="media-modal">
+  <span class="media-close">&times;</span>
+  <div class="media-content"></div>
+</div>
+    <div class="frame"><video 
+  src="vid1.mp4"
+  autoplay
+  muted
+  loop
+  playsinline
+></video></div>
+    <div class="frame"><video 
+  src="vid3.mp4"
+  autoplay
+  muted
+  loop
+  playsinline
+></video></div>
+    <div class="frame"><video 
+  src="vid5.mp4"
+  autoplay
+  muted
+  loop
+  playsinline
+></video></div>
+  </div>
+</div>
+</div>
+
+<a href="index.html">
+  <img src="lilypads.png" class="return-btn">
+</a>
+
+
+
+<audio id="forestAudio" autoplay loop>
+  <source src="forest-ambient.mp3" type="audio/mpeg">
+</audio>
+
+
+<script src="gallery-data.js"></script>
+<script>
+  const galleryGrid = document.getElementById("galleryGrid");
+
+  galleryImages.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.classList.add("gallery-img");
+    galleryGrid.appendChild(img);
+  });
+</script>
+<script>
+const viewer = document.getElementById("viewer");
+const viewerContent = document.getElementById("viewerContent");
+const closeViewer = document.getElementById("closeViewer");
+
+document.querySelectorAll(".media-item").forEach(item => {
+  item.addEventListener("click", () => {
+    viewerContent.innerHTML = "";
+
+    if (item.tagName === "IMG") {
+      const img = document.createElement("img");
+      img.src = item.src;
+      viewerContent.appendChild(img);
+    } else if (item.tagName === "VIDEO") {
+      const vid = document.createElement("video");
+      vid.src = item.src;
+      vid.controls = true;
+      vid.autoplay = true;
+      viewerContent.appendChild(vid);
+    }
+
+    viewer.classList.add("show");
+  });
+});
+
+closeViewer.addEventListener("click", () => {
+  viewer.classList.remove("show");
+  viewerContent.innerHTML = "";
+});
+</script>
+<script>
+const container = document.querySelector(".leaves-container");
+
+// Your 3 leaf images
+const leafImages = [
+  "leaf1-removebg-preview.png",
+  "leaf2-removebg-preview.png",
+  "leaf4.gif"
+];
+
+function createLeaf() {
+  const leaf = document.createElement("img");
+
+  // Random leaf type
+  leaf.src = leafImages[Math.floor(Math.random() * leafImages.length)];
+  leaf.classList.add("leaf");
+
+  // Random horizontal start
+  leaf.style.left = Math.random() * 100 + "vw";
+
+  // Random size
+  const size = 25 + Math.random() * 35;
+  leaf.style.width = size + "px";
+
+  // Random fall duration (slower = more aesthetic)
+  const duration = 6 + Math.random() * 6;
+  leaf.style.animationDuration = duration + "s";
+
+  // Slight random horizontal drift
+  const drift = (Math.random() - 0.5) * 200;
+  leaf.style.setProperty("--drift", drift + "px");
+
+  container.appendChild(leaf);
+
+  // Remove after animation ends
+  setTimeout(() => {
+    leaf.remove();
+  }, duration * 1000);
+}
+
+// Spawn rate (lower = more leaves)
+setInterval(createLeaf, 700);
+</script>
+<script>
+const modal = document.getElementById("mediaModal");
+const modalContent = document.querySelector(".media-content");
+const closeBtn = document.querySelector(".media-close");
+
+// Click on images or videos inside frames
+document.querySelectorAll(".frame img, .frame video").forEach(media => {
+  media.addEventListener("click", () => {
+
+    modalContent.innerHTML = "";
+
+    if (media.tagName === "IMG") {
+      const img = document.createElement("img");
+      img.src = media.src;
+      modalContent.appendChild(img);
+
+    } else if (media.tagName === "VIDEO") {
+      const video = document.createElement("video");
+      video.src = media.src;
+      video.controls = true;
+      video.autoplay = true;
+      video.muted = false;
+      video.playsInline = true;
+
+      modalContent.appendChild(video);
+    }
+
+    modal.style.display = "flex";
+  });
+});
+
+// Close modal
+closeBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+  modalContent.innerHTML = "";
+});
+
+// Optional: click outside content to close
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+    modalContent.innerHTML = "";
+  }
+});</script>
+<!-- MEDIA MODAL -->
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Steven — About Me</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --card-bg: rgba(0,0,0,0.75);
+  --text: #f3f1ff;
+  --accent: #ff00bf;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+
+  /* ANIMATED BACKGROUND */
+  background: url("nekobackground.png") repeat;
+  background-size: auto;
+  animation: moveBackground 15s linear infinite; /* 🔥 FASTER */
+}
+
+/* BACKGROUND ANIMATION */
+@keyframes moveBackground {
+  from { background-position: 0 0; }
+  to { background-position: -500px 0; }
+}
+
+/* MAIN CARD */
+.site-wrapper {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 40px;
+  background: var(--card-bg);
+  border-radius: 16px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+/* BACK BUTTON */
+.back-btn {
+  margin-bottom: 30px;
+  padding: 8px 14px;
+  background: #410e4b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* PIXEL TITLE */
+.pixel-title {
+  font-family: "Press Start 2P", monospace;
+  font-size: 18px;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+/* TEXT */
+p {
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+/* MOBILE */
+@media(max-width:700px) {
+  .site-wrapper {
+    margin: 20px;
+    padding: 25px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="site-wrapper">
+
+<button onclick="window.history.back()" class="back-btn">← Go Back</button>
+
+<div class="pixel-title">IN PROGRESS</div>
+
+<p>This wasn’t supposed to be serious.</p>
+
+<p>It was just a school project. A requirement. Something to finish, submit, and forget about five minutes later.</p>
+
+<p>
+But somewhere between broken code, error messages that might as well have been written in ancient hieroglyphs,  
+and debugging at hours when normal people are asleep… something changed.
+</p>
+
+<p>
+There’s a strange kind of satisfaction in solving a problem that once made you question your intelligence.  
+One moment the code is a mess. The next moment it works like it finally decided to cooperate.
+</p>
+
+<p>
+Turns out watching logic fall into place is... addictive.
+</p>
+
+<p>
+So what started as homework slowly turned into something else.
+Curiosity. Then obsession.
+</p>
+
+</div>
+
+</body>
+</html>

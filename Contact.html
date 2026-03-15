@@ -1,0 +1,148 @@
+Look at this, the black card is so fucking fat the background isnt even seeablea nymoree "<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steven — Contact</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+    
+        /* RIVER CONTACT STYLE */
+
+.river-contact{
+text-align:center;
+background:rgb(0, 0, 0);
+padding:10px;
+border:2px solid white;
+
+}
+
+.river-title{
+font-family:Georgia,serif;
+color:#cc00ff;
+font-size:42px;
+margin-bottom:10px;
+}
+
+.river-line{
+border:none;
+border-top:1px solid #999;
+margin:20px auto;
+width:80%;
+}
+
+.river-text{
+color:white;
+font-size:18px;
+line-height:1.6;
+max-width:750px;
+margin:20px auto;
+}
+
+.spark-divider{
+margin:20px auto;
+display:block;
+}
+
+.contact-list{
+color:white;
+font-size:20px;
+margin-top:20px;
+}
+
+.contact-list span{
+color:#cc00ff;
+font-weight:bold;
+}
+body{
+margin:0;
+font-family:Inter,sans-serif;
+color:var(--text);
+overflow-x:hidden;
+
+background:url("BACKGROUND-BLINKIES.gif") repeat;
+background-size:900px;
+
+animation:moveBackground 20s linear infinite;
+}
+
+@keyframes moveBackground {
+from { background-position: 0 0; }
+to { background-position: -500px -300px; }
+}
+.contact-list a{
+color:#ff00cc;
+text-decoration:underline;
+}
+
+.contact-list a:hover{
+color:#ffffff;
+}
+
+.river-figure{
+display:block;
+margin:40px auto 0 auto;
+max-width:320px;
+}
+    </style>
+</head>
+
+<body>
+    <div class="site-wrapper">
+
+        
+
+        <div class="layout">
+
+            <button onclick="window.history.back()" class="back-btn">← Go Back</button>
+
+<div class="river-contact">
+
+<h1 class="river-title">WELCOME TO THE RIVER!</h1>
+
+<hr class="river-line">
+
+<p class="river-text">
+My name is Steven. I run this small corner of the internet where I write about
+ideas, projects, and things that interest me.
+If you want to reach out, collaborate, or just talk about coding and life online,
+you're welcome to contact me.
+</p>
+
+<img src="redsparkilng.gif" class="spark-divider">
+
+<p class="river-text">
+You can contact me in the following places:<br>
+Join my <a href="#">discord server</a> to chat about coding, projects, or anything interesting!
+</p>
+
+<div class="contact-list">
+<p><span>Discord:</span> ACROGEEZER</p>
+<p><span>Email:</span> <a href="mailto:Acrogeezer@gmail.com">Acrogeezer@gmail.com</a></p>
+<p>I also post updates on <a href="#">Bluesky</a> and <a href="#">Tumblr</a>.</p>
+</div>
+
+<img src="bannerasriel.gif" class="river-figure">
+
+</div>
+    </div>
+
+    <script>
+        const toggle = document.getElementById("themeToggle");
+        if (localStorage.theme === "dark") {
+            document.body.classList.add("dark");
+            toggle.textContent = "☀️";
+        }
+        toggle.onclick = () => {
+            document.body.classList.toggle("dark");
+            localStorage.theme = document.body.classList.contains("dark") ? "dark" : "light";
+            toggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+        };
+    </script>
+
+</body>
+
+</html>
