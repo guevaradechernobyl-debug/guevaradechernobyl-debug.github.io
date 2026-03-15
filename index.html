@@ -442,15 +442,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Ensure the element exists
   if (!toggle) return;
-
-  // Set initial theme and icon
-  if (localStorage.theme === "dark") {
-    document.body.classList.add("dark");
-    toggle.src = "sun.gif"; // GIF for dark mode
-  } else {
-    document.body.classList.remove("dark");
-    toggle.src = "moon.gif"; // GIF for light mode
-  }
+// Set initial theme and icon
+if (localStorage.theme === "light") {
+  document.body.classList.remove("dark");
+  toggle.src = "moon.gif"; // GIF for light mode
+} else {
+  // Default to dark mode
+  document.body.classList.add("dark");
+  localStorage.theme = "dark";
+  toggle.src = "sun.gif"; // GIF for dark mode
+}
 
   // Toggle theme on click
   toggle.addEventListener("click", () => {
