@@ -9,11 +9,6 @@
 <link rel="icon" href="leaf2-removebg-preview.png" type="image/png">
 
 <style>
-  :root {
-    --leaf-size-min: 10px;
-    --leaf-size-max: 18px;
-  }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -73,7 +68,7 @@
     text-shadow: 0 1px 10px rgba(0,0,0,0.4);
   }
 
-  /* ── GRID (2–3 col) ── */
+  /* ── GRID ── */
   .photo-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -163,13 +158,17 @@
     opacity: 1;
   }
 
-  #lightbox img,
-  #lightbox video {
+  #lightbox img {
     max-width: min(90vw, 700px);
     max-height: 70vh;
     object-fit: contain;
     box-shadow: 0 0 60px rgba(0,0,0,0.7);
     border-radius: 2px;
+    transition: opacity 0.2s ease;
+  }
+
+  #lightbox img.loading {
+    opacity: 0;
   }
 
   #lightbox-caption {
@@ -190,6 +189,42 @@
     opacity: 0.55;
   }
 
+  /* Lightbox nav buttons */
+  .lb-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.12);
+    border: none;
+    color: white;
+    font-family: inherit;
+    font-size: 2rem;
+    width: 48px;
+    height: 64px;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s, background 0.2s;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lb-nav:hover { opacity: 1; background: rgba(255,255,255,0.22); }
+  #lb-prev { left: 16px; }
+  #lb-next { right: 16px; }
+
+  #lb-counter {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    opacity: 0.5;
+  }
+
   #closeLightbox {
     position: absolute;
     top: 16px;
@@ -207,7 +242,7 @@
 
   #closeLightbox:hover { opacity: 1; }
 
-  /* ── MODAL (video fullscreen) ── */
+  /* ── VIDEO MODAL ── */
   .media-modal {
     display: none;
     position: fixed;
@@ -344,69 +379,69 @@
     </div>
 
     <div class="gallery-item" data-src="phot1.jpeg" data-date="Feb 4, 2026" data-caption="Tatlong engot">
-  <div class="frame"><img src="phot1.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+      <div class="frame"><img src="phot1.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="phot2.jpeg" data-date="Feb 4, 2026" data-caption="Throwback from 8th Grade, absolutely got flamed (why do i look like that lmao)">
-  <div class="frame"><img src="phot2.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="phot2.jpeg" data-date="Feb 4, 2026" data-caption="Throwback from 8th Grade, absolutely got flamed (why do i look like that lmao)">
+      <div class="frame"><img src="phot2.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="phot3.jpeg" data-date="Feb 4, 2026" data-caption="The things i could do with this cam... (Obtaining STW for one)">
-  <div class="frame"><img src="phot3.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="phot3.jpeg" data-date="Feb 4, 2026" data-caption="The things i could do with this cam... (Obtaining STW for one)">
+      <div class="frame"><img src="phot3.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="Diana.jpg" data-date="Feb 4, 2026" data-caption="My sweet sweet daughter, Diana.">
-  <div class="frame"><img src="Diana.jpg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="Diana.jpg" data-date="Feb 4, 2026" data-caption="My sweet sweet daughter, Diana.">
+      <div class="frame"><img src="Diana.jpg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="phot5.jpeg" data-date="Feb 4, 2026" data-caption="Juli my love">
-  <div class="frame"><img src="phot5.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="phot5.jpeg" data-date="Feb 4, 2026" data-caption="Juli my love">
+      <div class="frame"><img src="phot5.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="phot6.jpeg" data-date="Feb 4, 2026" data-caption="Inaangasan ako">
-  <div class="frame"><img src="phot6.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="phot6.jpeg" data-date="Feb 4, 2026" data-caption="Inaangasan ako">
+      <div class="frame"><img src="phot6.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="phot7.jpeg" data-date="Feb 4, 2026" data-caption="Absolute cinema">
-  <div class="frame"><img src="phot7.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="phot7.jpeg" data-date="Feb 4, 2026" data-caption="Absolute cinema">
+      <div class="frame"><img src="phot7.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="phot8.jpeg" data-date="Feb 4, 2026" data-caption="Tryna do the gigachad face :sob:">
-  <div class="frame"><img src="phot8.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="phot8.jpeg" data-date="Feb 4, 2026" data-caption="Tryna do the gigachad face :sob:">
+      <div class="frame"><img src="phot8.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="phot9.jpeg" data-date="Feb 4, 2026" data-caption="<3">
-  <div class="frame"><img src="phot9.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="phot9.jpeg" data-date="Feb 4, 2026" data-caption="<3">
+      <div class="frame"><img src="phot9.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="yuan.jpg" data-date="Feb 4, 2026" data-caption="Abomination of a haircut. hope he never know i took this photo lol">
-  <div class="frame"><img src="yuan.jpg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="yuan.jpg" data-date="Feb 4, 2026" data-caption="Abomination of a haircut. hope he never know i took this photo lol">
+      <div class="frame"><img src="yuan.jpg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="phot11.jpeg" data-date="Feb 4, 2026" data-caption="With tita">
-  <div class="frame"><img src="phot11.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="phot11.jpeg" data-date="Feb 4, 2026" data-caption="With tita">
+      <div class="frame"><img src="phot11.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="phot12.jpeg" data-date="Feb 4, 2026" data-caption="ONE TIME na nakompleto lahat ang mga hanep">
-  <div class="frame"><img src="phot12.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="phot12.jpeg" data-date="Feb 4, 2026" data-caption="ONE TIME na nakompleto lahat ang mga hanep">
+      <div class="frame"><img src="phot12.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
-<div class="gallery-item" data-src="phot13.jpeg" data-date="Feb 4, 2026" data-caption="Progress looks great. Abs coming soon though">
-  <div class="frame"><img src="phot13.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
-  <div class="media-date">Feb 4, 2026</div>
-</div>
+    <div class="gallery-item" data-src="phot13.jpeg" data-date="Feb 4, 2026" data-caption="Progress looks great. Abs coming soon though">
+      <div class="frame"><img src="phot13.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
+      <div class="media-date">Feb 4, 2026</div>
+    </div>
 
   </div>
 
@@ -414,40 +449,16 @@
   <h2 class="section-title">☆ Videos ☆</h2>
 
   <div class="video-grid">
-    <div class="gallery-item video-item" data-src="vid6.mp4">
+    <div class="gallery-item video-item" data-src="vid6.mp4" data-caption="vid6">
       <div class="frame"><video src="vid6.mp4" autoplay muted loop playsinline></video></div>
     </div>
-    <div class="gallery-item video-item" data-src="vid1.mp4">
+    <div class="gallery-item video-item" data-src="vid1.mp4" data-caption="vid1">
       <div class="frame"><video src="vid1.mp4" autoplay muted loop playsinline></video></div>
     </div>
-    <div class="gallery-item video-item" data-src="vid3.mp4">
+    <div class="gallery-item video-item" data-src="vid3.mp4" data-caption="vid3">
       <div class="frame"><video src="vid3.mp4" autoplay muted loop playsinline></video></div>
     </div>
-    <div class="gallery-item video-item" data-src="vid5.mp4">
-      <div class="frame"><video src="vid5.mp4" autoplay muted loop playsinline></video></div>
-    </div>
-  </div>
-   <div class="gallery-item video-item" data-src="vid5.mp4">
-      <div class="frame"><video src="vid5.mp4" autoplay muted loop playsinline></video></div>
-    </div>
-  </div>
-   <div class="gallery-item video-item" data-src="vid5.mp4">
-      <div class="frame"><video src="vid5.mp4" autoplay muted loop playsinline></video></div>
-    </div>
-  </div>
-   <div class="gallery-item video-item" data-src="vid5.mp4">
-      <div class="frame"><video src="vid5.mp4" autoplay muted loop playsinline></video></div>
-    </div>
-  </div>
-   <div class="gallery-item video-item" data-src="vid5.mp4">
-      <div class="frame"><video src="vid5.mp4" autoplay muted loop playsinline></video></div>
-    </div>
-  </div>
-   <div class="gallery-item video-item" data-src="vid5.mp4">
-      <div class="frame"><video src="vid5.mp4" autoplay muted loop playsinline></video></div>
-    </div>
-  </div>
-   <div class="gallery-item video-item" data-src="vid5.mp4">
+    <div class="gallery-item video-item" data-src="vid5.mp4" data-caption="vid5">
       <div class="frame"><video src="vid5.mp4" autoplay muted loop playsinline></video></div>
     </div>
   </div>
@@ -455,22 +466,25 @@
 </div><!-- /gallery-wrapper -->
 
 <!-- ── PHOTO LIGHTBOX ── -->
-<div id="lightbox">
-  <button id="closeLightbox">&times;</button>
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button id="closeLightbox" aria-label="Close">&times;</button>
+  <span id="lb-counter"></span>
+  <button class="lb-nav" id="lb-prev" aria-label="Previous photo">&#8249;</button>
   <img id="lightboxImg" src="" alt="">
+  <button class="lb-nav" id="lb-next" aria-label="Next photo">&#8250;</button>
   <div id="lightbox-caption"></div>
   <div id="lightbox-date"></div>
 </div>
 
 <!-- ── VIDEO MODAL ── -->
-<div id="mediaModal" class="media-modal">
-  <button class="media-close" id="videoClose">&times;</button>
+<div id="mediaModal" class="media-modal" role="dialog" aria-modal="true" aria-label="Video player">
+  <button class="media-close" id="videoClose" aria-label="Close">&times;</button>
   <div class="media-content" id="videoContent"></div>
 </div>
 
 <!-- Return button -->
 <a href="index.html">
-  <img src="lilypads.png" class="return-btn" alt="Return">
+  <img src="lilypads.png" class="return-btn" alt="Return to home">
 </a>
 
 <audio id="forestAudio" autoplay loop>
@@ -486,21 +500,20 @@
     "leaf4.gif"
   ];
 
+  let leafInterval = null;
+
   function createLeaf() {
     const leaf = document.createElement("img");
     leaf.src = leafImages[Math.floor(Math.random() * leafImages.length)];
     leaf.classList.add("leaf");
 
-    // Uniform small size — like tiny snowflakes, slight variance
-    const size = 10 + Math.random() * 8; // 10–18px
+    const size = 10 + Math.random() * 8;
     leaf.style.width = size + "px";
-
     leaf.style.left = Math.random() * 100 + "vw";
 
-    const duration = 7 + Math.random() * 7; // 7–14s
+    const duration = 7 + Math.random() * 7;
     leaf.style.animationDuration = duration + "s";
 
-    // Gentle sway (two points for realistic drift)
     const driftA = (Math.random() - 0.5) * 80 + "px";
     const driftB = (Math.random() - 0.5) * 80 + "px";
     leaf.style.setProperty("--drift-a", driftA);
@@ -510,21 +523,57 @@
     setTimeout(() => leaf.remove(), duration * 1000);
   }
 
-  setInterval(createLeaf, 600);
+  function startLeaves() {
+    if (!leafInterval) leafInterval = setInterval(createLeaf, 600);
+  }
+
+  function stopLeaves() {
+    clearInterval(leafInterval);
+    leafInterval = null;
+  }
+
+  startLeaves();
+
+  // Pause leaves when tab is hidden (saves CPU)
+  document.addEventListener("visibilitychange", () => {
+    document.hidden ? stopLeaves() : startLeaves();
+  });
 
   /* ─── PHOTO LIGHTBOX ─── */
   const lightbox    = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightboxImg");
   const lbCaption   = document.getElementById("lightbox-caption");
   const lbDate      = document.getElementById("lightbox-date");
+  const lbCounter   = document.getElementById("lb-counter");
   const closeBtn    = document.getElementById("closeLightbox");
+  const lbPrev      = document.getElementById("lb-prev");
+  const lbNext      = document.getElementById("lb-next");
 
-  function openLightbox(src, caption, date) {
-    lightboxImg.src = src;
-    lbCaption.textContent = caption || "";
-    lbDate.textContent = date || "";
+  // Collect all photo items (not videos) in order
+  const photoItems = Array.from(document.querySelectorAll(".gallery-item:not(.video-item)"));
+  let currentIndex = 0;
+
+  function openLightbox(index) {
+    currentIndex = index;
+    const item = photoItems[index];
+
+    lightboxImg.classList.add("loading");
+    lbCaption.textContent = item.dataset.caption || "";
+    lbDate.textContent = item.dataset.date || "";
+    lbCounter.textContent = (index + 1) + " / " + photoItems.length;
+
+    const newImg = new Image();
+    newImg.onload = () => {
+      lightboxImg.src = newImg.src;
+      lightboxImg.classList.remove("loading");
+    };
+    newImg.src = item.dataset.src;
+
     lightbox.style.display = "flex";
-    requestAnimationFrame(() => lightbox.classList.add("active"));
+    // Small delay so display:flex renders before opacity transition kicks in
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => lightbox.classList.add("active"));
+    });
   }
 
   function closeLightbox() {
@@ -535,18 +584,34 @@
     }, 300);
   }
 
-  document.querySelectorAll(".gallery-item:not(.video-item)").forEach(item => {
-    item.addEventListener("click", () => {
-      openLightbox(
-        item.dataset.src,
-        item.dataset.caption,
-        item.dataset.date
-      );
-    });
+  function showPrev() {
+    openLightbox((currentIndex - 1 + photoItems.length) % photoItems.length);
+  }
+
+  function showNext() {
+    openLightbox((currentIndex + 1) % photoItems.length);
+  }
+
+  photoItems.forEach((item, i) => {
+    item.addEventListener("click", () => openLightbox(i));
   });
 
   closeBtn.addEventListener("click", closeLightbox);
+  lbPrev.addEventListener("click", (e) => { e.stopPropagation(); showPrev(); });
+  lbNext.addEventListener("click", (e) => { e.stopPropagation(); showNext(); });
   lightbox.addEventListener("click", e => { if (e.target === lightbox) closeLightbox(); });
+
+  /* ─── KEYBOARD NAVIGATION ─── */
+  document.addEventListener("keydown", e => {
+    if (lightbox.classList.contains("active")) {
+      if (e.key === "Escape")      closeLightbox();
+      else if (e.key === "ArrowLeft")  showPrev();
+      else if (e.key === "ArrowRight") showNext();
+    }
+    if (videoModal.classList.contains("open") && e.key === "Escape") {
+      closeVideoModal();
+    }
+  });
 
   /* ─── VIDEO MODAL ─── */
   const videoModal   = document.getElementById("mediaModal");
