@@ -167,9 +167,7 @@
     transition: opacity 0.2s ease;
   }
 
-  #lightbox img.loading {
-    opacity: 0;
-  }
+  #lightbox img.loading { opacity: 0; }
 
   #lightbox-caption {
     margin-top: 16px;
@@ -189,7 +187,6 @@
     opacity: 0.55;
   }
 
-  /* Lightbox nav buttons */
   .lb-nav {
     position: absolute;
     top: 50%;
@@ -248,9 +245,11 @@
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.88);
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    padding: 20px;
   }
 
   .media-modal.open { display: flex; }
@@ -273,8 +272,28 @@
 
   .media-content video {
     max-width: 92vw;
-    max-height: 88vh;
+    max-height: 72vh;
     object-fit: contain;
+  }
+
+  /* Video caption — mirrors photo lightbox style */
+  #video-modal-caption {
+    margin-top: 16px;
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
+    font-style: italic;
+    letter-spacing: 1px;
+    text-align: center;
+    color: rgba(255,255,255,0.85);
+    max-width: 500px;
+    line-height: 1.5;
+  }
+
+  #video-modal-date {
+    margin-top: 6px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    opacity: 0.55;
+    text-align: center;
   }
 
   /* ── RETURN BUTTON ── */
@@ -303,8 +322,6 @@
 
   <div class="photo-grid">
 
- 
-
     <div class="gallery-item" data-src="pic22.jpg" data-date="Jan 3, 2026" data-caption="New year, same wandering eyes.">
       <div class="frame"><img src="pic22.jpg" loading="lazy" alt="Jan 3, 2026"></div>
       <div class="media-date">Jan 3, 2026</div>
@@ -324,7 +341,6 @@
       <div class="frame"><img src="phot17.jpg" loading="lazy" alt="Dec 17, 2025"></div>
       <div class="media-date">Dec 17, 2025</div>
     </div>
-
 
     <div class="gallery-item" data-src="guys.jpg" data-date="Feb 4, 2026" data-caption="Mid-week light has its own particular mood.">
       <div class="frame"><img src="guys.jpg" loading="lazy" alt="Feb 4, 2026"></div>
@@ -431,54 +447,52 @@
       <div class="media-date">Feb 4, 2026</div>
     </div>
 
-     <div class="gallery-item" data-src="phot14.jpg" data-date="Feb 4, 2026" data-caption="Of course the photo looks dull, I wasn’t in it">
+    <!-- FIXED: data-src was "phot14.jpg" but src was "phot14.jpeg" — unified to .jpeg -->
+    <div class="gallery-item" data-src="phot14.jpeg" data-date="Feb 4, 2026" data-caption="Of course the photo looks dull, I wasn't in it">
       <div class="frame"><img src="phot14.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
       <div class="media-date">Feb 4, 2026</div>
     </div>
 
-     <div class="gallery-item" data-src="phot15.jpeg" data-date="Feb 4, 2026" data-caption="Boy nguso">
+    <div class="gallery-item" data-src="phot15.jpeg" data-date="Feb 4, 2026" data-caption="Boy nguso">
       <div class="frame"><img src="phot15.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
       <div class="media-date">Feb 4, 2026</div>
     </div>
 
-       <div class="gallery-item" data-src="SAVE.jpeg" data-date="Feb 4, 2026" data-caption="Boy nguso">
+    <div class="gallery-item" data-src="SAVE.jpeg" data-date="Feb 4, 2026" data-caption="Boy nguso">
       <div class="frame"><img src="SAVE.jpeg" loading="lazy" alt="Feb 4, 2026"></div>
       <div class="media-date">Feb 4, 2026</div>
     </div>
-
 
   </div>
 
   <!-- ── VIDEOS ── -->
   <h2 class="section-title">☆ Videos ☆</h2>
 
+  <!-- FIXED: all 8 video items are now properly inside the grid, no orphaned divs -->
   <div class="video-grid">
-    <div class="gallery-item video-item" data-src="vid6.mp4" data-caption="vid6">
+    <div class="gallery-item video-item" data-src="vid6.mp4" data-caption="Your caption here" data-date="">
       <div class="frame"><video src="vid6.mp4" autoplay muted loop playsinline></video></div>
     </div>
-    <div class="gallery-item video-item" data-src="vid1.mp4" data-caption="vid1">
+    <div class="gallery-item video-item" data-src="vid1.mp4" data-caption="Your caption here" data-date="">
       <div class="frame"><video src="vid1.mp4" autoplay muted loop playsinline></video></div>
     </div>
-    <div class="gallery-item video-item" data-src="vid3.mp4" data-caption="vid3">
+    <div class="gallery-item video-item" data-src="vid3.mp4" data-caption="Your caption here" data-date="">
       <div class="frame"><video src="vid3.mp4" autoplay muted loop playsinline></video></div>
     </div>
-    <div class="gallery-item video-item" data-src="vid5.mp4" data-caption="vid5">
+    <div class="gallery-item video-item" data-src="vid5.mp4" data-caption="Your caption here" data-date="">
       <div class="frame"><video src="vid5.mp4" autoplay muted loop playsinline></video></div>
     </div>
-  </div>
- <div class="gallery-item video-item" data-src="vid17.mp4" data-caption="vid5">
+    <div class="gallery-item video-item" data-src="vid17.mp4" data-caption="Your caption here" data-date="">
       <div class="frame"><video src="vid17.mp4" autoplay muted loop playsinline></video></div>
     </div>
-  </div>
- <div class="gallery-item video-item" data-src="vid2.mp4" data-caption="vid5">
+    <div class="gallery-item video-item" data-src="vid2.mp4" data-caption="Your caption here" data-date="">
       <div class="frame"><video src="vid2.mp4" autoplay muted loop playsinline></video></div>
     </div>
-  </div>
- <div class="gallery-item video-item" data-src="vi19.mp4" data-caption="vid5">
+    <!-- FIXED: data-src typo "vi19.mp4" corrected to "vid19.mp4" -->
+    <div class="gallery-item video-item" data-src="vid19.mp4" data-caption="Your caption here" data-date="">
       <div class="frame"><video src="vid19.mp4" autoplay muted loop playsinline></video></div>
     </div>
-  </div>
- <div class="gallery-item video-item" data-src="save2.mp4" data-caption="vid5">
+    <div class="gallery-item video-item" data-src="save2.mp4" data-caption="Your caption here" data-date="">
       <div class="frame"><video src="save2.mp4" autoplay muted loop playsinline></video></div>
     </div>
   </div>
@@ -500,6 +514,8 @@
 <div id="mediaModal" class="media-modal" role="dialog" aria-modal="true" aria-label="Video player">
   <button class="media-close" id="videoClose" aria-label="Close">&times;</button>
   <div class="media-content" id="videoContent"></div>
+  <div id="video-modal-caption"></div>
+  <div id="video-modal-date"></div>
 </div>
 
 <!-- Return button -->
@@ -526,35 +542,23 @@
     const leaf = document.createElement("img");
     leaf.src = leafImages[Math.floor(Math.random() * leafImages.length)];
     leaf.classList.add("leaf");
-
     const size = 10 + Math.random() * 8;
     leaf.style.width = size + "px";
     leaf.style.left = Math.random() * 100 + "vw";
-
     const duration = 7 + Math.random() * 7;
     leaf.style.animationDuration = duration + "s";
-
     const driftA = (Math.random() - 0.5) * 80 + "px";
     const driftB = (Math.random() - 0.5) * 80 + "px";
     leaf.style.setProperty("--drift-a", driftA);
     leaf.style.setProperty("--drift-b", driftB);
-
     leavesContainer.appendChild(leaf);
     setTimeout(() => leaf.remove(), duration * 1000);
   }
 
-  function startLeaves() {
-    if (!leafInterval) leafInterval = setInterval(createLeaf, 600);
-  }
-
-  function stopLeaves() {
-    clearInterval(leafInterval);
-    leafInterval = null;
-  }
+  function startLeaves() { if (!leafInterval) leafInterval = setInterval(createLeaf, 600); }
+  function stopLeaves()  { clearInterval(leafInterval); leafInterval = null; }
 
   startLeaves();
-
-  // Pause leaves when tab is hidden (saves CPU)
   document.addEventListener("visibilitychange", () => {
     document.hidden ? stopLeaves() : startLeaves();
   });
@@ -569,53 +573,35 @@
   const lbPrev      = document.getElementById("lb-prev");
   const lbNext      = document.getElementById("lb-next");
 
-  // Collect all photo items (not videos) in order
   const photoItems = Array.from(document.querySelectorAll(".gallery-item:not(.video-item)"));
   let currentIndex = 0;
 
   function openLightbox(index) {
     currentIndex = index;
     const item = photoItems[index];
-
     lightboxImg.classList.add("loading");
     lbCaption.textContent = item.dataset.caption || "";
-    lbDate.textContent = item.dataset.date || "";
+    lbDate.textContent    = item.dataset.date    || "";
     lbCounter.textContent = (index + 1) + " / " + photoItems.length;
-
     const newImg = new Image();
     newImg.onload = () => {
       lightboxImg.src = newImg.src;
       lightboxImg.classList.remove("loading");
     };
     newImg.src = item.dataset.src;
-
     lightbox.style.display = "flex";
-    // Small delay so display:flex renders before opacity transition kicks in
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => lightbox.classList.add("active"));
-    });
+    requestAnimationFrame(() => requestAnimationFrame(() => lightbox.classList.add("active")));
   }
 
   function closeLightbox() {
     lightbox.classList.remove("active");
-    setTimeout(() => {
-      lightbox.style.display = "none";
-      lightboxImg.src = "";
-    }, 300);
+    setTimeout(() => { lightbox.style.display = "none"; lightboxImg.src = ""; }, 300);
   }
 
-  function showPrev() {
-    openLightbox((currentIndex - 1 + photoItems.length) % photoItems.length);
-  }
+  function showPrev() { openLightbox((currentIndex - 1 + photoItems.length) % photoItems.length); }
+  function showNext() { openLightbox((currentIndex + 1) % photoItems.length); }
 
-  function showNext() {
-    openLightbox((currentIndex + 1) % photoItems.length);
-  }
-
-  photoItems.forEach((item, i) => {
-    item.addEventListener("click", () => openLightbox(i));
-  });
-
+  photoItems.forEach((item, i) => item.addEventListener("click", () => openLightbox(i)));
   closeBtn.addEventListener("click", closeLightbox);
   lbPrev.addEventListener("click", (e) => { e.stopPropagation(); showPrev(); });
   lbNext.addEventListener("click", (e) => { e.stopPropagation(); showNext(); });
@@ -624,36 +610,41 @@
   /* ─── KEYBOARD NAVIGATION ─── */
   document.addEventListener("keydown", e => {
     if (lightbox.classList.contains("active")) {
-      if (e.key === "Escape")      closeLightbox();
+      if (e.key === "Escape")          closeLightbox();
       else if (e.key === "ArrowLeft")  showPrev();
       else if (e.key === "ArrowRight") showNext();
     }
-    if (videoModal.classList.contains("open") && e.key === "Escape") {
-      closeVideoModal();
-    }
+    if (videoModal.classList.contains("open") && e.key === "Escape") closeVideoModal();
   });
 
   /* ─── VIDEO MODAL ─── */
-  const videoModal   = document.getElementById("mediaModal");
-  const videoContent = document.getElementById("videoContent");
-  const videoClose   = document.getElementById("videoClose");
+  const videoModal     = document.getElementById("mediaModal");
+  const videoContent   = document.getElementById("videoContent");
+  const videoClose     = document.getElementById("videoClose");
+  const videoModalCap  = document.getElementById("video-modal-caption");
+  const videoModalDate = document.getElementById("video-modal-date");
 
   document.querySelectorAll(".video-item").forEach(item => {
     item.addEventListener("click", () => {
       videoContent.innerHTML = "";
       const video = document.createElement("video");
-      video.src = item.dataset.src;
-      video.controls = true;
-      video.autoplay = true;
+      video.src        = item.dataset.src;
+      video.controls   = true;
+      video.autoplay   = true;
       video.playsInline = true;
       videoContent.appendChild(video);
+      // Show caption & date just like photos do
+      videoModalCap.textContent  = item.dataset.caption || "";
+      videoModalDate.textContent = item.dataset.date    || "";
       videoModal.classList.add("open");
     });
   });
 
   function closeVideoModal() {
     videoModal.classList.remove("open");
-    videoContent.innerHTML = "";
+    videoContent.innerHTML     = "";
+    videoModalCap.textContent  = "";
+    videoModalDate.textContent = "";
   }
 
   videoClose.addEventListener("click", closeVideoModal);
