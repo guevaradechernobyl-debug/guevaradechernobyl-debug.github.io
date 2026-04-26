@@ -7,642 +7,283 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="icon" href="leaf2-removebg-preview.png" type="image/png">
 
 <style>
-:root {
-  --card: rgba(255,255,255,0.85);
-  --text: #2d2a3a;
-  --border: #7a4f8a;
-  --accent: #af9ff4;
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body.dark {
-  --card: rgba(20,20,30,0.85);
-  --text: #f3f1ff;
-  --border: #d5c8b5;
-  --accent: #000;
-}
+  body {
+    font-family: 'Cormorant Garamond', serif;
+    cursor: url("lily-cursor.png") 16 16, auto;
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-* { box-sizing: border-box; }
+  /* ── VIDEO BACKGROUND ── */
+  video.bg-video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
 
-body {
-  margin: 0;
-  font-family: Inter, sans-serif;
-  color: var(--text);
-  overflow-x: hidden;
-}
+  .video-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.58);
+    z-index: -1;
+  }
 
-/* FULLSCREEN VIDEO BACKGROUND */
-video.bg-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
-}
+  /* ── FALLING LEAVES ── */
+  .leaves-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
 
-/* dark overlay for readability */
-.video-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  z-index: -1;
-}
+  .leaf {
+    position: absolute;
+    top: -30px;
+    opacity: 0.85;
+    animation: fall linear forwards;
+    will-change: transform;
+  }
 
-/* MAIN CONTENT BLOCK */
-.site-wrapper {
-  max-width: 1100px;
-  margin: 60px auto;
-  padding: 20px;
-  border-radius: 18px;
-  transition: 0.3s;
-}
+  @keyframes fall {
+    0%   { transform: translateY(0)     rotate(0deg)   translateX(0); }
+    25%  { transform: translateY(25vh)  rotate(90deg)  translateX(var(--drift-a)); }
+    50%  { transform: translateY(50vh)  rotate(180deg) translateX(var(--drift-b)); }
+    75%  { transform: translateY(75vh)  rotate(270deg) translateX(var(--drift-a)); }
+    100% { transform: translateY(115vh) rotate(360deg) translateX(0); }
+  }
 
-/* HEADER */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-}
-
-header h1 {
-  margin: 0;
-}
-
-.toggle {
-  cursor: pointer;
-  font-size: 22px;
-}
-
-/* PIXEL INTRO PANEL */
-.pixel-panel {
-  background: #111;
-  color: #d9d9d9;
-  padding: 20px;
-  border: 3px solid #888;
-  box-shadow: inset 0 0 0 2px #fff;
-  display: flex;
-  gap: 25px;
-  align-items: flex-start;
-  margin-bottom: 40px;
-  font-family: monospace;
-  position: relative;
-}
-
-.pixel-panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255,255,255,0.03),
-    rgba(255,255,255,0.03) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  pointer-events: none;
-}
-
-.pixel-avatar {
-  width: 120px;
-  background: black;
-  border: 2px solid #ff00bf;
-  text-align: center;
-}
-
-.pixel-avatar img {
-  width: 100%;
-  image-rendering: pixelated;
-}
-
-.pixel-avatar small {
-  display: block;
-  font-family: "Press Start 2P", monospace;
-  font-size: 8px;
-  padding: 6px 0;
-  color: #ff00bf;
-}
-
-.pixel-title {
-  font-family: "Press Start 2P", monospace;
-  font-size: 18px;
-  color: #ff00bf;
-  text-shadow: 2px 2px #004d4d;
-  margin-bottom: 15px;
-}
-
-.pixel-list {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 15px;
-}
-
-.pixel-list li {
-  margin-bottom: 8px;
-  padding-left: 18px;
-  position: relative;
-}
-
-.pixel-list li::before {
-  content: "■";
-  position: absolute;
-  left: 0;
-  color: #ff00bf;
-}
-
-/* ABOUT SECTION */
-.about-section {
-  margin-top: 30px;
-  line-height: 1.7;
-}
-
-/* FOOTER */
-footer {
-  margin-top: 50px;
-  text-align: center;
-  font-size: 13px;
-  opacity: 0.7;
-}
-
-/* MOBILE */
-@media(max-width:700px) {
-  .pixel-panel {
-    flex-direction: column;
+  /* ── TOP BANNER ── */
+  .top-banner {
+    width: 100%;
     text-align: center;
-    align-items: center;
+    padding: 20px 16px 0;
+    position: relative;
+    z-index: 2;
   }
-}
-  /* BACK BUTTON */
-    .back-btn {
-      margin-bottom: 20px;
-      padding: 8px 14px;
-      background: #410e4b;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .top-banner {
-  width: 100%;
-  text-align: center;
-  background: transparent; /* change if you want background color */
-}
 
-.top-banner img {
-  width: 700px;
-  max-width: 700px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-.top-banner img {
-  image-rendering: pixelated;
-}
-
-.top-banner {
-  margin: 0;
-  padding: 0;
-}
-body {
-  margin: 0;
-  background: url("forest.png") center/cover fixed;
-  font-family: 'Cormorant Garamond', serif;
-  cursor: url("lily-cursor.png") 16 16, auto;
-  color: white;
-}
-
-.gallery-wrapper {
-  padding: 80px 60px;
-  text-align: center;
-}
-
-.big-title {
-  font-size: 6rem;
-  font-style: italic;
-  margin-bottom: 20px;
-}
-
-.section-title {
-  font-size: 1.8rem;
-  margin: 60px 0 30px;
-  letter-spacing: 2px;
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-  margin-bottom: 60px;
-  flex-wrap: wrap;
-}
-
-.row.center {
-  justify-content: center;
-}
-
-.frame {
-  background: url("frame.png") no-repeat center/contain;
-  width: 260px;
-  height: 260px;
-  position: relative;
-  transition: transform 0.4s ease;
-}
-
-.frame img {
-  position: absolute;
-  top: 12%;
-  left: 12%;
-  width: 76%;
-  height: 76%;
-  object-fit: cover;
-}
-
-.frame:hover {
-  transform: translateY(-10px) scale(1.05);
-}
-
-/* Return button */
-.return-btn {
-  position: fixed;
-  bottom: 30px;
-  left: 30px;
-  width: 140px;
-  transition: transform 0.3s ease;
-}
-
-.return-btn:hover {
-  transform: scale(1.1);
-}
-body {
-  margin: 0;
-  background: url("forest.png") center/cover fixed;
-  font-family: 'Cormorant Garamond', serif;
-  cursor: url("lily-cursor.png") 16 16, auto;
-  color: white;
-}
-
-.gallery-wrapper {
-  padding: 80px 60px;
-  text-align: center;
-}
-
-.big-title {
-  font-size: 6rem;
-  font-style: italic;
-  margin-bottom: 20px;
-}
-
-.section-title {
-  font-size: 1.8rem;
-  margin: 60px 0 30px;
-  letter-spacing: 2px;
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-  margin-bottom: 60px;
-  flex-wrap: wrap;
-}
-
-.row.center {
-  justify-content: center;
-}
-
-.frame {
-  background: url("frame.png") no-repeat center/contain;
-  width: 260px;
-  height: 260px;
-  position: relative;
-  transition: transform 0.4s ease;
-}
-
-.frame img {
-  position: absolute;
-  top: 12%;
-  left: 12%;
-  width: 76%;
-  height: 76%;
-  object-fit: cover;
-}
-
-.frame:hover {
-  transform: translateY(-10px) scale(1.05);
-}
-
-/* Return button */
-.return-btn {
-  position: fixed;
-  bottom: 30px;
-  left: 30px;
-  width: 140px;
-  transition: transform 0.3s ease;
-}
-
-.return-btn:hover {
-  transform: scale(1.1);
-}
-.leaves-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 1; /* behind frames */
-}
-
-.leaf {
-  position: absolute;
-  top: -50px;
-  width: 40px;
-  opacity: 0.8;
-  animation: fall linear forwards;
-}
-
-@keyframes fall {
-  0% {
-    transform: translateY(0) rotate(0deg);
+  .top-banner img {
+    width: min(700px, 100%);
+    height: auto;
+    image-rendering: pixelated;
   }
-  100% {
-    transform: translateY(110vh) rotate(360deg);
+
+  /* ── MAIN WRAPPER ── */
+  .site-wrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 860px;
+    margin: 30px auto 60px;
+    padding: 0 16px;
   }
-}#lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
 
-#lightbox img {
-  max-width: 90%;
-  max-height: 90%;
-  box-shadow: 0 0 40px black;
-}
+  /* ── BACK BUTTON ── */
+  .back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 9px 16px;
+    background: #410e4b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+  }
 
-#closeLightbox {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 30px;
-  color: white;
-  cursor: pointer;
-}
-#lightbox {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
+  .back-btn:hover { background: #5c1870; }
 
-#lightbox.active {
-  display: flex;
-  opacity: 1;
-}
-.frame video {
-  position: absolute;
-  top: 12%;
-  left: 12%;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-/* MODAL BACKGROUND */
-.media-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
+  /* ── PIXEL PANEL ── */
+  .pixel-panel {
+    background: rgba(10, 10, 18, 0.92);
+    color: #d9d9d9;
+    padding: clamp(16px, 4vw, 30px);
+    border: 3px solid #888;
+    box-shadow: inset 0 0 0 2px #fff;
+    font-family: 'Inter', monospace;
+    position: relative;
+    border-radius: 4px;
+  }
 
+  /* CRT scanline overlay */
+  .pixel-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.025),
+      rgba(255,255,255,0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    border-radius: 4px;
+  }
 
-/* CLOSE BUTTON */
-.media-close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 30px;
-  color: white;
-  cursor: pointer;
-  z-index: 10000;
-}
+  /* ── PIXEL TITLES ── */
+  .pixel-title {
+    font-family: "Press Start 2P", monospace;
+    font-size: clamp(9px, 2.5vw, 14px);
+    color: #ff00bf;
+    text-shadow: 2px 2px #004d4d;
+    margin: 32px 0 14px;
+    line-height: 1.6;
+  }
 
-/* CONTENT AREA */
-.media-content img,
-.media-content video {
-  max-width: 90vw;
-  max-height: 90vh;
-  object-fit: contain;
-}
-.frame video {
-  position: absolute;
-  top: 12%;
-  left: 12%;
-  width: 76%;
-  height: 76%;
-  object-fit: cover;
-}.gallery-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  .pixel-title:first-child { margin-top: 0; }
 
-.media-date {
-  margin-top: 10px;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  opacity: 0.8;
-}
+  /* ── BODY TEXT ── */
+  .about-section p {
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    line-height: 1.85;
+    margin-bottom: 14px;
+    color: #e8e4ff;
+  }
+
+  .about-section mark {
+    background: #ff00bf;
+    color: #000;
+    padding: 0 4px;
+    border-radius: 2px;
+  }
+
+  .about-section strong {
+    color: #ff00bf;
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    margin-top: 40px;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    opacity: 0.5;
+    color: white;
+  }
+
+  /* ── RETURN BUTTON (lilypad) ── */
+  .return-btn {
+    position: fixed;
+    bottom: 22px;
+    left: 18px;
+    width: clamp(70px, 12vw, 120px);
+    transition: transform 0.3s ease;
+    z-index: 10;
+  }
+
+  .return-btn:hover { transform: scale(1.1); }
 </style>
 </head>
-
 <body>
-      <div class="leaves-container"></div>
-<div class="top-banner">
-  <img src="Basic-info.png" alt="Site Banner">
-</div>
-<!-- VIDEO BACKGROUND -->
-<video class="bg-video" autoplay muted loop playsinline>
-  <source src="undertale.mp4" type="video/mp4">
-</video>
-<div class="video-overlay"></div>
 
-<div class="site-wrapper">
+  <!-- Falling leaves -->
+  <div class="leaves-container" id="leavesContainer"></div>
 
-<div class="pixel-panel">
-
-  <div>  
-  <button onclick="window.history.back()" class="back-btn">← Go Back</button>
+  <!-- Video background -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="undertale.mp4" type="video/mp4">
+  </video>
+  <div class="video-overlay"></div>
 
 
-</div>
-<header>
-<div class="about-section">
-  <div class="pixel-title">WHY THIS BLOG EXIST</div>
-  <div>
+  <!-- Main content -->
+  <div class="site-wrapper">
 
-<p>This wasn’t supposed to be serious.</p>
+    <button class="back-btn" onclick="window.history.back()">← Go Back</button>
 
-<p>It was just a school project. A requirement. Something to finish, submit, and forget about five minutes later.</p>
+    <div class="pixel-panel">
+      <div class="about-section">
 
-<p>
-But somewhere between broken code, error messages that might as well have been written in ancient hieroglyphs,  
-and debugging at hours when normal people are asleep… something changed.
-</p>
+        <div class="pixel-title">WHY THIS BLOG EXISTS</div>
 
-<p>
-There’s a strange kind of satisfaction in solving a problem that once made you question your intelligence.  
-One moment the code is a mess. The next moment it works like it finally decided to cooperate. 
-</p>
+        <p>This wasn't supposed to be serious.</p>
+        <p>It was just a school project. A requirement. Something to finish, submit, and forget about five minutes later.</p>
+        <p>But somewhere between broken code, error messages that might as well have been written in ancient hieroglyphs, and debugging at hours when normal people are asleep… something changed.</p>
+        <p>There's a strange kind of satisfaction in solving a problem that once made you question your intelligence. One moment the code is a mess. The next moment it works like it finally decided to cooperate.</p>
+        <p>Turns out watching logic fall into place is... addictive.</p>
+        <p>So what started as homework slowly turned into something else.</p>
+        <p>Curiosity. Then obsession.</p>
+        <p>I added features.<br>Then more features.<br>Then the classic mistake: I kept improving it.</p>
+        <p>Eventually I thought, "Why not publish it?"</p>
+        <p>So now it lives here on the internet. Publicly. Permanently. Which is either a great idea or a terrible one.</p>
 
-<p>
-Turns out watching logic fall into place is... addictive.
-</p>
+        <div class="pixel-title">WEBSITE STATUS: <mark>VERY ACTIVE</mark></div>
 
-<p>So what started as homework slowly turned into something else.</p>
+        <p>I update this place whenever I feel like it.</p>
+        <p>Right now it's mostly experiments, small projects, and ideas that refused to stay inside my head.</p>
+        <p>This site is basically the foundation. The real projects, the interesting ones, are still being built.</p>
+        <p>So if you're expecting perfection… you're in the wrong place.</p>
 
-<p>Curiosity. Then obsession.</p>
+        <div class="pixel-title">WHO AM I</div>
 
-<p>
-I added features.<br>
-Then more features.<br>
-Then the classic mistake: I kept improving it.
-</p>
+        <p>I'm Steven.<br>16. Grade 11. ICT student.</p>
+        <p>I mostly work with JavaScript. Sometimes Python. Websites, bots, scripts — whatever catches my interest long enough for me to build it.</p>
+        <p>I'm from Quezon City, Philippines.</p>
+        <p>Do I know exactly what I'm doing with my life?</p>
+        <p>Not even remotely.</p>
+        <p>Part of me sees a future somewhere in tech. Another part of me feels pulled toward ministry.</p>
+        <p>Faith matters to me. Growth matters to me.</p>
+        <p>For now, I'm somewhere in the middle — learning, building, figuring things out as I go.</p>
 
-<p>
-Eventually I thought, “Why not publish it?”
-</p>
+        <div class="pixel-title">THINGS I LIKE</div>
 
-<p>
-So now it lives here on the internet. Publicly. Permanently.   
-Which is either a great idea or a terrible one.
-</p>
+        <p>I like the sky, the moon, the sun, the clouds. The kind of things people forget to notice because they're too busy staring at their phones.</p>
+        <p>I binge-watch shows and get way too invested in fictional characters. And yes, "just one more episode" is a lie I keep telling myself.</p>
+        <p>I like progress, small improvements over time. Perfection is overrated anyway.</p>
+        <p>This blog is basically proof of that progress.</p>
+        <p>If you're reading this, you're watching someone in the middle of becoming something.</p>
 
-<div class="pixel-title">WEBSITE STATUS: <mark>VERY ACTIVE</mark></div>
+        <p><strong>Gratitude. Abundance. Purpose.</strong></p>
+        <p>— Steven</p>
 
-<p>I update this place whenever I feel like it.</p>
+      </div><!-- /about-section -->
+    </div><!-- /pixel-panel -->
 
-<p>
-Right now it's mostly experiments, small projects, and ideas that refused to stay inside my head.
-</p>
+    <footer class="site-footer">© 2026 Steven Ignacio</footer>
 
-<p>
-This site is basically the foundation.  
-The real projects, the interesting ones are still being built. 
-</p>
+  </div><!-- /site-wrapper -->
 
-<p>
-So if you're expecting perfection… you’re in the wrong place.
-</p>
+  <script>
+    /* ── FALLING LEAVES ── */
+    const leavesContainer = document.getElementById("leavesContainer");
+    const leafImages = [
+      "leaf1-removebg-preview.png",
+      "leaf2-removebg-preview.png",
+      "leaf4.gif"
+    ];
 
-<div class="pixel-title">WHO AM I</div>
+    function createLeaf() {
+      const leaf = document.createElement("img");
+      leaf.src = leafImages[Math.floor(Math.random() * leafImages.length)];
+      leaf.classList.add("leaf");
 
-<p>I’m Steven.<br>
-16. Grade 11. ICT student.</p>
+      const size = 10 + Math.random() * 8; // 10–18px (snow-scale)
+      leaf.style.width = size + "px";
+      leaf.style.left = Math.random() * 100 + "vw";
 
-<p>
-I mostly work with JavaScript. Sometimes Python.  
-Websites, bots, scripts whatever catches my interest long enough for me to build it. 
-</p>
+      const duration = 7 + Math.random() * 7;
+      leaf.style.animationDuration = duration + "s";
 
-<p>I’m from Quezon City, Philippines.</p>
+      leaf.style.setProperty("--drift-a", (Math.random() - 0.5) * 80 + "px");
+      leaf.style.setProperty("--drift-b", (Math.random() - 0.5) * 80 + "px");
 
-<p>
-Do I know exactly what I’m doing with my life?
-</p>
-
-<p>Not even remotely.</p>
-
-<p>
-Part of me sees a future somewhere in tech.  
-Another part of me feels pulled toward ministry.
-</p>
-
-<p>
-Faith matters to me.  
-Growth matters to me.
-</p>
-
-<p>
-For now, I'm somewhere in the middle learning, building, figuring things out as I go. 
-</p>
-
-<div class="pixel-title">THINGS I LIKE</div>
-
-<p>I like the sky, the moon, the sun, the clouds.   
-The kind of things people forget to notice because they’re too busy staring at their phones.</p>
-
-<p>
-I binge-watch shows and get way too invested in fictional characters.  
-And yes, “just one more episode” is a lie I keep telling myself.
-</p>
-
-<p>
-I like progress, small improvements over time.   
-Perfection is overrated anyway.
-</p>
-
-<p>This blog is basically proof of that progress.</p>
-
-<p>
-If you're reading this, you're watching someone in the middle of becoming something.
-</p>
-
-<p><strong>Gratitude. Abundance. Purpose.</strong></p>
-<p>— Steven</p>
-<footer>
-  © 2026 Steven Ignacio
-</footer>
-
-</div>
-<script>
-  const galleryGrid = document.getElementById("galleryGrid");
-
-  galleryImages.forEach(src => {
-    const img = document.createElement("img");
-    img.src = src;
-    img.classList.add("gallery-img");
-    galleryGrid.appendChild(img);
-  });
-</script>
-<script>
-const viewer = document.getElementById("viewer");
-const viewerContent = document.getElementById("viewerContent");
-const closeViewer = document.getElementById("closeViewer");
-
-document.querySelectorAll(".media-item").forEach(item => {
-  item.addEventListener("click", () => {
-    viewerContent.innerHTML = "";
-
-    if (item.tagName === "IMG") {
-      const img = document.createElement("img");
-      img.src = item.src;
-      viewerContent.appendChild(img);
-    } else if (item.tagName === "VIDEO") {
-      const vid = document.createElement("video");
-      vid.src = item.src;
-      vid.controls = true;
-      vid.autoplay = true;
-      viewerContent.appendChild(vid);
+      leavesContainer.appendChild(leaf);
+      setTimeout(() => leaf.remove(), duration * 1000);
     }
 
-    viewer.classList.add("show");
-  });
-});
+    setInterval(createLeaf, 650);
+  </script>
 
-closeViewer.addEventListener("click", () => {
-  viewer.classList.remove("show");
-  viewerContent.innerHTML = "";
-});
-</script>
 </body>
 </html>
