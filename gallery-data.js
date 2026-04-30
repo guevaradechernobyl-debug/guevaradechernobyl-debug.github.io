@@ -53,7 +53,7 @@ const galleryImages = [
  "phot14.jpg",
  "phot15.jpeg",
  "Diana.jpg",
- "yuan.jpg"
+ "yuan.jpg", 
  "SAVE.jpg",
  "guys.jpg",
  "phot17.jpg"
