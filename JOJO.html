@@ -8,211 +8,368 @@
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* ── RESET ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-/* ================= GLOBAL ================= */
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+/* ── ROOT ── */
+:root {
+  --orange:       #ff7a29;
+  --amber:        #ffb347;
+  --amber-dim:    rgba(255,179,71,.18);
+  --amber-glow:   rgba(255,179,71,.35);
+  --panel-bg:     rgba(12,10,8,.82);
+  --border:       rgba(255,140,50,.22);
+  --text:         #dcdcdc;
+  --muted:        #888;
 }
 
-body{
+/* ── BODY ── */
+body {
   background:#000;
-  color:#e8e8e8;
+  color: var(--text);
   font-family:'Inter', sans-serif;
   overflow-x:hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* VIDEO BG */
-.bg-video{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
+/* ── PROGRESS BAR ── */
+#progress-bar {
+  position:fixed; top:0; left:0;
+  height:3px; width:0%;
+  background:linear-gradient(90deg, #ff7a29, #ffb347, #ff7a29);
+  background-size:200% 100%;
+  animation: shimmer 2s linear infinite;
+  z-index:999;
+  box-shadow:0 0 10px rgba(255,122,41,.7);
+  transition:width .1s linear;
+}
+@keyframes shimmer { 0%{background-position:0% 0%} 100%{background-position:200% 0%} }
+
+/* ── VIDEO ── */
+.bg-video {
+  position:fixed; inset:0;
+  width:100%; height:100%;
   object-fit:cover;
-  z-index:-3;
+  z-index:-2;
+  filter:brightness(.45) saturate(.8);
+}
+.bg-overlay {
+  position:fixed; inset:0;
+  background:radial-gradient(ellipse at center, rgba(0,0,0,.3) 0%, rgba(0,0,0,.75) 100%);
+  z-index:-1;
 }
 
-
-
-/* ================= PANEL ================= */
-
-.site-wrapper{
-  max-width:950px;
-  margin:80px auto;
-  padding:20px;
+/* ── WRAPPER ── */
+.site-wrapper {
+  max-width:900px;
+  margin:0 auto;
+  padding: clamp(60px,10vw,90px) clamp(12px,4vw,24px) 60px;
 }
 
-.pixel-panel{
-  background:#0f0f0f;
-  padding:50px 40px;
-  border:2px solid #444;
-  box-shadow:0 0 40px rgba(0,0,0,.8);
+/* ── PANEL ── */
+.pixel-panel {
+  background: var(--panel-bg);
+  backdrop-filter:blur(8px);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding: clamp(20px,5vw,50px) clamp(16px,5vw,40px);
   position:relative;
+  box-shadow:
+    0 0 0 1px rgba(255,100,20,.08),
+    0 0 60px rgba(0,0,0,.9),
+    inset 0 0 40px rgba(0,0,0,.4);
 }
 
-/* TITLE */
-.pixel-title{
-  font-family:'Press Start 2P', monospace;
-  font-size:20px;
-  color:#ff7a29;
-  text-align:center;
-  margin-bottom:30px;
-}
-
-/* BACK BUTTON */
-.back-btn{
+/* corner accents */
+.pixel-panel::before,
+.pixel-panel::after {
+  content:'';
   position:absolute;
-  top:20px;
-  left:20px;
+  width:18px; height:18px;
+  border-color: var(--amber);
+  border-style:solid;
+  opacity:.5;
+}
+.pixel-panel::before { top:10px; left:10px; border-width:2px 0 0 2px; }
+.pixel-panel::after  { bottom:10px; right:10px; border-width:0 2px 2px 0; }
+
+/* ── HEADER ROW ── */
+.panel-header {
+  display:flex;
+  align-items:center;
+  margin-bottom:28px;
+  gap:12px;
+}
+
+.back-btn {
   font-family:'Press Start 2P', monospace;
-  font-size:10px;
+  font-size: clamp(7px,1.8vw,10px);
   background:#2c1a10;
-  color:#ffb347;
-  padding:8px 14px;
-  border:1px solid #ffb34755;
+  color: var(--amber);
+  padding:8px 12px;
+  border:1px solid rgba(255,179,71,.35);
+  border-radius:3px;
   cursor:pointer;
+  transition:.2s;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.back-btn:hover, .back-btn:active {
+  background:#3d2415;
+  box-shadow:0 0 12px rgba(255,179,71,.4);
+  color:#ffd080;
 }
 
-/* META */
-.meta{
+/* ── TITLE ── */
+.pixel-title {
+  font-family:'Press Start 2P', monospace;
+  font-size: clamp(13px,3.8vw,22px);
+  color: var(--orange);
   text-align:center;
-  font-size:13px;
-  opacity:.7;
-  margin-bottom:30px;
+  margin-bottom:10px;
+  line-height:1.6;
+  text-shadow:
+    0 0 8px rgba(255,122,41,.6),
+    0 0 30px rgba(255,122,41,.25);
 }
 
-/* IMAGE */
-.tierlist-img{
+/* ── META ── */
+.meta {
+  text-align:center;
+  font-size: clamp(11px,2.8vw,13px);
+  color: var(--muted);
+  margin-bottom:10px;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  border:none;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(255,140,50,.4), transparent);
+  margin:24px 0;
+}
+
+/* ── TIER IMAGE ── */
+.tierlist-img {
   width:100%;
-  max-width:800px;
   display:block;
-  margin:40px auto;
+  margin:0 auto 10px;
+  border:1px solid var(--border);
+  border-radius:4px;
   image-rendering:pixelated;
 }
 
-/* SECTION TITLE */
-.section-title{
+/* image caption */
+.img-caption {
+  text-align:center;
+  font-size:11px;
+  color: var(--muted);
+  margin-bottom:0;
+  font-style:italic;
+}
+
+/* ── SECTION TITLE ── */
+.section-title {
   font-family:'Press Start 2P', monospace;
-  font-size:14px;
-  margin-top:50px;
-  margin-bottom:30px;
-  color:#ffb347;
+  font-size: clamp(10px,2.5vw,14px);
+  margin:40px 0 28px;
+  color: var(--amber);
   text-align:center;
+  line-height:1.7;
+  text-shadow:0 0 12px rgba(255,179,71,.3);
 }
 
-/* TEXT CONTENT */
-.content{
-  font-size:15px;
-  line-height:1.9;
-  color:#dcdcdc;
+/* ── CONTENT PARAGRAPHS ── */
+.content {
+  font-size: clamp(14px,2.8vw,15px);
+  line-height:1.95;
+  color: var(--text);
+}
+.content p {
+  margin-bottom:20px;
+  padding:16px 20px;
+  border-left:2px solid rgba(255,140,50,.3);
+  background:rgba(255,100,20,.04);
+  border-radius:0 6px 6px 0;
+  transition:border-color .25s, background .25s;
+  /* entrance */
+  opacity:0;
+  transform:translateX(-10px);
+  transition: opacity .4s ease, transform .4s ease, border-color .25s, background .25s;
+}
+.content p.visible {
+  opacity:1;
+  transform:translateX(0);
+}
+.content p:hover {
+  border-left-color: var(--amber);
+  background:rgba(255,100,20,.08);
 }
 
-.content p{
-  margin-bottom:22px;
-}
-
-/* TIER LABEL */
-.tier{
-  font-weight:700;
-  letter-spacing:.5px;
-  color:#ffb347;
-}
-
-/* WARM HIGHLIGHT */
-.highlight{
-  color:#ffb347;
+.tier   { font-weight:700; color: var(--amber); letter-spacing:.5px; }
+.highlight {
+  color: var(--amber);
   font-weight:600;
-  text-shadow:0 0 8px rgba(255,179,71,.25);
+  text-shadow:0 0 8px var(--amber-glow);
 }
 
-/* TAGS */
-.tags{
-  margin-top:40px;
-  text-align:center;
+/* ── TAGS ── */
+.tags {
+  margin-top:36px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
 }
-
-.tags span{
+.tags span {
   font-size:11px;
-  border:1px solid #444;
+  border:1px solid rgba(255,140,50,.3);
   padding:6px 14px;
-  margin:0 5px;
-  opacity:.7;
+  color: var(--amber);
+  background:rgba(255,100,20,.06);
+  border-radius:3px;
+  opacity:.8;
+  transition:.2s;
 }
+.tags span:hover { opacity:1; background:rgba(255,100,20,.14); }
 
-/* FOOTER */
-footer{
-  margin-top:50px;
+/* ── SCROLL TO TOP ── */
+#scroll-top {
+  position:fixed;
+  bottom:24px; right:20px;
+  width:42px; height:42px;
+  border-radius:3px;
+  background:rgba(20,12,5,.85);
+  border:1px solid rgba(255,140,50,.4);
+  color: var(--amber);
+  font-size:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  backdrop-filter:blur(6px);
+  transition:.3s;
+  opacity:0;
+  pointer-events:none;
+  z-index:200;
+  font-family:'Press Start 2P', monospace;
+}
+#scroll-top.show { opacity:1; pointer-events:auto; }
+#scroll-top:hover { box-shadow:0 0 16px rgba(255,179,71,.5); color:#ffd080; }
+
+/* ── FOOTER ── */
+footer {
+  margin-top:44px;
   text-align:center;
   font-size:11px;
+  color: var(--muted);
   opacity:.6;
 }
 
+/* ── VERY SMALL PHONES ── */
+@media(max-width:380px){
+  .pixel-title { font-size:11px; }
+  .back-btn    { font-size:6px; padding:7px 9px; }
+}
 </style>
 </head>
-
 <body>
+
+<div id="progress-bar"></div>
 
 <video class="bg-video" autoplay muted loop playsinline>
   <source src="JOJO.mp4" type="video/mp4">
 </video>
-<div class="video-overlay"></div>
+<div class="bg-overlay"></div>
 
 <div class="site-wrapper">
 <div class="pixel-panel">
 
-<button onclick="window.history.back()" class="back-btn">← GO BACK</button>
+  <!-- HEADER -->
+  <div class="panel-header">
+    <button onclick="window.history.back()" class="back-btn">← GO BACK</button>
+  </div>
 
-<div class="pixel-title">
-ANIME TIERLIST
+  <div class="pixel-title">ANIME TIERLIST</div>
+  <div class="meta">🗓️ Jan 29, 2026 &nbsp;|&nbsp; ⏱️ ~5 min read</div>
+
+  <hr class="divider">
+
+  <!-- TIER IMAGE -->
+  <img src="Tierlist.png" class="tierlist-img" alt="Anime Tier List">
+  <p class="img-caption">Click to zoom in on mobile — pinch works too.</p>
+
+  <hr class="divider">
+
+  <!-- EXPLANATIONS -->
+  <div class="section-title">The Explanations &amp; Reasonings</div>
+
+  <div class="content">
+
+    <p><strong>Death Note</strong> being in <span class="highlight">GOD TIER</span> absolutely deserves its place. The story flow is <span class="highlight">insanely tight</span>, the mind games are on another level, and every plot twist feels intentional instead of forced. Light vs L is still one of the most iconic rivalries in anime history, and the atmosphere alone carries the show into legendary status.</p>
+
+    <p><strong>Berserk</strong> also earns its <span class="highlight">GOD TIER</span> spot without question. The themes, the brutality, the tragedy — it's dark in a way that actually means something. It's not edgy for the sake of being edgy; it's raw, uncomfortable, and <span class="highlight">unforgettable</span>.</p>
+
+    <p><strong>Code Geass</strong>… this show is a <span class="highlight">masterpiece</span>, especially the ending. The build-up, the sacrifices, the absolute <span class="highlight">mind-blowing</span> conclusion — I was genuinely freaking out watching it. Lelouch's character arc is one of the best-written in anime, period.</p>
+
+    <p>Now <strong>JoJo's Parts 3 and 4</strong> (Might be a little biased) easily the best of what I've watched so far. The Stand battles, the creativity, the characters, the sheer personality of these parts — it's <span class="highlight">peak JoJo</span>.</p>
+
+    <p><span class="tier">TOP TIER</span> shows are insanely good and just barely miss GOD TIER. Incredible world-building, strong casts, and moments that genuinely stick with you.</p>
+
+    <p><span class="tier">Made Me Cry</span> speaks for itself. These anime didn't just entertain me — they <span class="highlight">emotionally destroyed me</span> in the best way possible.</p>
+
+    <p><span class="tier">HIGH TIER</span> is stacked with really strong anime. Great pacing, solid storytelling, and characters that are easy to get invested in.</p>
+
+    <p><span class="tier">MID TIER</span> doesn't mean bad — not even close. Enjoyable, good moments, just not unforgettable.</p>
+
+    <p><span class="tier">LOW TIER</span> is where cracks start to show. Pacing issues, weak writing, or wasted potential.</p>
+
+    <p><span class="tier">SHIT TIER</span>… yeah. These annoyed me, bored me, or felt like a waste of time. No hate if you like them — just not for me.</p>
+
+    <p><span class="tier">Haven't Yet Watched</span> — still on my radar. Who knows, some could end up GOD TIER once Araki gets them animated. (I'd probably be married with kids by the time it gets animated, but oh well.)</p>
+
+  </div>
+
+  <div class="tags">
+    <span>#anime</span>
+    <span>#fun</span>
+    <span>#opinion</span>
+    <span>#tierlist</span>
+  </div>
+
+  <footer>© 2026 Steven Ignacio</footer>
+
+</div>
 </div>
 
-<div class="meta">
-🗓️ Jan 29, 2026 | ⏱️ ~5 minute read
-</div>
+<button id="scroll-top" aria-label="Scroll to top">↑</button>
 
-<img src="Tierlist.png" class="tierlist-img">
+<script>
+  /* Reading progress */
+  const bar = document.getElementById('progress-bar');
+  const update = () => {
+    const d = document.documentElement;
+    bar.style.width = (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+  };
+  window.addEventListener('scroll', update, { passive:true });
 
-<div class="section-title">
-The Explanations & Reasonings
-</div>
+  /* Scroll-to-top */
+  const topBtn = document.getElementById('scroll-top');
+  window.addEventListener('scroll', () => topBtn.classList.toggle('show', scrollY > 220), { passive:true });
+  topBtn.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
 
-<div class="content">
-
-<p><strong>Death Note</strong> being in <span class="highlight">GOD TIER</span> absolutely deserves its place. The story flow is <span class="highlight">insanely tight</span>, the mind games are on another level, and every plot twist feels intentional instead of forced. Light vs L is still one of the most iconic rivalries in anime history, and the atmosphere alone carries the show into legendary status.</p>
-
-<p><strong>Berserk</strong> also earns its <span class="highlight">GOD TIER</span> spot without question. The themes, the brutality, the tragedy  it’s dark in a way that actually means something. It’s not edgy for the sake of being edgy; it’s raw, uncomfortable, and <span class="highlight">unforgettable</span>.</p>
-
-<p><strong>Code Geass</strong>… this show is a <span class="highlight">masterpiece</span>, especially the ending. The build-up, the sacrifices, the absolute <span class="highlight">mind-blowing</span> conclusion  I was genuinely freaking out watching it. Lelouch’s character arc is one of the best-written in anime, period.</p>
-
-<p>Now <strong>JoJo’s Parts 3 and 4</strong> (Might be a little biased) easily the best of what I’ve watched so far. The Stand battles, the creativity, the characters, the sheer personality of these parts  it’s <span class="highlight">peak JoJo</span>.</p>
-
-<p><span class="tier">TOP TIER</span> shows are insanely good and just barely miss GOD TIER. Incredible world-building, strong casts, and moments that genuinely stick with you.</p>
-
-<p><span class="tier">Made Me Cry</span> speaks for itself. These anime didn’t just entertain me they <span class="highlight">emotionally destroyed me</span> in the best way possible.</p>
-
-<p><span class="tier">HIGH TIER</span> is stacked with really strong anime. Great pacing, solid storytelling, and characters that are easy to get invested in.</p>
-
-<p><span class="tier">MID TIER</span> doesn’t mean bad  not even close. Enjoyable, good moments, just not unforgettable.</p>
-
-<p><span class="tier">LOW TIER</span> is where cracks start to show. Pacing issues, weak writing, or wasted potential.</p>
-
-<p><span class="tier">SHIT TIER</span>… yeah. These annoyed me, bored me, or felt like a waste of time. No hate if you like them just not for me.</p>
-
-<p><span class="tier">Haven’t Yet Watched</span>  still on my radar. Who knows, some could end up GOD TIER once Araki gets them animated. (I'd probably be married and had kids by the time it gets animated, but oh well)</p>
-
-</div>
-
-<div class="tags">
-<span>#fun</span>
-<span>#opinion</span>
-</div>
-
-<footer>© 2026 Steven Ignacio</footer>
-
-</div>
-</div>
-
+  /* Staggered paragraph reveal */
+  const paragraphs = document.querySelectorAll('.content p');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const i = [...paragraphs].indexOf(e.target);
+        setTimeout(() => e.target.classList.add('visible'), i * 70);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  paragraphs.forEach(p => obs.observe(p));
+</script>
 </body>
 </html>
