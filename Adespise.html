@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Steven — Anime Tierlist</title>
+<title>Steven — Things I Hate</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-    :root{
+:root{
   --ice-white:#eaf6ff;
   --snow:#f7fbff;
   --frost:#cfe9ff;
@@ -18,13 +18,7 @@
   --fog:#bfc9cf;
 }
 
-/* ================= GLOBAL ================= */
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{ margin:0; padding:0; box-sizing:border-box; }
 
 body{
   background:#000;
@@ -33,7 +27,19 @@ body{
   overflow-x:hidden;
 }
 
-/* VIDEO BG */
+/* ── READING PROGRESS BAR ── */
+#progress-bar{
+  position:fixed;
+  top:0; left:0;
+  height:3px;
+  width:0%;
+  background:linear-gradient(90deg, #9fd4ff, #ffb347);
+  z-index:999;
+  transition:width .1s linear;
+  box-shadow:0 0 10px rgba(159,212,255,.6);
+}
+
+/* ── VIDEO BG ── */
 .bg-video{
   position:fixed;
   inset:0;
@@ -43,26 +49,315 @@ body{
   z-index:-3;
 }
 
-
-
-/* ================= PANEL ================= */
-
+/* ── WRAPPER ── */
 .site-wrapper{
   max-width:950px;
-  margin:80px auto;
-  padding:20px;
+  margin:0 auto;
+  padding:clamp(60px,10vw,80px) clamp(12px,4vw,20px) 40px;
 }
 
+/* ── PANEL ── */
 .pixel-panel{
   background:rgba(20,35,45,.45);
   backdrop-filter:blur(6px);
   border:1px solid rgba(200,230,255,.35);
   border-radius:18px;
-  padding:30px;
+  padding:clamp(18px,5vw,30px);
   width:100%;
   max-width:800px;
   box-shadow:
     0 0 40px rgba(140,200,255,.15),
+    inset 0 0 20px rgba(255,255,255,.04);
+}
+
+/* ── HEADER ── */
+.panel-header{
+  display:flex;
+  align-items:center;
+  margin-bottom:28px;
+  gap:12px;
+}
+
+.back-btn{
+  font-family:'Press Start 2P', monospace;
+  font-size:clamp(8px,2vw,10px);
+  background:rgba(120,170,200,.15);
+  color:var(--snow);
+  padding:8px 12px;
+  border:1px solid rgba(200,230,255,.4);
+  border-radius:8px;
+  cursor:pointer;
+  transition:.25s;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.back-btn:hover,
+.back-btn:active{
+  background:rgba(180,220,255,.25);
+  box-shadow:0 0 12px rgba(170,220,255,.6);
+}
+
+/* ── TITLE ── */
+.pixel-title{
+  font-family:'Press Start 2P', monospace;
+  font-size:clamp(11px,3.2vw,20px);
+  color:var(--ice-white);
+  text-align:center;
+  margin-bottom:20px;
+  line-height:1.6;
+  text-shadow:
+    0 0 6px rgba(255,255,255,.7),
+    0 0 18px rgba(140,200,255,.45);
+}
+
+/* ── META ── */
+.meta{
+  text-align:center;
+  font-size:clamp(12px,3vw,14px);
+  opacity:.75;
+  margin-bottom:18px;
+  line-height:1.5;
+}
+.meta.intro{
+  font-size:clamp(13px,3.5vw,16px);
+  color:#fff;
+  opacity:1;
+}
+.meta img{
+  vertical-align:middle;
+  width:22px;
+  height:22px;
+}
+
+/* ── DIVIDER ── */
+.divider{
+  border:none;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,230,255,.3),transparent);
+  margin:22px 0;
+}
+
+/* ── LIST ── */
+.post{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:10px;
+  counter-reset:item;
+}
+
+.hate-item{
+  position:relative;
+  padding:14px 16px 14px clamp(46px,10vw,56px);
+
+  background:linear-gradient(
+    180deg,
+    rgba(200,230,255,.10),
+    rgba(140,180,210,.05)
+  );
+
+  border:1px solid rgba(200,230,255,.22);
+  border-radius:12px;
+
+  color:var(--snow);
+  line-height:1.75;
+
+  backdrop-filter:blur(4px);
+  transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease, opacity .4s ease;
+
+  font-family:'Press Start 2P', monospace;
+  font-size:clamp(9px,2.2vw,12px);
+
+  /* entrance animation */
+  opacity:0;
+  transform:translateY(14px);
+}
+
+.hate-item.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* Number bubbles */
+.hate-item::before{
+  counter-increment:item;
+  content:counter(item);
+
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform:translateY(-50%);
+
+  width:26px;
+  height:26px;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:11px;
+  font-weight:600;
+  color:#fff;
+  background:rgba(150,210,255,.25);
+  box-shadow:0 0 10px rgba(150,210,255,.45);
+}
+
+.hate-item:hover,
+.hate-item:active{
+  transform:translateY(-2px);
+  border-color:rgba(220,240,255,.55);
+  box-shadow:
+    0 0 18px rgba(180,230,255,.22),
+    inset 0 0 10px rgba(255,255,255,.07);
+}
+
+/* ── TAGS ── */
+.tags{
+  margin-top:36px;
+  text-align:center;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+}
+
+.tags span{
+  font-size:11px;
+  border:1px solid rgba(200,230,255,.25);
+  padding:6px 14px;
+  color:var(--frost);
+  background:rgba(160,210,255,.06);
+  backdrop-filter:blur(3px);
+  border-radius:4px;
+}
+
+/* ── SCROLL TO TOP ── */
+#scroll-top{
+  position:fixed;
+  bottom:24px;
+  right:20px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:rgba(30,50,65,.75);
+  border:1px solid rgba(200,230,255,.35);
+  color:var(--cold-blue);
+  font-size:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  backdrop-filter:blur(6px);
+  transition:.3s;
+  opacity:0;
+  pointer-events:none;
+  z-index:100;
+}
+#scroll-top.show{
+  opacity:1;
+  pointer-events:auto;
+}
+#scroll-top:hover{
+  background:rgba(60,90,115,.85);
+  box-shadow:0 0 14px rgba(159,212,255,.4);
+}
+
+/* ── FOOTER ── */
+footer{
+  margin-top:44px;
+  text-align:center;
+  font-size:11px;
+  opacity:.55;
+}
+
+/* ── SMALL PHONES ── */
+@media(max-width:400px){
+  .back-btn{ font-size:7px; padding:7px 10px; }
+  .pixel-title{ font-size:10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div id="progress-bar"></div>
+
+<video class="bg-video" autoplay muted loop playsinline>
+  <source src="Snow.mp4" type="video/mp4">
+</video>
+
+<div class="site-wrapper">
+<div class="pixel-panel">
+
+  <div class="panel-header">
+    <button onclick="window.history.back()" class="back-btn">← GO BACK</button>
+  </div>
+
+  <div class="pixel-title">A Random List of Silly Things I Hate</div>
+
+  <div class="meta intro">Apparently this is a thing now, so I'm gonna join in. <img src="cat.png" alt="cat"></div>
+  <div class="meta">🗓️ Feb 06, 2026 &nbsp;|&nbsp; ⏱️ ~2 min read</div>
+
+  <hr class="divider">
+
+  <div class="post">
+    <div class="hate-item">Rude people.</div>
+    <div class="hate-item">Impatient people.</div>
+    <div class="hate-item">People who don't like dogs. What's that all about??</div>
+    <div class="hate-item">Blogs that don't have a simple way to contact the author.</div>
+    <div class="hate-item">The hold that mobile phones have on our society.</div>
+    <div class="hate-item">When you realize you forgot why you walked into a room.</div>
+    <div class="hate-item">Dark alleys.</div>
+    <div class="hate-item">Spiders! 🕷</div>
+    <div class="hate-item">Greasy foods.</div>
+    <div class="hate-item">Slow Wi-Fi.</div>
+  </div>
+
+  <div class="tags">
+    <span>#fun</span>
+    <span>#opinion</span>
+  </div>
+
+  <footer>© 2026 Steven Ignacio</footer>
+
+</div>
+</div>
+
+<!-- Scroll to top -->
+<button id="scroll-top" aria-label="Scroll to top">↑</button>
+
+<script>
+  /* ── Reading progress bar ── */
+  const bar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', () => {
+    const doc  = document.documentElement;
+    const pct  = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+    bar.style.width = pct + '%';
+  });
+
+  /* ── Scroll-to-top button ── */
+  const topBtn = document.getElementById('scroll-top');
+  window.addEventListener('scroll', () => {
+    topBtn.classList.toggle('show', window.scrollY > 200);
+  });
+  topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  /* ── Staggered entrance animation via IntersectionObserver ── */
+  const items = document.querySelectorAll('.hate-item');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const i = [...items].indexOf(e.target);
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  items.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
     inset 0 0 20px rgba(255,255,255,.04);
 }
 
