@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DIO Over Heaven — Eyes of Heaven</title>
+<title>DIO — Over Heaven</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&display=swap');
 
@@ -12,7 +12,7 @@
   --gold-bright: #f5d97a;
   --gold-dim: #5a3e10;
   --white: #f0ece2;
-  --bg: #000000;
+  --bg: #000;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,148 +22,219 @@ html, body {
   color: var(--white);
   font-family: 'Cinzel', serif;
   overflow-x: hidden;
-  scroll-behavior: smooth;
 }
 
-/* ── HERO ── */
-#hero {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
-}
-
-/* BG decorative symbols */
-#bg-symbols {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  opacity: 0.04;
-  font-size: 120px;
-  color: #fff;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  filter: blur(0.5px);
-  user-select: none;
-}
-
-/* Top header */
-#header {
+/* ── TOP HEADER ── */
+#top-header {
+  text-align: center;
+  padding: 28px 20px 0;
   position: relative;
   z-index: 10;
-  text-align: center;
-  padding-top: 32px;
-  animation: fadeDown 1.2s ease forwards;
 }
 
 #game-label {
-  font-size: 10px;
-  letter-spacing: 5px;
-  color: rgba(255,255,255,0.3);
+  font-size: 8px;
+  letter-spacing: 4px;
+  color: rgba(255,255,255,0.25);
   text-transform: uppercase;
   margin-bottom: 10px;
 }
 
-#header h1 {
+#top-header h1 {
   font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(22px, 5vw, 52px);
+  font-size: clamp(28px, 8vw, 56px);
   font-weight: 900;
-  letter-spacing: 8px;
+  letter-spacing: 10px;
   color: var(--white);
-  text-shadow:
-    0 0 20px rgba(201,168,76,0.5),
-    0 0 60px rgba(201,168,76,0.15);
-  line-height: 1.1;
+  text-shadow: 0 0 30px rgba(201,168,76,0.45), 0 0 80px rgba(201,168,76,0.1);
+  line-height: 1;
 }
 
-#header h1 span {
-  color: var(--gold);
+#top-header h1 span {
   display: block;
-  font-size: clamp(13px, 2.5vw, 24px);
-  letter-spacing: 12px;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(9px, 2.5vw, 14px);
+  letter-spacing: 8px;
+  color: var(--gold);
   font-weight: 400;
-  margin-top: 6px;
-  text-shadow: 0 0 20px rgba(201,168,76,0.6);
+  margin-top: 8px;
+  text-shadow: 0 0 16px rgba(201,168,76,0.7);
 }
 
 .divider {
-  width: 260px;
+  width: 200px;
   height: 1px;
-  margin: 14px auto;
+  margin: 14px auto 0;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
-/* 3D Canvas */
-#canvas-wrap {
-  position: relative;
+/* ── 3D VIEWER — fixed height, not full screen ── */
+#viewer {
   width: 100%;
-  flex: 1;
-  z-index: 5;
+  height: 52vw;
+  max-height: 380px;
+  min-height: 220px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
 }
-#canvas-wrap canvas {
+
+#viewer canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
 }
 
-/* Scroll hint */
-#scroll-hint {
+/* soft fade top & bottom of canvas so it blends */
+#viewer::before,
+#viewer::after {
+  content: '';
   position: absolute;
-  bottom: 18px;
+  left: 0; right: 0;
+  height: 60px;
+  z-index: 2;
+  pointer-events: none;
+}
+#viewer::before {
+  top: 0;
+  background: linear-gradient(180deg, #000 0%, transparent 100%);
+}
+#viewer::after {
+  bottom: 0;
+  background: linear-gradient(0deg, #000 0%, transparent 100%);
+}
+
+/* side vignette */
+.side-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.7) 100%);
+}
+
+/* ── BOTTOM TEXT SECTION ── */
+#info {
+  padding: 10px 24px 60px;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#char-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(13px, 3.5vw, 20px);
+  letter-spacing: 6px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.section-divider {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
+  margin: 12px auto 18px;
+}
+
+#description {
+  font-size: clamp(11px, 2.5vw, 13px);
+  line-height: 2;
+  color: rgba(240,236,226,0.5);
+  letter-spacing: 0.5px;
+  margin-bottom: 36px;
+}
+
+/* Stats */
+.stats-label {
+  font-size: 8px;
+  letter-spacing: 5px;
+  color: rgba(201,168,76,0.35);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+#stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 28px;
+  margin-bottom: 36px;
+  text-align: left;
+}
+
+@media (max-width: 360px) {
+  #stats-grid { grid-template-columns: 1fr; }
+}
+
+.stat-row { display: flex; flex-direction: column; gap: 5px; }
+
+.stat-name {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+}
+.stat-name span { color: var(--gold); font-size: 9px; }
+
+.stat-bar-bg {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  position: relative;
+}
+.stat-bar-fill {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
+  box-shadow: 0 0 5px var(--gold);
+  width: 0%;
+  transition: width 1.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* Ability */
+#ability {
+  border: 1px solid rgba(201,168,76,0.12);
+  padding: 22px 20px;
+  position: relative;
+  margin-bottom: 40px;
+}
+#ability::before {
+  content: '✦  STAND ABILITY  ✦';
+  position: absolute;
+  top: -7px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 10;
-  color: rgba(255,255,255,0.2);
-  font-size: 9px;
+  background: #000;
+  padding: 0 12px;
+  font-size: 7px;
   letter-spacing: 4px;
-  animation: pulse 2.5s ease infinite;
+  color: var(--gold);
+  white-space: nowrap;
 }
-#scroll-hint::after {
-  content: '';
-  display: block;
-  width: 1px;
-  height: 28px;
-  background: linear-gradient(180deg, rgba(201,168,76,0.4), transparent);
-  margin: 8px auto 0;
+#ability h4 {
+  font-size: clamp(11px, 2.5vw, 13px);
+  letter-spacing: 4px;
+  color: var(--white);
+  margin-bottom: 10px;
 }
-
-/* Controls */
-#controls {
-  position: absolute;
-  bottom: 52px;
-  right: 20px;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.ctrl-btn {
-  background: rgba(0,0,0,0.5);
-  border: 1px solid rgba(201,168,76,0.3);
-  color: rgba(201,168,76,0.7);
-  padding: 7px 13px;
-  font-family: 'Cinzel', serif;
-  font-size: 9px;
-  letter-spacing: 2px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.ctrl-btn:hover, .ctrl-btn.active {
-  border-color: var(--gold);
-  color: var(--gold-bright);
-  background: rgba(201,168,76,0.08);
+#ability p {
+  font-size: clamp(10px, 2.2vw, 12px);
+  line-height: 1.9;
+  color: rgba(240,236,226,0.45);
+  letter-spacing: 0.3px;
 }
 
-/* Loading overlay */
+/* Footer */
+#footer {
+  border-top: 1px solid rgba(201,168,76,0.07);
+  text-align: center;
+  padding: 24px 20px;
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.08);
+}
+
+/* Loading */
 #loading {
   position: fixed;
   inset: 0;
@@ -173,284 +244,65 @@ html, body {
   align-items: center;
   justify-content: center;
   z-index: 999;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.8s;
 }
 #loading h2 {
   font-family: 'Cinzel Decorative', serif;
   color: var(--gold);
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 6px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
-#progress-wrap {
-  width: 180px;
-  height: 1px;
-  background: rgba(201,168,76,0.15);
-}
-#progress-bar {
+#prog-wrap { width: 160px; height: 1px; background: rgba(201,168,76,0.12); }
+#prog-bar {
   height: 1px;
   width: 0%;
-  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
-  box-shadow: 0 0 8px var(--gold);
-  transition: width 0.2s;
-}
-#loading-sub {
-  margin-top: 16px;
-  font-size: 9px;
-  letter-spacing: 4px;
-  color: rgba(255,255,255,0.2);
-}
-
-/* ── INFO SECTION ── */
-#info {
-  position: relative;
-  background: #000;
-  padding: 80px 24px 60px;
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-/* Corner decorations */
-#info::before, #info::after {
-  content: '';
-  position: absolute;
-  width: 60px; height: 60px;
-  border-color: rgba(201,168,76,0.25);
-  border-style: solid;
-}
-#info::before { top: 40px; left: 0; border-width: 1px 0 0 1px; }
-#info::after  { top: 40px; right: 0; border-width: 1px 1px 0 0; }
-
-/* Section label */
-.section-label {
-  text-align: center;
-  font-size: 9px;
-  letter-spacing: 6px;
-  color: rgba(201,168,76,0.4);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-/* Character name block */
-#name-block {
-  text-align: center;
-  margin-bottom: 40px;
-  animation: fadeUp 1s ease forwards;
-}
-#name-block h2 {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(24px, 5vw, 48px);
-  font-weight: 700;
-  letter-spacing: 6px;
-  color: var(--white);
-  line-height: 1.2;
-}
-#name-block h2 em {
-  font-style: normal;
-  color: var(--gold);
-}
-
-/* Description */
-#description {
-  text-align: center;
-  font-size: clamp(13px, 2vw, 15px);
-  line-height: 2;
-  color: rgba(240,236,226,0.65);
-  letter-spacing: 1px;
-  max-width: 680px;
-  margin: 0 auto 60px;
-  font-family: 'Cinzel', serif;
-  font-weight: 400;
-}
-
-/* Stats */
-#stats-title {
-  text-align: center;
-  margin-bottom: 32px;
-}
-#stats-title h3 {
-  font-size: 11px;
-  letter-spacing: 6px;
-  color: var(--gold);
-  text-transform: uppercase;
-}
-
-#stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px 32px;
-  max-width: 600px;
-  margin: 0 auto 60px;
-}
-
-.stat-row {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.stat-name {
-  font-size: 9px;
-  letter-spacing: 4px;
-  color: rgba(255,255,255,0.35);
-  text-transform: uppercase;
-  display: flex;
-  justify-content: space-between;
-}
-.stat-name span { color: var(--gold); }
-.stat-bar-bg {
-  height: 2px;
-  background: rgba(255,255,255,0.07);
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-}
-.stat-bar-fill {
-  height: 2px;
   background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
   box-shadow: 0 0 6px var(--gold);
-  width: 0%;
-  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+  transition: width 0.2s;
 }
-
-/* Ability section */
-#ability {
-  border: 1px solid rgba(201,168,76,0.15);
-  padding: 28px 32px;
-  margin: 0 auto 60px;
-  max-width: 600px;
-  position: relative;
-}
-#ability::before {
-  content: '✦ ABILITY ✦';
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #000;
-  padding: 0 16px;
-  font-size: 9px;
-  letter-spacing: 5px;
-  color: var(--gold);
-}
-#ability h4 {
-  font-size: 13px;
+#loading p {
+  margin-top: 14px;
+  font-size: 8px;
   letter-spacing: 4px;
-  color: var(--white);
-  margin-bottom: 12px;
-  text-align: center;
-}
-#ability p {
-  font-size: 12px;
-  line-height: 1.9;
-  color: rgba(240,236,226,0.5);
-  letter-spacing: 0.5px;
-  text-align: center;
-  font-family: 'Cinzel', serif;
-}
-
-/* Footer */
-#footer {
-  border-top: 1px solid rgba(201,168,76,0.1);
-  text-align: center;
-  padding: 30px 20px;
-  font-size: 9px;
-  letter-spacing: 4px;
-  color: rgba(255,255,255,0.1);
-}
-
-/* Vignette on hero */
-.vignette {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.75) 100%);
-  z-index: 6;
-}
-
-/* Animations */
-@keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes pulse {
-  0%,100% { opacity: 0.2; }
-  50%      { opacity: 0.6; }
-}
-
-/* Mobile tweaks */
-@media (max-width: 480px) {
-  #stats-grid { grid-template-columns: 1fr; }
-  #ability { padding: 24px 20px; }
+  color: rgba(255,255,255,0.15);
 }
 </style>
 </head>
 <body>
 
-<!-- Loading -->
 <div id="loading">
   <h2>OVER HEAVEN</h2>
-  <div id="progress-wrap"><div id="progress-bar"></div></div>
-  <div id="loading-sub">SUMMONING DIO...</div>
+  <div id="prog-wrap"><div id="prog-bar"></div></div>
+  <p>SUMMONING DIO...</p>
 </div>
 
-<!-- HERO -->
-<section id="hero">
+<!-- TITLE -->
+<div id="top-header">
+  <div id="game-label">JoJo's Bizarre Adventure: Eyes of Heaven</div>
+  <h1>DIO<span>OVER HEAVEN</span></h1>
+  <div class="divider"></div>
+</div>
 
-  <!-- BG symbols -->
-  <div id="bg-symbols">
-    ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦ ☽ ✦
-  </div>
-
-  <!-- Header -->
-  <div id="header">
-    <div id="game-label">JoJo's Bizarre Adventure: Eyes of Heaven</div>
-    <h1>
-      DIO
-      <span>OVER HEAVEN</span>
-    </h1>
-    <div class="divider"></div>
-  </div>
-
-  <!-- 3D Canvas -->
-  <div id="canvas-wrap"></div>
-
-  <div class="vignette"></div>
-
-  <!-- Controls -->
-  <div id="controls">
-    <button class="ctrl-btn active" id="btnSpin">⟳ SPIN</button>
-    <button class="ctrl-btn" id="btnWire">◈ WIRE</button>
-  </div>
-
-  <div id="scroll-hint">SCROLL</div>
-</section>
+<!-- 3D VIEWER -->
+<div id="viewer">
+  <div class="side-vignette"></div>
+</div>
 
 <!-- INFO -->
-<section id="info">
-  <div id="name-block">
-    <div class="section-label">Character Profile</div>
-    <h2><em>DIO</em> OVER HEAVEN</h2>
-    <div class="divider"></div>
-  </div>
+<div id="info">
+  <div id="char-name">THE WORLD OVER HEAVEN</div>
+  <div class="section-divider"></div>
 
   <p id="description">
-    The god-like incarnation of DIO, achieved after obtaining the Saint's Corpse
-    and rewriting reality itself. Having transcended the limits of human potential
-    through sheer will and ambition, DIO Over Heaven wields a power that surpasses
-    all stands and all timelines. He does not merely defeat his enemies —
-    he rewrites them out of existence. In Eyes of Heaven, he stands as the final
-    boss and the most powerful being across all of JoJo's history.
+    Having obtained the Saint's Corpse and rewritten the very laws of reality,
+    DIO ascended beyond all limits of power and time. He is not merely a villain —
+    he is a god who remade the universe in his image. In Eyes of Heaven,
+    he stands as the supreme final antagonist, a being whose will alone
+    can erase and overwrite all of existence.
   </p>
 
-  <!-- Stats -->
-  <div id="stats-title">
-    <div class="section-label">Stand Stats</div>
-    <div class="divider"></div>
-  </div>
+  <div class="stats-label">Stand Statistics</div>
 
   <div id="stats-grid">
     <div class="stat-row">
@@ -479,115 +331,87 @@ html, body {
     </div>
   </div>
 
-  <!-- Ability box -->
   <div id="ability">
     <h4>HEAVEN ASCENSION</h4>
     <p>
-      The World Over Heaven grants DIO the ability to overwrite reality with his fists.
-      Anything struck by his Stand is rewritten — living beings, objects, even the laws
-      of the universe itself. Time stop is merely a bonus. His true power is
-      the absolute rewriting of all existence, making him effectively omnipotent
-      within any timeline he enters.
+      The World Over Heaven grants its user the power to overwrite reality itself.
+      Any surface struck by its fists is rewritten — people, objects, timelines,
+      even the fabric of the universe. Time stop is merely secondary.
+      His true dominion is absolute rewriting of all that exists.
     </p>
   </div>
+</div>
 
-  <div id="footer">
-    JoJo's Bizarre Adventure: Eyes of Heaven &nbsp;·&nbsp; Bandai Namco &nbsp;·&nbsp; 2015
-  </div>
-</section>
+<div id="footer">
+  JoJo's Bizarre Adventure: Eyes of Heaven &nbsp;·&nbsp; Bandai Namco &nbsp;·&nbsp; 2015
+</div>
 
-<!-- THREE.JS -->
 <script>
 function loadScript(src, cb) {
   var s = document.createElement('script');
-  s.src = src; s.onload = cb;
-  document.head.appendChild(s);
+  s.src = src; s.onload = cb; document.head.appendChild(s);
 }
 
-var autoSpin = true;
-var wireMode = false;
-var modelRef = null;
-var controlsRef = null;
-
-document.getElementById('btnSpin').onclick = function() {
-  autoSpin = !autoSpin;
-  this.classList.toggle('active', autoSpin);
-  if (controlsRef) controlsRef.autoRotate = autoSpin;
-};
-document.getElementById('btnWire').onclick = function() {
-  wireMode = !wireMode;
-  this.classList.toggle('active', wireMode);
-  if (!modelRef) return;
-  modelRef.traverse(function(c) {
-    if (!c.isMesh) return;
-    if (wireMode) {
-      c._om = c.material;
-      c.material = new THREE.MeshBasicMaterial({ color: 0xc9a84c, wireframe: true });
-    } else {
-      if (c._om) c.material = c._om;
-    }
-  });
-};
-
 loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', function() {
-  loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js', function() {
-    loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js', initScene);
-  });
+  loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js', initScene);
 });
 
 function initScene() {
-  var wrap = document.getElementById('canvas-wrap');
-  var W = wrap.clientWidth, H = wrap.clientHeight;
+  var wrap = document.getElementById('viewer');
+  var W = wrap.clientWidth;
+  var H = wrap.clientHeight;
 
   var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(42, W / H, 0.01, 200);
-  camera.position.set(0, 1.2, 4.5);
+
+  var camera = new THREE.PerspectiveCamera(36, W / H, 0.01, 100);
+  // Close up — DIO fills the frame nicely
+  camera.position.set(0, 0.3, 3.2);
+  camera.lookAt(0, 0.3, 0);
 
   var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setClearColor(0x000000, 0);
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setSize(W, H);
   renderer.outputEncoding = THREE.sRGBEncoding;
   renderer.toneMapping = THREE.ReinhardToneMapping;
-  renderer.toneMappingExposure = 1.5;
+  renderer.toneMappingExposure = 1.6;
   renderer.shadowMap.enabled = true;
   wrap.appendChild(renderer.domElement);
 
-  // Orbit
-  var controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controlsRef = controls;
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.06;
-  controls.autoRotate = true;
-  controls.autoRotateSpeed = 1.4;
-  controls.minDistance = 1.5;
-  controls.maxDistance = 10;
-  controls.maxPolarAngle = Math.PI * 0.88;
-
   // Lights
-  scene.add(new THREE.AmbientLight(0x110d00, 2));
-  var key = new THREE.DirectionalLight(0xfff0c0, 4);
-  key.position.set(3, 6, 4); key.castShadow = true; scene.add(key);
-  var rim = new THREE.DirectionalLight(0x3355ff, 1.5);
-  rim.position.set(-4, 2, -5); scene.add(rim);
-  var fill = new THREE.DirectionalLight(0xffbb44, 0.8);
-  fill.position.set(0, -4, 3); scene.add(fill);
-  var glow = new THREE.PointLight(0xd4a030, 3, 8);
-  glow.position.set(0, 1, 1.8); scene.add(glow);
+  scene.add(new THREE.AmbientLight(0x111000, 2.5));
 
-  // Particles
-  var ptN = 250;
+  var key = new THREE.DirectionalLight(0xfff2d0, 5);
+  key.position.set(3, 5, 4);
+  key.castShadow = true;
+  scene.add(key);
+
+  var rim = new THREE.DirectionalLight(0x2244ff, 1.8);
+  rim.position.set(-4, 1, -5);
+  scene.add(rim);
+
+  var fill = new THREE.DirectionalLight(0xffaa33, 1.0);
+  fill.position.set(0, -3, 3);
+  scene.add(fill);
+
+  var glow = new THREE.PointLight(0xd4a030, 4, 6);
+  glow.position.set(0, 0.5, 1.5);
+  scene.add(glow);
+
+  // Subtle particles
+  var ptN = 180;
   var ptArr = new Float32Array(ptN * 3);
   for (var i = 0; i < ptN; i++) {
-    var r = Math.random() * 3.5 + 0.8;
+    var r = Math.random() * 2.5 + 0.6;
     var a = Math.random() * Math.PI * 2;
     ptArr[i*3]   = Math.cos(a) * r;
-    ptArr[i*3+1] = Math.random() * 5 - 0.5;
+    ptArr[i*3+1] = Math.random() * 4 - 0.8;
     ptArr[i*3+2] = Math.sin(a) * r;
   }
   var ptGeo = new THREE.BufferGeometry();
   ptGeo.setAttribute('position', new THREE.BufferAttribute(ptArr, 3));
   var ptMesh = new THREE.Points(ptGeo, new THREE.PointsMaterial({
-    color: 0xd4a030, size: 0.022, transparent: true, opacity: 0.65
+    color: 0xd4a030, size: 0.018, transparent: true, opacity: 0.55
   }));
   scene.add(ptMesh);
 
@@ -596,26 +420,24 @@ function initScene() {
   loader.load('dio.glb',
     function(gltf) {
       var model = gltf.scene;
-      modelRef = model;
 
-      // Auto-fit
+      // Center and scale
       var box = new THREE.Box3().setFromObject(model);
       var center = box.getCenter(new THREE.Vector3());
       var size = box.getSize(new THREE.Vector3());
       var maxDim = Math.max(size.x, size.y, size.z);
-      var s = 2.8 / maxDim;
+      var s = 2.2 / maxDim;
       model.scale.setScalar(s);
       model.position.sub(center.multiplyScalar(s));
-      model.position.y += size.y * s * 0.5;
+      // shift up so head/chest visible, not feet
+      model.position.y += size.y * s * 0.18;
 
       model.traverse(function(c) {
-        if (c.isMesh) {
-          c.castShadow = true; c.receiveShadow = true;
-        }
+        if (c.isMesh) { c.castShadow = true; c.receiveShadow = true; }
       });
       scene.add(model);
 
-      // Animations
+      // Animations if any
       var mixer = null;
       if (gltf.animations && gltf.animations.length) {
         mixer = new THREE.AnimationMixer(model);
@@ -623,43 +445,50 @@ function initScene() {
       }
 
       // Hide loader
-      var loadEl = document.getElementById('loading');
-      loadEl.style.opacity = '0';
-      setTimeout(function() { loadEl.style.display = 'none'; }, 800);
+      var ld = document.getElementById('loading');
+      ld.style.opacity = '0';
+      setTimeout(function() { ld.style.display = 'none'; }, 800);
 
-      // Animate stats bars
-      setTimeout(animateStats, 1200);
+      // Trigger stat bars
+      setTimeout(animateStats, 600);
 
       var clock = new THREE.Clock();
       var t = 0;
+
       (function loop() {
         requestAnimationFrame(loop);
-        t += 0.006;
+        t += 0.004; // slow, smooth — logo speed
         var d = clock.getDelta();
         if (mixer) mixer.update(d);
-        controls.update();
-        glow.intensity = 2.5 + Math.sin(t * 2.2) * 0.6;
-        glow.position.x = Math.sin(t * 0.8) * 0.4;
+
+        // Pure Y rotation — no user input, just like a logo
+        model.rotation.y = t;
+
+        // Glow breathe
+        glow.intensity = 3.5 + Math.sin(t * 3) * 0.8;
+
+        // Particles drift up slowly
         var pos = ptGeo.attributes.position.array;
         for (var i = 0; i < ptN; i++) {
-          pos[i*3+1] += 0.004;
-          if (pos[i*3+1] > 4.5) pos[i*3+1] = -0.5;
+          pos[i*3+1] += 0.003;
+          if (pos[i*3+1] > 3.2) pos[i*3+1] = -0.8;
         }
         ptGeo.attributes.position.needsUpdate = true;
-        ptMesh.rotation.y = t * 0.06;
+        ptMesh.rotation.y = t * 0.05;
+
         renderer.render(scene, camera);
       })();
     },
     function(xhr) {
       if (xhr.lengthComputable) {
-        document.getElementById('progress-bar').style.width =
+        document.getElementById('prog-bar').style.width =
           (xhr.loaded / xhr.total * 100).toFixed(0) + '%';
       }
     },
-    function(e) {
+    function() {
       document.getElementById('loading').innerHTML =
-        '<h2 style="color:#c0392b;font-family:Cinzel,serif;letter-spacing:6px;">LOAD ERROR</h2>' +
-        '<p style="color:rgba(255,255,255,0.3);font-size:10px;margin-top:12px;letter-spacing:2px;">Make sure dio.glb is in the same folder</p>';
+        '<h2 style="color:#c0392b;font-family:Cinzel,serif;letter-spacing:5px;font-size:13px;">LOAD ERROR</h2>' +
+        '<p style="color:rgba(255,255,255,0.25);font-size:9px;margin-top:14px;letter-spacing:3px;font-family:Cinzel,serif;">dio.glb must be in the same folder</p>';
     }
   );
 
@@ -671,18 +500,17 @@ function initScene() {
   });
 }
 
-// Animate stat bars on scroll into view
 function animateStats() {
   var bars = document.querySelectorAll('.stat-bar-fill');
-  var observer = new IntersectionObserver(function(entries) {
+  var obs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) {
         e.target.style.width = e.target.dataset.pct + '%';
-        observer.unobserve(e.target);
+        obs.unobserve(e.target);
       }
     });
-  }, { threshold: 0.3 });
-  bars.forEach(function(b) { observer.observe(b); });
+  }, { threshold: 0.2 });
+  bars.forEach(function(b) { obs.observe(b); });
 }
 </script>
 </body>
