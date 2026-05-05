@@ -18,7 +18,7 @@
   --dusty:      #c9bfb0;
   --dusty-dark: #9e9285;
   --accent:     #b8a99a;
-  --accent2:    #8a9aad;   /* slate-blue, single cool note */
+  --accent2:    #8a9aad;
   --card-bg:    rgba(10, 9, 14, 0.80);
   --border:     rgba(200,185,170,.15);
   --border-h:   rgba(200,185,170,.3);
@@ -38,9 +38,6 @@ body {
   background: #09080f;
 }
 
-/* ══════════════════════════════════
-   CANVAS PARTICLE LAYER
-══════════════════════════════════ */
 #particle-canvas {
   position: fixed;
   inset: 0;
@@ -49,9 +46,6 @@ body {
   opacity: .55;
 }
 
-/* ══════════════════════════════════
-   PROGRESS BAR
-══════════════════════════════════ */
 #prog {
   position: fixed; top: 0; left: 0;
   height: 2px; width: 0%;
@@ -64,9 +58,6 @@ body {
 }
 @keyframes pgShimmer { to { background-position: 200% 0; } }
 
-/* ══════════════════════════════════
-   VIDEO BG
-══════════════════════════════════ */
 video.bg-video {
   position: fixed; inset: 0;
   width: 100%; height: 100%;
@@ -79,9 +70,6 @@ video.bg-video {
   z-index: 0;
 }
 
-/* ══════════════════════════════════
-   LEAVES
-══════════════════════════════════ */
 .leaves-container {
   position: fixed; inset: 0;
   pointer-events: none;
@@ -103,9 +91,6 @@ video.bg-video {
   100% { transform: translateY(115vh) rotate(360deg) translateX(0); }
 }
 
-/* ══════════════════════════════════
-   WRAPPER
-══════════════════════════════════ */
 .site-wrapper {
   position: relative;
   z-index: 2;
@@ -114,9 +99,6 @@ video.bg-video {
   padding: clamp(16px,5vw,28px) clamp(12px,4vw,20px) 100px;
 }
 
-/* ══════════════════════════════════
-   BACK BUTTON
-══════════════════════════════════ */
 .back-btn {
   display: inline-flex;
   align-items: center;
@@ -141,9 +123,6 @@ video.bg-video {
   box-shadow: 0 0 14px rgba(138,154,173,.2);
 }
 
-/* ══════════════════════════════════
-   ENTRANCE ANIMATIONS
-══════════════════════════════════ */
 @keyframes fadeSlideDown {
   from { opacity:0; transform:translateY(-14px); }
   to   { opacity:1; transform:translateY(0); }
@@ -173,7 +152,6 @@ video.bg-video {
   100% { background-position: 200% 50%; }
 }
 
-/* Scroll-reveal base */
 .reveal {
   opacity: 0;
   transform: translateY(32px);
@@ -188,9 +166,6 @@ video.bg-video {
   transform: translateY(0) translateX(0) scale(1);
 }
 
-/* ══════════════════════════════════
-   HERO
-══════════════════════════════════ */
 .hero {
   padding: clamp(36px,8vw,60px) clamp(22px,6vw,44px);
   background: var(--card-bg);
@@ -204,7 +179,6 @@ video.bg-video {
   animation: scaleIn .9s .1s cubic-bezier(.22,1,.36,1) both;
 }
 
-/* animated top border trace */
 .hero::before {
   content: '';
   position: absolute;
@@ -244,7 +218,6 @@ video.bg-video {
   50%      { opacity:.35; transform:scale(.7); }
 }
 
-/* Split-word name reveal */
 .hero-name {
   font-family: 'Press Start 2P', monospace;
   font-size: clamp(13px, 4vw, 24px);
@@ -255,7 +228,6 @@ video.bg-video {
   letter-spacing: .02em;
 }
 
-/* Typewriter tagline */
 .hero-tagline {
   font-family: 'Lora', Georgia, serif;
   font-style: italic;
@@ -296,9 +268,6 @@ video.bg-video {
 .chip-sage   { color: #a3b89a;       border-color: rgba(163,184,154,.3);  background: rgba(163,184,154,.07); }
 .chip-rose   { color: #c9a8a8;       border-color: rgba(201,168,168,.3);  background: rgba(201,168,168,.07); }
 
-/* ══════════════════════════════════
-   FACTS TICKER
-══════════════════════════════════ */
 .facts-ticker {
   overflow: hidden;
   margin-bottom: 16px;
@@ -330,9 +299,6 @@ video.bg-video {
 .ticker-item span { font-size: .9rem; }
 .ticker-item strong { color: var(--soft); }
 
-/* ══════════════════════════════════
-   SHARED CARD
-══════════════════════════════════ */
 .card {
   background: var(--card-bg);
   backdrop-filter: blur(14px);
@@ -373,9 +339,6 @@ video.bg-video {
   line-height: 1.8;
 }
 
-/* ══════════════════════════════════
-   STORY TEXT
-══════════════════════════════════ */
 .story p {
   font-size: clamp(.87rem, 2.4vw, .96rem);
   line-height: 1.88;
@@ -397,9 +360,6 @@ video.bg-video {
   -webkit-box-decoration-break: clone;
 }
 
-/* ══════════════════════════════════
-   TECH SKILLS — moved up, with logos
-══════════════════════════════════ */
 .tech-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -467,9 +427,6 @@ video.bg-video {
 .level-daily       { color: var(--dusty); border-color: rgba(201,191,176,.3); background: rgba(201,191,176,.07); }
 .level-basic       { color: #c9a8a8; border-color: rgba(201,168,168,.3); background: rgba(201,168,168,.07); }
 
-/* ══════════════════════════════════
-   PERSONALITY ROWS
-══════════════════════════════════ */
 .mbti-badge {
   display: inline-block;
   font-family: 'Press Start 2P', monospace;
@@ -515,9 +472,6 @@ video.bg-video {
   line-height: 1.65;
 }
 
-/* ══════════════════════════════════
-   CURRENTLY INTO
-══════════════════════════════════ */
 .currently-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
@@ -559,9 +513,6 @@ video.bg-video {
 }
 .currently-sub { font-size: .72rem; color: var(--muted); }
 
-/* ══════════════════════════════════
-   PROFILE GRID
-══════════════════════════════════ */
 .profile-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -593,9 +544,6 @@ video.bg-video {
 }
 .profile-item.full { grid-column: 1 / -1; }
 
-/* ══════════════════════════════════
-   LIKES GRID
-══════════════════════════════════ */
 .likes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
@@ -618,9 +566,6 @@ video.bg-video {
 .like-item .like-icon { font-size: 20px; margin-bottom: 7px; }
 .like-item .like-label { font-size: .75rem; font-weight: 600; color: var(--text); line-height: 1.45; }
 
-/* ══════════════════════════════════
-   STATUS BADGE
-══════════════════════════════════ */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -641,9 +586,6 @@ video.bg-video {
   animation: pulse 2s ease-in-out infinite;
 }
 
-/* ══════════════════════════════════
-   CLOSING
-══════════════════════════════════ */
 .closing {
   text-align: center;
   padding: clamp(28px,7vw,48px) clamp(22px,6vw,44px);
@@ -681,9 +623,6 @@ video.bg-video {
   letter-spacing: .05em;
 }
 
-/* ══════════════════════════════════
-   LETTER REVEAL (split text)
-══════════════════════════════════ */
 .split-letter {
   display: inline-block;
   opacity: 0;
@@ -695,9 +634,6 @@ video.bg-video {
   transform: translateY(0) rotate(0deg);
 }
 
-/* ══════════════════════════════════
-   SCROLL TOP
-══════════════════════════════════ */
 #scroll-top {
   position: fixed;
   bottom: 24px; right: 18px;
@@ -720,9 +656,6 @@ video.bg-video {
 #scroll-top.show { opacity: 1; pointer-events: auto; }
 #scroll-top:hover { background: rgba(201,191,176,.22); box-shadow: 0 0 14px rgba(201,191,176,.2); }
 
-/* ══════════════════════════════════
-   FOOTER
-══════════════════════════════════ */
 .site-footer {
   text-align: center;
   font-size: .7rem;
@@ -731,9 +664,6 @@ video.bg-video {
   padding-bottom: 20px;
 }
 
-/* ══════════════════════════════════
-   TYPEWRITER CURSOR
-══════════════════════════════════ */
 .tw-cursor {
   display: inline-block;
   width: 2px;
@@ -745,9 +675,6 @@ video.bg-video {
 }
 @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
 
-/* ══════════════════════════════════
-   WORD FLOAT ANIMATION (hero words)
-══════════════════════════════════ */
 @keyframes wordFloat {
   0%,100% { transform: translateY(0); }
   50%      { transform: translateY(-4px); }
@@ -780,13 +707,13 @@ video.bg-video {
     <div class="hero-status">Site is very active</div>
     <div class="hero-name" id="heroName">Hey, I'm Steven.</div>
     <p class="hero-tagline">
-      Somewhere between <em>curiosity</em> and <em>reflection</em>,<br>
-      unlocking new versions of myself, one season at a time.
+      Somewhere between <em>stillness</em> and <em>motion</em>,<br>
+      finding out what this season is actually for.
     </p>
     <div class="hero-chips">
       <span class="chip chip-dust">INFJ</span>
-      <span class="chip chip-warm"></span>
-      <span class="chip chip-slate">Deep Thinker</span>
+      <span class="chip chip-warm">Discovering Era ✦</span>
+      <span class="chip chip-slate">Quiet Observer</span>
       <span class="chip chip-sage">Indie at heart</span>
       <span class="chip chip-rose">ICT · PH </span>
     </div>
@@ -797,7 +724,7 @@ video.bg-video {
     <div class="ticker-inner" id="tickerInner"></div>
   </div>
 
-  <!-- ══ TECH SKILLS — up here so readers see early ══ -->
+  <!-- ══ TECH SKILLS ══ -->
   <div class="card reveal">
     <div class="card-header">
       <div class="card-icon icon-slate">⌨</div>
@@ -882,13 +809,12 @@ video.bg-video {
       <div class="card-label">Why This Blog Exists</div>
     </div>
     <div class="story">
-      <p class="lead">This wasn't supposed to be serious.</p>
-      <p>It was just a school project. A requirement. Something to finish, submit, and forget about five minutes later.</p>
-      <p>But somewhere between broken code, error messages that might as well have been written in <mark>ancient hieroglyphs</mark>, and debugging at hours when normal people are asleep… something changed.</p>
-      <p>There's a strange kind of satisfaction in solving a problem that once made you question your intelligence. One moment the code is a mess. The next moment it works like it finally decided to cooperate.</p>
-      <p>Turns out <mark>watching logic fall into place is addictive.</mark></p>
-      <p>Eventually: "Why not just publish it?"</p>
-      <p>So now it lives here. Publicly. Permanently. Which is either a great idea or a terrible one.</p>
+      <p class="lead">It started as a school project.</p>
+      <p>A requirement. Something to finish and forget about. That was the plan.</p>
+      <p>But there's something about broken code. Error messages that made no sense, Small fixes that somehow made everything work. The quiet satisfaction of something finally <mark>clicking into place.</mark></p>
+      <p>It's a specific kind of feeling, and once you notice it, it's hard to ignore.</p>
+      <p>So what began as a requirement became something I kept returning to. And at some point the question stopped being "why keep going" and started being <mark>"why not just put it out there?"</mark></p>
+      <p>So here it is. Public. A little unfinished. Exactly as it should be.</p>
     </div>
   </div>
 
@@ -902,29 +828,26 @@ video.bg-video {
     <div class="personality-row">
       <div class="pers-icon">🌿</div>
       <div>
-        <div class="pers-label">Season of discovery</div>
-        <div class="pers-desc">Curiosity and reflection are blending together into something I can't quite name yet, and I think that's the point.</div>
+        <div class="pers-label">Discovering Era</div>
+        <div class="pers-desc">This is a season of paying attention to what's worth keeping, what's worth building, and what's still being figured out. I'm in no rush to name it.</div>
       </div>
     </div>
     <div class="personality-row">
       <div class="pers-icon">🔍</div>
       <div>
-        <div class="pers-label">Deeply Curious</div>
-        <div class="pers-desc">I ask too many questions and go too deep into rabbit holes. I'm unlocking versions of myself I didn't know existed.</div>
-      </div>
-    </div>
+        
     <div class="personality-row">
       <div class="pers-icon">🌊</div>
       <div>
-        <div class="pers-label">Depth</div>
-        <div class="pers-desc">It can be difficult, depth requires honesty, and raw truth. Both can be uncomfortable whilst existing at the same time. </div>
+        <div class="pers-label">More Than It Looks</div>
+        <div class="pers-desc">There's usually more going on underneath than I put out. Some people figure that out quickly. Others don't — and that's fine too.</div>
       </div>
     </div>
     <div class="personality-row">
       <div class="pers-icon">🌱</div>
       <div>
         <div class="pers-label">What I Value</div>
-        <div class="pers-desc">Genuine connection. Kindness that costs something. Growth that's slow but real. Openness in people, in ideas, in myself.</div>
+        <div class="pers-desc">Sincerity. Slow growth. The kind of conversations that leave something behind. People who mean what they say.</div>
       </div>
     </div>
   </div>
@@ -938,23 +861,23 @@ video.bg-video {
     <div class="currently-grid">
       <div class="currently-item" style="--c-accent:#c9a87a;">
         <div class="currently-tag">🎵 Obsessed With</div>
-        <div class="currently-title">Rodrick Rules ~ by Malcolm Todd</div>
+        <div class="currently-title">Malcolm Todd</div>
         <div class="currently-sub">Indie folk/pop · at its absolute core</div>
       </div>
       <div class="currently-item" style="--c-accent:#a8bccf;">
         <div class="currently-tag">🎵 Listening To</div>
         <div class="currently-title">Indie Rock & Pop</div>
-        <div class="currently-sub">This genre just gets it</div>
+        <div class="currently-sub">The genre that just gets it</div>
       </div>
       <div class="currently-item" style="--c-accent:#c9a8c0;">
         <div class="currently-tag">📺 Binge Watching</div>
         <div class="currently-title">Kakegurui Live Action</div>
-        <div class="currently-sub">Oh my Yumeko. Absolutely obsessed.</div>
+        <div class="currently-sub">Completely hooked. No regrets.</div>
       </div>
       <div class="currently-item" style="--c-accent:#a8c9a8;">
         <div class="currently-tag">📖 A Season Of</div>
         <div class="currently-title">Becoming</div>
-        <div class="currently-sub">Reflective. Growing. Figuring it out.</div>
+        <div class="currently-sub">Growing. Figuring it out.</div>
       </div>
     </div>
   </div>
@@ -966,17 +889,17 @@ video.bg-video {
       <div class="card-label">Things I Like</div>
     </div>
     <div class="likes-grid">
-      <div class="like-item"><div class="like-icon">🌙</div><div class="like-label">The sky, moon & The sun</div></div>
-   
+  
+
       <div class="like-item"><div class="like-icon">📺</div><div class="like-label">Binge-watching shows</div></div>
       <div class="like-item"><div class="like-icon">📈</div><div class="like-label">Small daily progress</div></div>
       <div class="like-item"><div class="like-icon">💻</div><div class="like-label">Building things</div></div>
-      <div class="like-item"><div class="like-icon">🙏</div><div class="like-label">Faith & purpose</div></div>
-      <div class="like-item"><div class="like-icon">🎵</div><div class="like-label">Indie music</div></div>
+
+      <div class="like-item"><div class="like-icon">🎵</div><div class="like-label">Music</div></div>
       <div class="like-item"><div class="like-icon">🐛</div><div class="like-label">Debugging at 2 AM</div></div>
     </div>
     <div class="story">
-      <p>The kind of things people forget to notice because they're too busy staring at their phones. I binge-watch shows and get way too invested in fictional characters. And yes, "just one more episode" is a lie I keep telling myself.</p>
+      <p>The kind of things that don't usually make it into introductions. I get too attached to fictional characters. And "just one more episode" is a commitment I make in bad faith every single time.</p>
     </div>
   </div>
 
@@ -997,19 +920,19 @@ video.bg-video {
       </div>
       <div class="profile-item">
         <div class="label">Location</div>
-        <div class="value">Quezon City, PH </div>
+        <div class="value">Quezon City, PH 🇵🇭</div>
       </div>
       <div class="profile-item">
         <div class="label">Currently</div>
-        <div class="value">12th Grade — ICT</div>
+        <div class="value">Grade 11 — ICT</div>
       </div>
       <div class="profile-item full">
-        <div class="label">Faith & Direction</div>
-        <div class="value">Part of me sees a future in tech. Another part feels called to ministry. Both matter. I'm still figuring out how they fit together.</div>
+        <div class="label">Direction</div>
+        <div class="value">Tech pulls at one side. Something quieter pulls at the other. Both feel real — so for now, I'm holding both and seeing where it goes.</div>
       </div>
     </div>
     <div class="story">
-      <p>Do I know exactly what I'm doing with my life? <mark>Not even remotely.</mark> But I'm learning to be okay with that.</p>
+      <p>The plan is still forming. That's not an excuse — <mark>it's just where I am.</mark></p>
     </div>
   </div>
 
@@ -1021,15 +944,15 @@ video.bg-video {
     </div>
     <div class="status-badge"><div class="status-dot"></div>VERY ACTIVE</div>
     <div class="story">
-      <p>I update this place whenever I feel like it — mostly experiments, small projects, and ideas that refused to stay inside my head.</p>
-      <p>This site is the foundation. The real projects, the interesting ones, are still being built.</p>
-      <p>So if you're expecting perfection… you're in the wrong place.</p>
+      <p>Updated whenever something is worth adding — experiments, small projects, things that wouldn't leave me alone until I built them.</p>
+      <p>This page is the foundation. What gets built on top of it is still in progress.</p>
+      <p>If you're looking for something finished, you're a little early.</p>
     </div>
   </div>
 
   <!-- ══ CLOSING ══ -->
   <div class="closing reveal scale-in">
-    <blockquote>"If you're reading this, you're watching someone in the middle of becoming something."</blockquote>
+    <blockquote>"Some things take shape slowly. This is one of them."</blockquote>
     <cite>Gratitude. Abundance. Purpose. — Steven</cite>
   </div>
 
@@ -1086,7 +1009,7 @@ video.bg-video {
 
   for (let i = 0; i < 90; i++) {
     const p = new Particle();
-    p.life = Math.random() * p.maxLife; // stagger starts
+    p.life = Math.random() * p.maxLife;
     particles.push(p);
   }
 
@@ -1110,12 +1033,11 @@ const topBtn = document.getElementById('scroll-top');
 window.addEventListener('scroll', () => topBtn.classList.toggle('show', scrollY > 220), { passive: true });
 topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-/* ══ SCROLL REVEAL — staggered, directional ══ */
+/* ══ SCROLL REVEAL ══ */
 const revealEls = document.querySelectorAll('.reveal');
 const obs = new IntersectionObserver(entries => {
   entries.forEach((e, i) => {
     if (e.isIntersecting) {
-      // find siblings for stagger
       const siblings = Array.from(e.target.parentElement.querySelectorAll('.reveal'));
       const idx = siblings.indexOf(e.target);
       setTimeout(() => e.target.classList.add('visible'), idx * 60 + 60);
@@ -1125,7 +1047,7 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.07 });
 revealEls.forEach(c => obs.observe(c));
 
-/* ══ HERO NAME — letter split + staggered reveal ══ */
+/* ══ HERO NAME — letter split ══ */
 (function() {
   const el = document.getElementById('heroName');
   const text = el.textContent;
@@ -1138,7 +1060,6 @@ revealEls.forEach(c => obs.observe(c));
     s.textContent = ch === ' ' ? '\u00a0' : ch;
     el.appendChild(s);
   });
-  // trigger after paint
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       el.querySelectorAll('.split-letter').forEach(s => s.classList.add('show'));
@@ -1146,11 +1067,9 @@ revealEls.forEach(c => obs.observe(c));
   });
 })();
 
-/* ══ TYPEWRITER for hero tagline ══ */
+/* ══ HERO TAGLINE FADE ══ */
 (function() {
   const tagline = document.querySelector('.hero-tagline');
-  const original = tagline.innerHTML;
-  // Only animate on load, not on re-render
   tagline.style.opacity = '0';
   setTimeout(() => {
     tagline.style.transition = 'opacity .5s ease';
@@ -1168,8 +1087,8 @@ const facts = [
   { icon: '📍', label: 'Location',            value: 'Quezon City, PH' },
   { icon: '🌿', label: 'Right now',           value: 'Discovering era' },
   { icon: '💻', label: 'Study track',         value: 'ICT — Grade 11' },
-  { icon: '🙏', label: 'Values',              value: 'Kindness · Growth · Openness' },
-  { icon: '🔍', label: 'Superpower',          value: 'Goes unexpectedly deep' },
+  { icon: '🙏', label: 'Values',              value: 'Sincerity · Growth · Openness' },
+  { icon: '🔍', label: 'Tendency',            value: 'Goes further than necessary' },
 ];
 const inner = document.getElementById('tickerInner');
 const makeItems = () => facts.map(f =>
@@ -1197,14 +1116,14 @@ function stopLeaves()  { clearInterval(leafInterval); leafInterval = null; }
 startLeaves();
 document.addEventListener('visibilitychange', () => document.hidden ? stopLeaves() : startLeaves());
 
-/* ══ CHIP hover ripple ══ */
+/* ══ CHIP hover ══ */
 document.querySelectorAll('.chip').forEach(chip => {
   chip.addEventListener('mouseover', function() {
     this.style.transition = 'transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s';
   });
 });
 
-/* ══ PERSONALITY ROW stagger on scroll ══ */
+/* ══ PERSONALITY ROW stagger ══ */
 const persRows = document.querySelectorAll('.personality-row');
 const persObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
