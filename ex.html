@@ -364,9 +364,9 @@ function initScene() {
   var scene = new THREE.Scene();
 
   var camera = new THREE.PerspectiveCamera(36, W / H, 0.01, 100);
-  // Close up — DIO fills the frame nicely
-  camera.position.set(0, 0.3, 3.2);
-  camera.lookAt(0, 0.3, 0);
+  // Camera aimed at upper chest/head level
+  camera.position.set(0, 1.4, 3.4);
+  camera.lookAt(0, 1.4, 0);
 
   var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setClearColor(0x000000, 0);
@@ -428,9 +428,11 @@ function initScene() {
       var maxDim = Math.max(size.x, size.y, size.z);
       var s = 2.2 / maxDim;
       model.scale.setScalar(s);
-      model.position.sub(center.multiplyScalar(s));
-      // shift up so head/chest visible, not feet
-      model.position.y += size.y * s * 0.18;
+      // Center X/Z, shift Y so upper body (chest/head) is what the camera sees
+      model.position.x = -center.x * s;
+      model.position.z = -center.z * s;
+      // Negative offset pushes model DOWN — feet go below frame, torso/head fills view
+      model.position.y = (-center.y * s) - (size.y * s * 0.28);
 
       model.traverse(function(c) {
         if (c.isMesh) { c.castShadow = true; c.receiveShadow = true; }
@@ -515,3 +517,4 @@ function animateStats() {
 </script>
 </body>
 </html>
+      
