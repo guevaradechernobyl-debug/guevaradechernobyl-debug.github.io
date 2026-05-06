@@ -27,11 +27,13 @@
     body.dark {
   background: #000 !important;
   background-image: none !important;
-      --card: #19243be3;
-      --text: #f3f1ff;
-      --border: #d5c8b5;
-      --accent: #000000;
-      --neon-border: #1a131f;
+      --bg: #04040a;
+  --card: #0d0d10;
+  --text: #f0ece2;
+  --border: rgba(201, 168, 76, 0.25);  /* gold from DIO page */
+  --accent: #c9a84c;
+  --fade-bg: #0d0b12;
+  --neon-border: rgba(201, 168, 76, 0.15);
     }
 body.dark .pixel-panel,
 body.dark .post,
