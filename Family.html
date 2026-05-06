@@ -1,602 +1,1902 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Steven — Personal Blog</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <style>
-   :root {
-      --bg: #e9e9ef;
-      /* soft white lavender background */
-      --card: #ffffff;
-      /* pure white cards */
-      --text: #2d2a3a;
-      /* soft dark purple-gray text */
-      --border: #7a4f8a;
-      /* light lavender border */
-      --accent: #af9ff4;
-      /* pastel purple accent */
-    }
-
-
-    body.dark {
-      --bg: #0c032b;
-      --card: #19243be3;
-      --text: #f3f1ff;
-      --border: #d5c8b5;
-      --accent: #000000;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, sans-serif;
-      color: var(--text);
-      transition: 0.3s;
-
-      /* JOJO LEFT + RIGHT LOCK */
-      background:
-        url("left.png") left center fixed,
-        url("right.png") right center fixed;
-      background-repeat: no-repeat, no-repeat;
-      background-size: auto 100vh, auto 100vh;
-      background-color: var(--bg);
-    }
-
-    /* Hide JoJo on small screens */
-    @media(max-width:900px) {
-      body {
-        background: #0f1115;
-      }
-    }
-
-    /* CENTER WEBSITE WRAPPER */
-    .site-wrapper {
-       max-inline-size: 1260px;
-      margin: auto;
-
-      /* soft violet + white harmony */
-      background:
-        radial-gradient(circle at top, rgba(210, 205, 255, 0.25), transparent 60%),
-        linear-gradient(180deg, #f7f6ff 0%, #e9e6ff 40%, #dcd8ff 100%);
-
-      backdrop-filter: blur(8px);
-
-      min-height: 100vh;
-      padding: 20px;
-      border-radius: 16px;
-    }
-
-
-    /* HEADER */
-    header {
-      background: var(--card);
-      padding: 10px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--border);
-    }
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .avatar-wrapper {
-      width: 60px;
-      height: 60px;
-      position: relative;
-    }
-
-    .avatar {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      position: absolute;
-      inset: 0;
-    }
-
-    .avatar-smile {
-      opacity: 0;
-    }
-
-    .avatar-wrapper:hover .avatar-smile {
-      opacity: 1;
-    }
-
-    .avatar-wrapper:hover .avatar-normal {
-      opacity: 0;
-    }
-
-    .toggle {
-      cursor: pointer;
-      font-size: 20px;
-    }
-
-    .search {
-      padding: 6px;
-      border-radius: 4px;
-      border: 1px solid #aaa;
-    }
-
-    /* TOP BANNER */
-      .top-banner img {
-      width: 50%;
-      max-height: 150px;
-      object-fit:cover;
-      border-radius: 12px;
-      margin-bottom: 10px;
-    }
-
-    /* HERO */
-
-
-    .hero h1 {
-      font-size: 3rem;
-    }
-
-    .hero p {
-      max-width: 800px;
-      line-height: 1.6;
-    }
-
-    /* MAIN GRID */
-    .layout {
-      max-width: 1200px;
-      margin: 30px auto;
-      display: grid;
-      grid-template-columns: 1fr 300px;
-      gap: 20px;
-    }
-
-    @media(max-width:900px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* POSTS */
-    .post {
-      background: var(--card);
-      border: 2px solid var(--border);
-      padding: 18px;
-      margin-bottom: 16px;
-      transition: .25s;
-    }
-
-    .post:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
-    }
-
-    .post h2 {
-      margin: 0;
-    }
-
-    .date {
-      font-size: 12px;
-      opacity: .6;
-      margin-top: 6px;
-    }
-
-    .post-link {
-      color: inherit;
-      text-decoration: none;
-      display: block;
-    }
-
-    /* SIDEBAR */
-    .sidebar-box {
-      border: 2px solid var(--border);
-      margin-bottom: 17px;
-      background: var(--card);
-      border-radius: 14px;
-    }
-
-    .sidebar-box h3 {
-      text-align: center;
-      padding: 8px;
-      font-size: 14px;
-      background: rgba(0, 0, 0, .05);
-    }
-
-    .sidebar-box a {
-      display: block;
-      margin: 6px;
-      padding: 6px;
-      border: 1px solid var(--border);
-      text-align: center;
-    }
-
-    /* SOCIALS */
-    .social-icons {
-      display: flex;
-      justify-content: space-around;
-      padding: 10px;
-    }
-
-    .social-icons img {
-      width: 32px;
-      height: 32px;
-      opacity: .8;
-      filter: grayscale(100%);
-    }
-
-    .social-icons img:hover {
-      filter: none;
-      opacity: 1;
-    }
-
-    /* FOOTER */
-    .site-footer {
-      margin-top: 40px;
-      padding: 20px;
-      background: rgba(15, 17, 21, 0.9);
-      border-top: 2px solid var(--border);
-      background: var(--card);
-      border-radius: 14px;
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
-      gap: 20px;
-    }
-
-
-
-
-    .footer-bottom {
-      text-align: center;
-      font-size: 12px;
-      opacity: .6;
-      margin-top: 10px;
-    }
-
-
-    body.dark .site-wrapper {
-      background:
-        radial-gradient(circle at top, rgba(120, 110, 255, 0.18), transparent 60%),
-        linear-gradient(180deg, #141624 0%, #171a2b 50%, #1b1f33 100%);
-    }
-
-    /* BACK BUTTON */
-    .back-btn {
-      margin-bottom: 20px;
-      padding: 8px 14px;
-      background: #5865F2;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    /* TAGS */
-    .tags {
-      margin-top: 20px;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      border-radius: 20px;
-      background: rgba(0, 51, 204, 0.1);
-      border: 1px solid var(--border);
-      color: var(--accent);
-      cursor: default;
-      transition: 0.2s;
-    }
-
-    .tag:hover {
-      background: var(--accent);
-      color: white;
-    }
-
-    /* ===== IMAGE SLIDER ===== */
-
-
-    .slider {
-      display: flex;
-      transition: transform 0.4s ease-in-out;
-    }
-
-    .slide {
-      min-width: 100%;
-      height: auto;
-      object-fit: contain;
-      object-fit: cover;
-
-
-    }
-
-    .slider-container {
-      position: relative;
-      width: 70%;
-      max-width: 1000px;
-      margin: 20px auto;
-      overflow: hidden;
-      border-radius: 14px;
-      border: 2px solid var(--border);
-    }
-
-
-
-
-    /* ARROWS */
-    .slider-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(192, 187, 187, 0.6);
-      color: white;
-      border: none;
-      font-size: 26px;
-      padding: 6px 10px;
-      cursor: pointer;
-      border-radius: 25%;
-      z-index: 10;
-    }
-
-    .slider-btn.left {
-      left: 10px;
-    }
-
-    .slider-btn.right {
-      right: 10px;
-    }
-
-    .slider-btn:hover {
-      background: rgba(0, 0, 0, 0.9);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Computer - Windows XP</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+:root {
+  --xp-titlebar: linear-gradient(180deg, #4f9ef8 0%, #1660d8 8%, #0540c6 40%, #1050d0 88%, #2060e0 93%, #5090f0 95%, #2060e0 96%, #0540c6 100%);
+  --xp-taskbar: linear-gradient(180deg, #1f4fce 0%, #3c8cf0 3%, #0831d9 6%, #0226b8 10%, #0040d0 90%, #0052e0 95%, #0040d0 100%);
+  --xp-btn: linear-gradient(180deg, #f0f0ea 0%, #d4d0c8 3%, #c8c4bc 5%, #d0ccc4 100%);
+  --silver: #ece9d8;
+  --font: 'Tahoma', 'MS Sans Serif', sans-serif;
+}
+html, body { width:100%; height:100%; overflow:hidden; font-family:var(--font); font-size:12px; touch-action:none; }
+
+/* DESKTOP */
+#desktop {
+  width:100%; height:100%;
+  background: radial-gradient(ellipse at 50% 40%, #56b060 0%, #38924a 60%, #204a28 100%);
+  position:relative; user-select:none; overflow:hidden;
+}
+
+/* DESKTOP ICONS */
+.desktop-icons { position:absolute; top:10px; left:10px; display:flex; flex-direction:column; gap:4px; }
+.d-icon {
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  cursor:pointer; padding:4px 6px; border-radius:2px; width:68px; text-align:center;
+  color:white; text-shadow:1px 1px 2px #000, -1px -1px 2px #000;
+}
+.d-icon:hover { background:rgba(49,106,197,0.6); outline:1px dashed #fff; }
+.d-icon .icon-img { font-size:26px; }
+.d-icon span { font-size:10px; line-height:1.2; }
+
+/* TASKBAR */
+#taskbar {
+  position:absolute; bottom:0; left:0; right:0; height:32px;
+  background:var(--xp-taskbar); border-top:1px solid #1460e0;
+  display:flex; align-items:center; z-index:9999;
+}
+#start-btn {
+  height:100%; background:linear-gradient(180deg,#5eb85e 0%,#3fa03f 6%,#2e8c2e 40%,#3a9a3a 90%,#54b454 95%,#3a9a3a 100%);
+  border:none; border-right:1px solid #206020; border-radius:0 10px 10px 0;
+  padding:0 10px 0 6px; color:white; font-family:var(--font); font-weight:bold; font-size:13px;
+  cursor:pointer; display:flex; align-items:center; gap:4px;
+  text-shadow:1px 1px 2px #004000; min-width:80px; letter-spacing:0.5px; flex-shrink:0;
+}
+.quicklaunch { display:flex; align-items:center; height:100%; border-right:1px solid #0028a0; border-left:1px solid #0028a0; padding:0 3px; gap:1px; flex-shrink:0; }
+.ql-btn { width:24px; height:24px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:15px; border-radius:3px; border:1px solid transparent; }
+.ql-btn:hover { border-color:#4080ff; background:rgba(255,255,255,0.15); }
+.taskbar-windows { flex:1; display:flex; align-items:center; height:100%; padding:2px 3px; gap:2px; overflow:hidden; }
+.tb-window {
+  height:26px; min-width:80px; max-width:140px;
+  background:linear-gradient(180deg,#2060d8 0%,#1040b8 100%);
+  border:1px solid #4080ff; border-radius:3px;
+  padding:0 6px; color:white; font-family:var(--font); font-size:10px;
+  cursor:pointer; display:flex; align-items:center; gap:4px;
+  overflow:hidden; white-space:nowrap; text-overflow:ellipsis; flex-shrink:0;
+}
+.tb-window.active { background:linear-gradient(180deg,#1040a0 0%,#1858c0 100%); border-color:#80a0ff; }
+.systray { background:linear-gradient(180deg,#0a3cac 0%,#1858d0 6%,#0040c0 100%); border-left:1px solid #0028a0; height:100%; display:flex; align-items:center; padding:0 6px; gap:5px; flex-shrink:0; }
+.tray-icon { font-size:14px; cursor:pointer; }
+#clock { font-size:10px; color:white; text-align:center; line-height:1.3; white-space:nowrap; }
+
+/* WINDOW BASE */
+.window {
+  position:absolute; background:var(--silver);
+  border:1px solid #808080; box-shadow:2px 2px 8px rgba(0,0,0,0.5), inset 0 0 0 1px #fff;
+  display:flex; flex-direction:column; min-width:180px; min-height:80px; z-index:100;
+}
+.window.focused { z-index:200; }
+
+/* TITLEBAR */
+.titlebar {
+  height:26px; background:var(--xp-titlebar);
+  display:flex; align-items:center; padding:0 4px;
+  cursor:move; border-bottom:1px solid #0020a0; flex-shrink:0; gap:3px;
+}
+.titlebar.inactive { background:linear-gradient(180deg,#9090c0 0%,#7878a8 40%,#8888b0 88%,#9898c0 95%,#7070a0 100%); }
+.title-icon { font-size:13px; flex-shrink:0; }
+.title-text { flex:1; color:white; font-weight:bold; font-size:11px; text-shadow:1px 1px 2px #000a; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.titlebar.inactive .title-text { color:#c8c8d8; text-shadow:none; }
+.win-controls { display:flex; gap:2px; flex-shrink:0; }
+.wc-btn { width:20px; height:20px; border-radius:3px; border:1px solid; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:bold; }
+.wc-min { background:var(--xp-btn); border-color:#808080 #fff #fff #808080; color:#000; }
+.wc-max { background:var(--xp-btn); border-color:#808080 #fff #fff #808080; color:#000; }
+.wc-close { background:linear-gradient(180deg,#e05050 0%,#c02020 50%,#a01010 100%); border-color:#ff8080 #800000 #800000 #ff8080; color:white; font-size:11px; }
+.wc-btn:active { filter:brightness(0.85); }
+
+/* MENUBAR */
+.menubar { height:22px; background:var(--silver); border-bottom:1px solid #a0a090; display:flex; align-items:center; padding:0 2px; flex-shrink:0; position:relative; }
+.menu-item { padding:2px 8px; cursor:pointer; border-radius:2px; font-size:11px; color:#000; position:relative; }
+.menu-item:hover { background:#316ac5; color:white; }
+.menu-item.active { background:#316ac5; color:white; }
+
+/* DROPDOWN MENUS */
+.dropdown {
+  position:absolute; top:100%; left:0; background:var(--silver);
+  border:1px solid #808080; box-shadow:2px 2px 4px rgba(0,0,0,0.3);
+  z-index:9000; min-width:160px; display:none; flex-direction:column; padding:2px 0;
+}
+.dropdown.open { display:flex; }
+.dd-item { padding:4px 24px 4px 28px; font-size:11px; cursor:pointer; white-space:nowrap; color:#000; position:relative; }
+.dd-item:hover { background:#316ac5; color:white; }
+.dd-sep { height:1px; background:#c0c0c0; margin:3px 4px; }
+.dd-item.disabled { color:#888; pointer-events:none; }
+
+/* TOOLBAR */
+.toolbar { height:34px; background:var(--silver); border-bottom:1px solid #a0a090; display:flex; align-items:center; padding:2px 4px; gap:2px; flex-shrink:0; overflow-x:auto; }
+.tb-btn { height:26px; padding:0 5px; background:var(--xp-btn); border:1px solid #808080; border-color:#fff #808080 #808080 #fff; border-radius:2px; cursor:pointer; font-size:10px; font-family:var(--font); display:flex; align-items:center; gap:3px; white-space:nowrap; flex-shrink:0; }
+.tb-btn:hover { background:linear-gradient(180deg,#fff 0%,#ddd 100%); border-color:#316ac5; }
+.tb-btn:active { background:linear-gradient(180deg,#c8c4bc 0%,#d0ccc4 100%); border-color:#808080 #fff #fff #808080; }
+.tb-sep { width:1px; height:22px; background:#808080; margin:0 2px; box-shadow:1px 0 0 #fff; flex-shrink:0; }
+
+/* ADDRESS BAR */
+.addressbar { height:24px; background:var(--silver); border-bottom:1px solid #a0a090; display:flex; align-items:center; padding:2px 4px; gap:4px; flex-shrink:0; font-size:11px; }
+.addressbar label { color:#000; font-weight:bold; white-space:nowrap; }
+.addressbar input { flex:1; height:18px; padding:0 4px; border:1px solid; border-color:#808080 #fff #fff #808080; background:white; font-family:var(--font); font-size:11px; outline:none; min-width:0; }
+.go-btn { height:18px; padding:0 6px; background:var(--xp-btn); border:1px solid; border-color:#fff #808080 #808080 #fff; font-size:11px; cursor:pointer; font-family:var(--font); flex-shrink:0; }
+
+/* WINDOW CONTENT */
+.win-body { display:flex; flex:1; overflow:hidden; }
+.sidebar { width:140px; flex-shrink:0; background:linear-gradient(180deg,#6fa8dc 0%,#4a88cc 20%,#3060b0 100%); border-right:1px solid #4070c0; overflow-y:auto; padding:6px 0; }
+.sidebar-section { margin-bottom:6px; }
+.sidebar-title { background:linear-gradient(90deg,#2040a0 0%,#4080d0 100%); color:white; font-weight:bold; font-size:11px; padding:3px 6px; margin-bottom:2px; }
+.sidebar-link { display:flex; align-items:center; gap:5px; padding:4px 10px; color:white; font-size:11px; cursor:pointer; text-shadow:1px 1px 2px #0008; }
+.sidebar-link:hover { background:rgba(255,255,255,0.2); text-decoration:underline; }
+
+/* FILE VIEW */
+.file-view { flex:1; background:white; overflow:auto; padding:6px; }
+.file-grid { display:flex; flex-wrap:wrap; gap:6px; align-content:flex-start; }
+.file-item { width:74px; display:flex; flex-direction:column; align-items:center; gap:3px; padding:5px 3px; border:1px solid transparent; border-radius:2px; cursor:pointer; text-align:center; }
+.file-item:hover { background:#d9e8ff; border-color:#316ac5; }
+.file-item.selected { background:#316ac5; border-color:#0020a0; color:white; }
+.file-icon { font-size:28px; }
+.file-name { font-size:10px; line-height:1.2; word-break:break-word; color:inherit; }
+
+/* STATUS BAR */
+.statusbar { height:20px; background:var(--silver); border-top:1px solid #a0a090; display:flex; align-items:center; padding:0 3px; gap:2px; flex-shrink:0; }
+.status-panel { border:1px solid; border-color:#808080 #fff #fff #808080; height:16px; padding:0 5px; font-size:10px; display:flex; align-items:center; color:#000; }
+
+/* START MENU */
+#start-menu {
+  position:absolute; bottom:32px; left:0; width:min(380px, 98vw);
+  background:white; border:1px solid #808080; box-shadow:3px 3px 8px rgba(0,0,0,0.5);
+  display:none; flex-direction:row; z-index:9998;
+}
+#start-menu.open { display:flex; }
+.sm-left { width:200px; background:white; display:flex; flex-direction:column; }
+.sm-right { flex:1; background:linear-gradient(180deg,#4878d0 0%,#2050a8 100%); display:flex; flex-direction:column; padding:6px 0; min-width:0; }
+.sm-header { background:linear-gradient(90deg,#2050b0 0%,#4888e8 100%); height:50px; display:flex; align-items:center; padding:0 8px; gap:8px; }
+.sm-avatar { width:38px; height:38px; border-radius:4px; background:linear-gradient(135deg,#f0d060,#e08020); border:2px solid #c0a040; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.sm-username { color:white; font-weight:bold; font-size:13px; text-shadow:1px 1px 2px #000; }
+.sm-programs { flex:1; padding:3px 0; overflow-y:auto; }
+.sm-item { display:flex; align-items:center; gap:8px; padding:5px 8px; cursor:pointer; font-size:11px; }
+.sm-item:hover { background:#316ac5; color:white; }
+.si-icon { font-size:18px; flex-shrink:0; }
+.si-label { font-weight:bold; }
+.si-sub { font-size:10px; color:#666; }
+.sm-item:hover .si-sub { color:#cce; }
+.sm-sep { height:1px; background:#c0c0c0; margin:3px 6px; }
+.sm-footer { border-top:1px solid #808080; display:flex; justify-content:flex-end; gap:4px; padding:5px 8px; background:#ece9d8; }
+.sm-foot-btn { display:flex; align-items:center; gap:4px; padding:3px 8px; cursor:pointer; font-size:11px; background:var(--xp-btn); border:1px solid; border-color:#fff #808080 #808080 #fff; font-family:var(--font); }
+.sm-foot-btn:hover { background:#316ac5; color:white; border-color:#316ac5; }
+.sm-right-item { display:flex; align-items:center; gap:6px; padding:4px 12px; color:white; font-size:11px; cursor:pointer; text-shadow:1px 1px 2px #0008; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sm-right-item:hover { background:rgba(255,255,255,0.2); text-decoration:underline; }
+.sm-right-sep { height:1px; background:rgba(255,255,255,0.2); margin:3px 6px; }
+
+/* DIALOG */
+.dialog { position:absolute; background:var(--silver); border:1px solid #808080; box-shadow:2px 2px 8px rgba(0,0,0,0.5), inset 0 0 0 1px #fff; z-index:500; min-width:250px; max-width:90vw; }
+.dialog-body { padding:14px; display:flex; gap:12px; align-items:flex-start; }
+.dialog-icon { font-size:30px; flex-shrink:0; }
+.dialog-text { font-size:11px; line-height:1.5; }
+.dialog-btns { display:flex; justify-content:center; gap:6px; padding:6px 14px 12px; }
+.dialog-btn { min-width:70px; height:23px; padding:0 10px; background:var(--xp-btn); border:1px solid; border-color:#fff #808080 #808080 #fff; font-family:var(--font); font-size:11px; cursor:pointer; }
+.dialog-btn:hover { background:linear-gradient(180deg,#fff 0%,#ddd 100%); }
+.dialog-btn.default { outline:1px solid #000; outline-offset:-4px; }
+
+/* RESIZE HANDLE */
+.resize-handle { position:absolute; bottom:0; right:0; width:18px; height:18px; cursor:se-resize; font-size:14px; display:flex; align-items:center; justify-content:center; color:#808080; touch-action:none; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width:14px; height:14px; }
+::-webkit-scrollbar-track { background:#c0c0c0; }
+::-webkit-scrollbar-thumb { background:linear-gradient(180deg,#f0f0ea 0%,#c8c4bc 100%); border:1px solid; border-color:#fff #808080 #808080 #fff; }
+
+/* NOTEPAD */
+#notepad-text { flex:1; border:none; outline:none; resize:none; font-family:'Courier New',monospace; font-size:12px; padding:4px; line-height:1.5; width:100%; }
+
+/* MINESWEEPER */
+#minesweeper-game { background:#bdbdbd; display:flex; flex-direction:column; align-items:center; padding:8px; flex:1; overflow:auto; }
+.ms-panel { background:#bdbdbd; border:3px solid; border-color:#fff #808080 #808080 #fff; padding:6px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; width:100%; }
+.ms-counter { background:#000; color:#f00; font-family:'Courier New',monospace; font-size:20px; padding:2px 6px; border:2px solid; border-color:#808080 #fff #fff #808080; min-width:52px; text-align:center; letter-spacing:2px; }
+.ms-face-btn { width:36px; height:36px; background:var(--xp-btn); border:3px solid; border-color:#fff #808080 #808080 #fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.ms-face-btn:active { border-color:#808080 #fff #fff #808080; }
+#ms-grid { display:inline-grid; border:3px solid; border-color:#808080 #fff #fff #808080; }
+.ms-cell {
+  width:28px; height:28px; background:#bdbdbd;
+  border:2px solid; border-color:#fff #808080 #808080 #fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; font-weight:bold; cursor:pointer; font-family:var(--font);
+  touch-action:none; flex-shrink:0;
+}
+.ms-cell.revealed { border:1px solid #808080; background:#bdbdbd; cursor:default; }
+.ms-cell.flagged { background:#bdbdbd; }
+.ms-cell.mine-hit { background:#f00; }
+.ms-cell.mine-wrong { background:#bdbdbd; }
+.ms-n1 { color:#00f; } .ms-n2 { color:#008000; } .ms-n3 { color:#f00; }
+.ms-n4 { color:#000080; } .ms-n5 { color:#800000; } .ms-n6 { color:#008080; }
+.ms-n7 { color:#000; } .ms-n8 { color:#808080; }
+.ms-difficulty { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; justify-content:center; }
+.ms-diff-btn { padding:3px 10px; background:var(--xp-btn); border:1px solid; border-color:#fff #808080 #808080 #fff; font-family:var(--font); font-size:11px; cursor:pointer; }
+.ms-diff-btn:hover { background:linear-gradient(180deg,#fff 0%,#ddd 100%); }
+.ms-diff-btn.active { border-color:#808080 #fff #fff #808080; background:linear-gradient(180deg,#c8c4bc 0%,#d0ccc4 100%); }
+
+/* INTERNET EXPLORER */
+.ie-content { background:white; height:100%; padding:12px; font-size:11px; line-height:1.6; overflow:auto; }
+.ie-content a { color:#003399; text-decoration:none; }
+.ie-content a:hover { text-decoration:underline; }
+
+/* CONTROL PANEL */
+.cp-grid { display:flex; flex-wrap:wrap; gap:10px; padding:12px; }
+.cp-item { width:80px; display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; padding:8px 4px; border:1px solid transparent; border-radius:2px; text-align:center; }
+.cp-item:hover { background:#d9e8ff; border-color:#316ac5; }
+.cp-icon { font-size:28px; }
+.cp-label { font-size:10px; line-height:1.2; color:#000; }
+
+/* PAINT */
+.paint-wrap { display:flex; flex-direction:column; flex:1; overflow:hidden; }
+.paint-toolbar { display:flex; flex-wrap:wrap; gap:2px; padding:4px; background:#bdbdbd; border-bottom:1px solid #808080; align-items:center; }
+.paint-tool { width:28px; height:28px; background:var(--xp-btn); border:1px solid; border-color:#fff #808080 #808080 #fff; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:14px; }
+.paint-tool:hover,.paint-tool.active { border-color:#808080 #fff #fff #808080; background:#c8c4bc; }
+.paint-colors { display:flex; flex-wrap:wrap; gap:2px; padding:4px; background:#bdbdbd; border-top:1px solid #808080; }
+.paint-color { width:16px; height:16px; border:1px solid #000; cursor:pointer; flex-shrink:0; }
+.paint-color.active { outline:2px solid #000; outline-offset:1px; }
+.paint-canvas-wrap { flex:1; overflow:hidden; display:flex; }
+#paint-canvas { cursor:crosshair; display:block; }
+
+/* CALCULATOR */
+.calc-body { padding:8px; background:#d4d0c8; display:flex; flex-direction:column; gap:4px; }
+.calc-display { background:white; border:1px solid; border-color:#808080 #fff #fff #808080; padding:4px 8px; font-family:'Courier New',monospace; font-size:18px; text-align:right; height:30px; display:flex; align-items:center; justify-content:flex-end; overflow:hidden; }
+.calc-btns { display:grid; grid-template-columns:repeat(5,1fr); gap:3px; }
+.calc-btn { height:30px; background:var(--xp-btn); border:1px solid; border-color:#fff #808080 #808080 #fff; font-family:var(--font); font-size:12px; cursor:pointer; }
+.calc-btn:hover { background:linear-gradient(180deg,#fff 0%,#ddd 100%); }
+.calc-btn:active { border-color:#808080 #fff #fff #808080; }
+.calc-btn.operator { background:linear-gradient(180deg,#ddd 0%,#bbb 100%); }
+.calc-btn.equals { background:linear-gradient(180deg,#4060d0 0%,#2040a0 100%); color:white; }
+
+/* MEDIA PLAYER */
+.mp-body { display:flex; flex-direction:column; flex:1; overflow:hidden; background:#1a1a2e; color:white; }
+.mp-vis { flex:1; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#0d0d1a,#1a1a3e); position:relative; overflow:hidden; }
+.mp-bars { display:flex; gap:3px; align-items:flex-end; height:60px; }
+.mp-bar { width:8px; background:linear-gradient(180deg,#00ff88,#0088ff); border-radius:2px 2px 0 0; animation:bar 0.8s ease-in-out infinite alternate; }
+.mp-controls { padding:8px; background:#111; display:flex; flex-direction:column; gap:6px; }
+.mp-track { font-size:11px; text-align:center; color:#aaa; }
+.mp-track b { color:white; }
+.mp-btn-row { display:flex; justify-content:center; gap:8px; }
+.mp-btn { width:32px; height:32px; background:#333; border:none; color:white; border-radius:4px; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; }
+.mp-btn:hover { background:#555; }
+.mp-btn.play-btn { width:40px; height:40px; background:#0060d0; font-size:18px; }
+.mp-prog { height:6px; background:#333; border-radius:3px; cursor:pointer; }
+.mp-prog-fill { height:100%; background:linear-gradient(90deg,#0060d0,#00b0ff); border-radius:3px; transition:width 0.5s; }
+.mp-vol { display:flex; align-items:center; gap:6px; font-size:10px; color:#aaa; }
+.mp-vol input { flex:1; accent-color:#0060d0; }
+.mp-playlist { border-top:1px solid #333; max-height:80px; overflow-y:auto; }
+.mp-pl-item { padding:4px 10px; font-size:10px; color:#aaa; cursor:pointer; display:flex; align-items:center; gap:6px; }
+.mp-pl-item:hover,.mp-pl-item.active { background:#222; color:white; }
+@keyframes bar { from { height:10px; } to { height:60px; } }
+
+/* RECYCLE BIN */
+.rb-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:#666; gap:8px; }
+
+/* MY NETWORK */
+.net-item { display:flex; align-items:center; gap:10px; padding:8px 12px; border-bottom:1px solid #eee; cursor:pointer; font-size:11px; }
+.net-item:hover { background:#d9e8ff; }
+
+/* Properties dialog */
+.props-tabs { display:flex; gap:0; border-bottom:1px solid #808080; padding:0 4px; }
+.props-tab { padding:4px 10px; font-size:11px; cursor:pointer; border:1px solid transparent; border-bottom:none; background:var(--silver); margin-bottom:-1px; }
+.props-tab.active { border-color:#808080; background:var(--silver); }
+.props-content { padding:10px; font-size:11px; line-height:1.8; }
+
+/* MOBILE ADJUSTMENTS */
+@media (max-width:600px) {
+  .sidebar { width:0; display:none; }
+  .win-body.show-sidebar .sidebar { width:140px; display:flex; flex-direction:column; }
+  .ms-cell { width:24px; height:24px; font-size:11px; }
+  .sm-left { width:180px; }
+  .sm-right { min-width:0; }
+  .sm-right-item { font-size:10px; padding:4px 8px; }
+  .desktop-icons { gap:2px; }
+  .d-icon { width:60px; }
+}
+@media (max-width:400px) {
+  .ms-cell { width:20px; height:20px; font-size:9px; }
+}
+</style>
 </head>
-
 <body>
-  <div class="site-wrapper">
+<div id="desktop" onclick="closeStartMenu(event)">
 
-    <div class="top-banner">
-      <img src="banner.png">
+<!-- Desktop Icons -->
+<div class="desktop-icons">
+  <div class="d-icon" ondblclick="openMyComputer()"><div class="icon-img">🖥️</div><span>My Computer</span></div>
+  <div class="d-icon" ondblclick="openNotepad()"><div class="icon-img">📝</div><span>Notepad</span></div>
+  <div class="d-icon" ondblclick="openRecycleBin()"><div class="icon-img">🗑️</div><span>Recycle Bin</span></div>
+  <div class="d-icon" ondblclick="openIE()"><div class="icon-img">🌐</div><span>Internet Explorer</span></div>
+  <div class="d-icon" ondblclick="openMinesweeper()"><div class="icon-img">💣</div><span>Minesweeper</span></div>
+  <div class="d-icon" ondblclick="openCalc()"><div class="icon-img">🧮</div><span>Calculator</span></div>
+</div>
+
+<!-- ═══ MY COMPUTER WINDOW ═══ -->
+<div class="window focused" id="win-mycomputer" style="top:50px;left:60px;width:580px;height:380px;">
+  <div class="titlebar" id="tb-mycomputer" onmousedown="startDrag(event,'win-mycomputer')" ontouchstart="startDragTouch(event,'win-mycomputer')">
+    <span class="title-icon">🖥️</span><span class="title-text">My Computer</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-min" onclick="minimizeWindow('win-mycomputer')">_</div>
+      <div class="wc-btn wc-max" onclick="maximizeWindow('win-mycomputer')">▫</div>
+      <div class="wc-btn wc-close" onclick="closeWindow('win-mycomputer')">✕</div>
     </div>
-
-    <header>
-      <div class="header-left">
-        <div class="avatar-wrapper">
-          <img src="smirk.png" class="avatar avatar-normal">
-          <img src="smile.jpg" class="avatar avatar-smile">
-        </div>
-        <h3>Paragon luck</h3>
-        <span class="toggle" id="themeToggle">🌙</span>
-      </div>
-      <input class="search" id="search" placeholder="Search posts...">
-    </header>
-
-    <section class="layout">
-
-      <main>
-        <button onclick="window.history.back()" class="back-btn">← Go Back</button>
-        <!-- HERO -->
-        <section class="hero">
-          <h1>Family Outings</h1>
-          <h4>Moments and photos i deeply cherish, and deeply grateful for.</h4>
-          <p>🗓️ 12 Feb 2026 | ⏱️~??? minute read</p>
-        </section>
-
-        <!-- BLOG CONTENT -->
-
-        <div class="slider-container">
-          <button class="slider-btn left">❮</button>
-
-
-          <div class="slider">
-            <img src="Zambales.jpg" class="slide" loading="lazy">
-            <img src="zambales77.jpg" class="slide">
-            <img src="zambales777.jpg" class="slide">
-          </div>
-          <p>📍Zambales, Philippines | 🗓️4/20/25</p>
-          <button class="slider-btn right">❯</button>
-
-
-
-        </div>
-        <h2>This was truly one of the greatest days I’ve ever experienced — a day filled with laughter, sunshine, and
-          moments I will always hold close to my heart.</h2>
-
-        <h3>We went to a beautiful resort in Zambales with my family, where the ocean breeze felt freeing and time
-          seemed to slow down just for us. We swam, took photos, shared stories, and simply enjoyed each other’s
-          presence. It wasn’t just about the place — it was about being together, away from stress and responsibilities,
-          creating memories that I know I’ll look back on with a smile for years to come.</h3>
-
-        <div class="tags">
-          <div class="slider-container">
-            <button class="slider-btn left">❮</button>
-
-
-            <div class="slider">
-              <img src="pnk.jpeg" class="slide active">
-              <img src="pnk2.jpeg" class="slide">
-              <img src="pnk3.jpeg" class="slide">
-            </div>
-            <p>📍Commonwealth, Q.C. Philippines | 🗓️12/13/25 </p>
-            <button class="slider-btn right">❯</button>
-          </div>
-          <h2>A Blessed Day of Gratitude</h2>
-          <h3>The night before, I prayed for strength and readiness for the Youth Thanksgiving event. Waking up early
-            with my brother, we headed to the kapilya and joined our fellow MTs for the panata. Singing hymns,
-            especially the processionals, touched my heart deeply — I even cried imagining a future child walking into
-            the koro.</h3>
-
-          <h3>Throughout the day, we helped distribute giveaways, shared smiles with the kids, and felt a strong sense
-            of community. Even small tasks, like arranging the giveaway packs, brought joy. I cherished the moments of
-            laughter, teamwork, and connection with friends and family alike. The day ended with shared meals, pictures,
-            and a heart overflowing with gratitude and love.</h3>
-          <div class="slider-container">
-            <button class="slider-btn left">❮</button>
-            <div class="slider">
-              <img src="claveria .jpg" class="slide active">
-              <img src="claveria2.jpg" class="slide">
-              <img src="claveria3.jpg" class="slide">
-              <img src="claveria5.jpg" class="slide">
-            </div>
-            <p>📍Cagayan Valley, Claveria </p>
-            <button class="slider-btn right">❯</button>
-          </div>
-          <h2>Morning by the sea</h2>
-          <h3>I remember waking up when our aunt gently woke us up to go somewhere she wanted us to see. It was early,
-            around 7 in the morning. The air was cold and quiet, and i still remember the tricycle ride on the way
-            there, the wind hbrushing against my face, while everything around us was just satrting to wake up.</h3>
-          <h3>When we arried, we took pictures and played with the sand. The seawater was so cold, and the waves were
-            strong, crashing again and again as the warm sun slowly rose from the horizon. The light made everything
-            feel calm and special at the same time.</h3>
-          <h3>My grandma, my aunt, my brother, and my cousin all stood together for a photp. A simple moment, but one i
-            feel deeply honored to have been part of. It's one of those memories that stays soft and warm in my mind,
-            even after so much time has passed.</h3>
-
-          <div class="slider-container">
-            <button class="slider-btn left">❮</button>
-            <div class="slider">
-              <img src="beach.jpg" class="slide active">
-              <img src="beach2.jpg" class="slide">
-              <img src="beach3.jpg" class="slide">
-              <img src="beach4.jpg" class="slide">
-            </div>
-            <p>📍Pagudpud, Ilocos Norte </p>
-            <button class="slider-btn right">❯</button>
-          </div>
-          <h2>Hot sun, Loud laughter</h2>
-          <h3>Yesterday, after my cousin's birthday, we decided to go to the beach to have a great time together. I
-            remember while the car was stopped because of traffic, my uncle told us that the far horizon leads all the
-            way to Hong Kong, thats how near we were. I kept staring outside after that.</h3>
-          <h3>When we arrived, the sun was so hot. There were bright colors from the floaties everywhere, karaoke
-            playing from nearby cottage, and people laughing and enjoying their day. Everything felt lively and loud, in
-            a happy way.</h3>
-          <h3>it had been awhile since my brother and i swam in the sea again. We even tried kayaking, and it made the
-            day feel more exciting. That day became really special to me, especially because i spent it with them.</h3>
-
-          <div class="slider-container">
-            <button class="slider-btn left">❮</button>
-            <div class="slider">
-              <img src="Barko.jpeg" class="slide active">
-              <img src="Barko.jpeg" class="slide">
-              <img src="claveria3.jpg" class="slide">
-              <img src="claveria5.jpg" class="slide">
-            </div>
-            <p>📍Cagayan Valley, Claveria </p>
-            <button class="slider-btn right">❯</button>
-          </div>
-
-          <div>
-            <span class="tag">🏷️#fun</span>
-          </div>
-
-
-
-      </main>
-
-      <aside>
-        <div class="sidebar-box">
-          <h3>NAVIGATION</h3>
-          <a href="index.html">Blog</a>
-          <a href="Aboutme.html">About me</a>
-          <a href="#">Projects</a>
-          <a href="Contact.html">Contact</a>
-        </div>
-
-        <div class="sidebar-box">
-          <h3>SOCIALS</h3>
-          <div class="social-icons">
-            <a href="https://www.facebook.com/Sevencorpse"><img src="fblogo.avif"></a>
-            <a href="https://www.instagram.com/sevenc0rp"><img src="instaglogo.jpg"></a>
-            <a href="https://www.tiktok.com/@boolean.str"><img src="tiklogo.avif"></a>
-            <a href="https://www.discord.com/user/loadstring.json"><img src="disc.avif"></a>
-          </div>
-        </div>
-      </aside>
-
   </div>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div>
-        <h4>Steven Ignacio</h4>
-        <p>Reflecting, questioning, still becoming.</p>
-      </div>
-      <div>
-        <a>Blog</a><a>About</a><a>Projects</a><a>Contact</a>
-      </div>
-      <div>
-        <a>Facebook</a><a>Instagram</a><a>TikTok</a><a>Discord</a>
+  <div class="menubar">
+    <div class="menu-item" onclick="toggleMenu(event,'menu-mc-file')">File
+      <div class="dropdown" id="menu-mc-file">
+        <div class="dd-item">🗂 New Window</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="closeWindow('win-mycomputer')">✕ Close</div>
       </div>
     </div>
-    <div class="footer-bottom">© 2026 Steven Ignacio</div>
-  </footer>
-
+    <div class="menu-item" onclick="toggleMenu(event,'menu-mc-edit')">Edit
+      <div class="dropdown" id="menu-mc-edit">
+        <div class="dd-item">Select All</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item">Copy</div>
+        <div class="dd-item">Paste</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-mc-view')">View
+      <div class="dropdown" id="menu-mc-view">
+        <div class="dd-item">✓ Tiles</div>
+        <div class="dd-item">Icons</div>
+        <div class="dd-item">List</div>
+        <div class="dd-item">Details</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-mc-tools')">Tools
+      <div class="dropdown" id="menu-mc-tools">
+        <div class="dd-item" onclick="openControlPanel()">📋 Control Panel</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item">Folder Options...</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-mc-help')">Help
+      <div class="dropdown" id="menu-mc-help">
+        <div class="dd-item" onclick="openHelpDialog()">❓ Help and Support</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="openAbout()">ℹ About Windows XP</div>
+      </div>
+    </div>
   </div>
+  <div class="toolbar">
+    <div class="tb-btn" onclick="goBack('win-mycomputer')">◀ Back</div>
+    <div class="tb-btn" onclick="goForward('win-mycomputer')">▶ Forward</div>
+    <div class="tb-btn">⬆ Up</div>
+    <div class="tb-sep"></div>
+    <div class="tb-btn" onclick="openSearchDialog()">🔍 Search</div>
+    <div class="tb-btn">📁 Folders</div>
+    <div class="tb-sep"></div>
+    <div class="tb-btn">⚙ Views ▾</div>
+  </div>
+  <div class="addressbar">
+    <label>Address</label>
+    <input type="text" id="mc-addr" value="My Computer" readonly />
+    <button class="go-btn">Go</button>
+  </div>
+  <div class="win-body">
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">System Tasks</div>
+        <div class="sidebar-link" onclick="openSystemInfo()">🔧 View system info</div>
+        <div class="sidebar-link" onclick="showNotImpl('Add Hardware')">➕ Add hardware</div>
+        <div class="sidebar-link" onclick="showNotImpl('Uninstall Program')">🗑 Uninstall program</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Other Places</div>
+        <div class="sidebar-link" onclick="openNetwork()">🌐 My Network</div>
+        <div class="sidebar-link" onclick="openMyDocs()">🗂 My Documents</div>
+        <div class="sidebar-link" onclick="openControlPanel()">📋 Control Panel</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Details</div>
+        <div style="padding:6px 8px;color:white;font-size:10px;line-height:1.6;text-shadow:1px 1px 2px #0008;"><b>My Computer</b><br>System Folder<br><br>Free space: 12.4 GB<br>Total: 80 GB</div>
+      </div>
+    </div>
+    <div class="file-view" id="mc-fileview">
+      <div style="font-size:11px;color:#444;margin-bottom:6px;font-weight:bold;">Hard Disk Drives</div>
+      <div class="file-grid">
+        <div class="file-item" ondblclick="openCDrive()"><div class="file-icon">💾</div><div class="file-name">Local Disk (C:)</div></div>
+        <div class="file-item" ondblclick="showNotImpl('Drive D:')"><div class="file-icon">💾</div><div class="file-name">Local Disk (D:)</div></div>
+      </div>
+      <div style="font-size:11px;color:#444;margin:10px 0 6px;font-weight:bold;">Devices with Removable Storage</div>
+      <div class="file-grid">
+        <div class="file-item" ondblclick="showNotImpl('DVD Drive')"><div class="file-icon">💿</div><div class="file-name">DVD/CD-RW Drive (E:)</div></div>
+        <div class="file-item" ondblclick="showNotImpl('Floppy')"><div class="file-icon">🖨️</div><div class="file-name">3½ Floppy (A:)</div></div>
+      </div>
+      <div style="font-size:11px;color:#444;margin:10px 0 6px;font-weight:bold;">Other</div>
+      <div class="file-grid">
+        <div class="file-item" ondblclick="openControlPanel()"><div class="file-icon">📋</div><div class="file-name">Control Panel</div></div>
+        <div class="file-item" ondblclick="openMediaPlayer()"><div class="file-icon">🎵</div><div class="file-name">My Music</div></div>
+        <div class="file-item" ondblclick="openMyPics()"><div class="file-icon">🖼️</div><div class="file-name">My Pictures</div></div>
+        <div class="file-item" ondblclick="openNetwork()"><div class="file-icon">🌐</div><div class="file-name">Network Places</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="statusbar"><div class="status-panel" id="mc-status">8 objects</div><div class="status-panel" style="flex:1;"></div><div class="status-panel">My Computer</div></div>
+  <div class="resize-handle" onmousedown="startResize(event,'win-mycomputer')" ontouchstart="startResizeTouch(event,'win-mycomputer')">◢</div>
+</div>
 
-  <script>
-    // 🌙 THEME TOGGLE
-    const toggle = document.getElementById("themeToggle");
+<!-- ═══ NOTEPAD WINDOW ═══ -->
+<div class="window" id="win-notepad" style="top:70px;left:180px;width:400px;height:300px;display:none;">
+  <div class="titlebar" id="tb-notepad" onmousedown="startDrag(event,'win-notepad')" ontouchstart="startDragTouch(event,'win-notepad')">
+    <span class="title-icon">📝</span><span class="title-text" id="notepad-title">Untitled - Notepad</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-min" onclick="minimizeWindow('win-notepad')">_</div>
+      <div class="wc-btn wc-max" onclick="maximizeWindow('win-notepad')">▫</div>
+      <div class="wc-btn wc-close" onclick="closeWindow('win-notepad')">✕</div>
+    </div>
+  </div>
+  <div class="menubar">
+    <div class="menu-item" onclick="toggleMenu(event,'menu-np-file')">File
+      <div class="dropdown" id="menu-np-file">
+        <div class="dd-item" onclick="notepadNew()">📄 New</div>
+        <div class="dd-item" onclick="notepadOpen()">📂 Open...</div>
+        <div class="dd-item" onclick="notepadSave()">💾 Save</div>
+        <div class="dd-item" onclick="notepadSave()">💾 Save As...</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="closeWindow('win-notepad')">✕ Exit</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-np-edit')">Edit
+      <div class="dropdown" id="menu-np-edit">
+        <div class="dd-item" onclick="document.execCommand('undo')">↩ Undo</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="document.execCommand('cut')">✂ Cut</div>
+        <div class="dd-item" onclick="document.execCommand('copy')">📋 Copy</div>
+        <div class="dd-item" onclick="document.execCommand('paste')">📋 Paste</div>
+        <div class="dd-item" onclick="document.getElementById('notepad-text').select()">Select All</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="notepadFindReplace()">🔍 Find...</div>
+        <div class="dd-item" onclick="insertTimeStamp()">🕐 Time/Date</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-np-format')">Format
+      <div class="dropdown" id="menu-np-format">
+        <div class="dd-item" onclick="toggleWordWrap()">✓ Word Wrap</div>
+        <div class="dd-item" onclick="notepadFont()">🔤 Font...</div>
+      </div>
+    </div>
+  </div>
+  <div style="flex:1;display:flex;overflow:hidden;">
+    <textarea id="notepad-text" style="flex:1;border:none;outline:none;resize:none;font-family:'Courier New',monospace;font-size:12px;padding:4px;line-height:1.5;" oninput="notepadChanged()" placeholder="Type something here...&#10;&#10;Welcome to Notepad!"></textarea>
+  </div>
+  <div class="statusbar"><div class="status-panel" id="np-status">Ln 1, Col 1</div><div class="status-panel" style="flex:1;"></div></div>
+  <div class="resize-handle" onmousedown="startResize(event,'win-notepad')" ontouchstart="startResizeTouch(event,'win-notepad')">◢</div>
+</div>
 
-    if (localStorage.theme === "dark") {
-      document.body.classList.add("dark");
-      toggle.textContent = "☀️";
+<!-- ═══ INTERNET EXPLORER WINDOW ═══ -->
+<div class="window" id="win-ie" style="top:40px;left:60px;width:620px;height:430px;display:none;">
+  <div class="titlebar" id="tb-ie" onmousedown="startDrag(event,'win-ie')" ontouchstart="startDragTouch(event,'win-ie')">
+    <span class="title-icon">🌐</span><span class="title-text" id="ie-title">MSN.com - Microsoft Internet Explorer</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-min" onclick="minimizeWindow('win-ie')">_</div>
+      <div class="wc-btn wc-max" onclick="maximizeWindow('win-ie')">▫</div>
+      <div class="wc-btn wc-close" onclick="closeWindow('win-ie')">✕</div>
+    </div>
+  </div>
+  <div class="menubar">
+    <div class="menu-item" onclick="toggleMenu(event,'menu-ie-file')">File
+      <div class="dropdown" id="menu-ie-file">
+        <div class="dd-item" onclick="ieNavigate('http://www.msn.com')">🏠 Home</div>
+        <div class="dd-item">💾 Save As...</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="closeWindow('win-ie')">✕ Close</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-ie-fav')">Favorites
+      <div class="dropdown" id="menu-ie-fav">
+        <div class="dd-item" onclick="ieNavigate('msn')">⭐ MSN</div>
+        <div class="dd-item" onclick="ieNavigate('hotmail')">📧 Hotmail</div>
+        <div class="dd-item" onclick="ieNavigate('google')">🔍 Google</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="ieNavigate('games')">🎮 Games</div>
+        <div class="dd-item" onclick="ieNavigate('news')">📰 News</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-ie-tools')">Tools
+      <div class="dropdown" id="menu-ie-tools">
+        <div class="dd-item">⚙ Internet Options...</div>
+        <div class="dd-item">🛡 Windows Update</div>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="tb-btn" onclick="ieBack()">◀ Back</div>
+    <div class="tb-btn" onclick="ieForward()">▶ Forward</div>
+    <div class="tb-btn" onclick="ieRefresh()">🔄 Refresh</div>
+    <div class="tb-btn" onclick="ieNavigate('msn')">🏠 Home</div>
+    <div class="tb-sep"></div>
+    <div class="tb-btn" onclick="showFavorites()">⭐ Favorites</div>
+    <div class="tb-btn" onclick="ieNavigate('hotmail')">📧 Mail</div>
+  </div>
+  <div class="addressbar">
+    <label>Address</label>
+    <input type="text" id="ie-url" value="http://www.msn.com" onkeydown="if(event.key==='Enter')ieNavigate(this.value)"/>
+    <button class="go-btn" onclick="ieNavigate(document.getElementById('ie-url').value)">Go</button>
+  </div>
+  <div class="win-body" style="display:block;overflow:hidden;">
+    <div id="ie-content" class="ie-content"></div>
+  </div>
+  <div class="statusbar"><div class="status-panel" id="ie-status">Done</div><div class="status-panel" style="flex:1;"></div><div class="status-panel">🌐 Internet</div></div>
+  <div class="resize-handle" onmousedown="startResize(event,'win-ie')" ontouchstart="startResizeTouch(event,'win-ie')">◢</div>
+</div>
+
+<!-- ═══ MINESWEEPER WINDOW ═══ -->
+<div class="window" id="win-minesweeper" style="top:60px;left:100px;width:340px;height:400px;display:none;">
+  <div class="titlebar" id="tb-minesweeper" onmousedown="startDrag(event,'win-minesweeper')" ontouchstart="startDragTouch(event,'win-minesweeper')">
+    <span class="title-icon">💣</span><span class="title-text">Minesweeper</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-min" onclick="minimizeWindow('win-minesweeper')">_</div>
+      <div class="wc-btn wc-max" onclick="maximizeWindow('win-minesweeper')">▫</div>
+      <div class="wc-btn wc-close" onclick="closeWindow('win-minesweeper')">✕</div>
+    </div>
+  </div>
+  <div class="menubar">
+    <div class="menu-item" onclick="toggleMenu(event,'menu-ms-game')">Game
+      <div class="dropdown" id="menu-ms-game">
+        <div class="dd-item" onclick="msNewGame()">🔄 New Game</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="msSetDiff('beginner')">Beginner (9×9, 10 mines)</div>
+        <div class="dd-item" onclick="msSetDiff('intermediate')">Intermediate (16×16, 40 mines)</div>
+        <div class="dd-item" onclick="msSetDiff('expert')">Expert (16×30, 99 mines)</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="msBestTimes()">🏆 Best Times...</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="closeWindow('win-minesweeper')">✕ Exit</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-ms-help')">Help
+      <div class="dropdown" id="menu-ms-help">
+        <div class="dd-item" onclick="msHelp()">❓ How to Play</div>
+      </div>
+    </div>
+  </div>
+  <div id="minesweeper-game">
+    <div class="ms-difficulty">
+      <div class="ms-diff-btn active" id="ms-btn-beginner" onclick="msSetDiff('beginner')">Beginner</div>
+      <div class="ms-diff-btn" id="ms-btn-intermediate" onclick="msSetDiff('intermediate')">Intermediate</div>
+      <div class="ms-diff-btn" id="ms-btn-expert" onclick="msSetDiff('expert')">Expert</div>
+    </div>
+    <div class="ms-panel">
+      <div class="ms-counter" id="ms-mines">010</div>
+      <div class="ms-face-btn" id="ms-face" onclick="msNewGame()">🙂</div>
+      <div class="ms-counter" id="ms-timer">000</div>
+    </div>
+    <div id="ms-grid"></div>
+  </div>
+  <div class="resize-handle" onmousedown="startResize(event,'win-minesweeper')" ontouchstart="startResizeTouch(event,'win-minesweeper')">◢</div>
+</div>
+
+<!-- ═══ CALCULATOR WINDOW ═══ -->
+<div class="window" id="win-calc" style="top:100px;left:200px;width:240px;height:260px;display:none;">
+  <div class="titlebar" id="tb-calc" onmousedown="startDrag(event,'win-calc')" ontouchstart="startDragTouch(event,'win-calc')">
+    <span class="title-icon">🧮</span><span class="title-text">Calculator</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-min" onclick="minimizeWindow('win-calc')">_</div>
+      <div class="wc-btn wc-max" onclick="maximizeWindow('win-calc')">▫</div>
+      <div class="wc-btn wc-close" onclick="closeWindow('win-calc')">✕</div>
+    </div>
+  </div>
+  <div class="menubar">
+    <div class="menu-item" onclick="toggleMenu(event,'menu-calc-view')">View
+      <div class="dropdown" id="menu-calc-view">
+        <div class="dd-item">✓ Standard</div>
+        <div class="dd-item">Scientific</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-calc-help')">Help
+      <div class="dropdown" id="menu-calc-help">
+        <div class="dd-item" onclick="showDialog('About Calculator','🧮','Calculator v5.1\nMicrosoft Windows XP')">ℹ About</div>
+      </div>
+    </div>
+  </div>
+  <div class="calc-body" id="calc-body">
+    <div class="calc-display" id="calc-display">0</div>
+    <div style="display:flex;gap:4px;margin-top:4px;">
+      <div style="flex:1;">
+        <div class="calc-btns" style="grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:3px;">
+          <div class="calc-btn" onclick="calcMC()">MC</div>
+          <div class="calc-btn" onclick="calcMR()">MR</div>
+          <div class="calc-btn" onclick="calcMS()">MS</div>
+          <div class="calc-btn" onclick="calcMPlus()">M+</div>
+        </div>
+        <div class="calc-btns" style="grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:3px;">
+          <div class="calc-btn" onclick="calcInput('7')">7</div>
+          <div class="calc-btn" onclick="calcInput('8')">8</div>
+          <div class="calc-btn" onclick="calcInput('9')">9</div>
+          <div class="calc-btn operator" onclick="calcOp('/')" >÷</div>
+        </div>
+        <div class="calc-btns" style="grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:3px;">
+          <div class="calc-btn" onclick="calcInput('4')">4</div>
+          <div class="calc-btn" onclick="calcInput('5')">5</div>
+          <div class="calc-btn" onclick="calcInput('6')">6</div>
+          <div class="calc-btn operator" onclick="calcOp('*')">×</div>
+        </div>
+        <div class="calc-btns" style="grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:3px;">
+          <div class="calc-btn" onclick="calcInput('1')">1</div>
+          <div class="calc-btn" onclick="calcInput('2')">2</div>
+          <div class="calc-btn" onclick="calcInput('3')">3</div>
+          <div class="calc-btn operator" onclick="calcOp('-')">−</div>
+        </div>
+        <div class="calc-btns" style="grid-template-columns:repeat(4,1fr);gap:3px;">
+          <div class="calc-btn" onclick="calcInput('0')" style="grid-column:span 2;">0</div>
+          <div class="calc-btn" onclick="calcDot()">.</div>
+          <div class="calc-btn operator" onclick="calcOp('+')">+</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:3px;width:44px;">
+        <div class="calc-btn" onclick="calcBack()" style="height:30px;">⌫</div>
+        <div class="calc-btn" onclick="calcCE()" style="height:30px;">CE</div>
+        <div class="calc-btn" onclick="calcC()" style="height:30px;">C</div>
+        <div class="calc-btn" onclick="calcSqrt()" style="height:30px;">√</div>
+        <div class="calc-btn" onclick="calcPercent()" style="height:30px;">%</div>
+        <div class="calc-btn" onclick="calcInverse()" style="height:30px;">1/x</div>
+        <div class="calc-btn equals" onclick="calcEquals()" style="flex:1;">＝</div>
+      </div>
+    </div>
+  </div>
+  <div class="resize-handle" onmousedown="startResize(event,'win-calc')" ontouchstart="startResizeTouch(event,'win-calc')">◢</div>
+</div>
+
+<!-- ═══ PAINT WINDOW ═══ -->
+<div class="window" id="win-paint" style="top:50px;left:80px;width:520px;height:380px;display:none;">
+  <div class="titlebar" id="tb-paint" onmousedown="startDrag(event,'win-paint')" ontouchstart="startDragTouch(event,'win-paint')">
+    <span class="title-icon">🎨</span><span class="title-text" id="paint-title">untitled - Paint</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-min" onclick="minimizeWindow('win-paint')">_</div>
+      <div class="wc-btn wc-max" onclick="maximizeWindow('win-paint')">▫</div>
+      <div class="wc-btn wc-close" onclick="closeWindow('win-paint')">✕</div>
+    </div>
+  </div>
+  <div class="menubar">
+    <div class="menu-item" onclick="toggleMenu(event,'menu-paint-file')">File
+      <div class="dropdown" id="menu-paint-file">
+        <div class="dd-item" onclick="paintNew()">📄 New</div>
+        <div class="dd-item" onclick="paintSave()">💾 Save</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="closeWindow('win-paint')">✕ Exit</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-paint-edit')">Edit
+      <div class="dropdown" id="menu-paint-edit">
+        <div class="dd-item" onclick="paintUndo()">↩ Undo</div>
+        <div class="dd-item" onclick="paintClear()">🗑 Clear Image</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-paint-image')">Image
+      <div class="dropdown" id="menu-paint-image">
+        <div class="dd-item" onclick="paintFlipH()">↔ Flip Horizontal</div>
+        <div class="dd-item" onclick="paintFlipV()">↕ Flip Vertical</div>
+        <div class="dd-item" onclick="paintInvert()">🎨 Invert Colors</div>
+      </div>
+    </div>
+  </div>
+  <div class="paint-wrap">
+    <div class="paint-toolbar" id="paint-tools">
+      <div class="paint-tool active" id="pt-pencil" onclick="setPaintTool('pencil')" title="Pencil">✏️</div>
+      <div class="paint-tool" id="pt-brush" onclick="setPaintTool('brush')" title="Brush">🖌️</div>
+      <div class="paint-tool" id="pt-eraser" onclick="setPaintTool('eraser')" title="Eraser">🧹</div>
+      <div class="paint-tool" id="pt-fill" onclick="setPaintTool('fill')" title="Fill">🪣</div>
+      <div class="paint-tool" id="pt-line" onclick="setPaintTool('line')" title="Line">╱</div>
+      <div class="paint-tool" id="pt-rect" onclick="setPaintTool('rect')" title="Rectangle">▭</div>
+      <div class="paint-tool" id="pt-circle" onclick="setPaintTool('circle')" title="Ellipse">⬭</div>
+      <div class="tb-sep"></div>
+      <div style="display:flex;align-items:center;gap:4px;font-size:11px;">
+        Size: <select id="paint-size" style="font-size:11px;padding:1px;" onchange="paintSizeChange()">
+          <option>1</option><option selected>3</option><option>6</option><option>10</option><option>16</option><option>24</option>
+        </select>
+      </div>
+    </div>
+    <div class="paint-canvas-wrap" id="paint-canvas-wrap">
+      <canvas id="paint-canvas" width="800" height="600"></canvas>
+    </div>
+    <div class="paint-colors" id="paint-colors">
+      <div style="display:flex;align-items:center;gap:4px;margin-right:6px;">
+        <div id="paint-fg" style="width:22px;height:22px;background:#000;border:2px solid #000;"></div>
+        <div id="paint-bg-swatch" style="width:16px;height:16px;background:#fff;border:1px solid #000;margin-top:4px;margin-left:-10px;"></div>
+      </div>
+    </div>
+  </div>
+  <div class="statusbar"><div class="status-panel" id="paint-status">For Help, click Help Topics on the Help Menu.</div><div class="status-panel" style="flex:1;"></div><div class="status-panel" id="paint-coords">0,0</div></div>
+  <div class="resize-handle" onmousedown="startResize(event,'win-paint')" ontouchstart="startResizeTouch(event,'win-paint')">◢</div>
+</div>
+
+<!-- ═══ MEDIA PLAYER WINDOW ═══ -->
+<div class="window" id="win-mediaplayer" style="top:60px;left:100px;width:320px;height:380px;display:none;">
+  <div class="titlebar" id="tb-mediaplayer" onmousedown="startDrag(event,'win-mediaplayer')" ontouchstart="startDragTouch(event,'win-mediaplayer')">
+    <span class="title-icon">🎵</span><span class="title-text">Windows Media Player</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-min" onclick="minimizeWindow('win-mediaplayer')">_</div>
+      <div class="wc-btn wc-max" onclick="maximizeWindow('win-mediaplayer')">▫</div>
+      <div class="wc-btn wc-close" onclick="closeWindow('win-mediaplayer')">✕</div>
+    </div>
+  </div>
+  <div class="menubar">
+    <div class="menu-item" onclick="toggleMenu(event,'menu-mp-file')">File
+      <div class="dropdown" id="menu-mp-file">
+        <div class="dd-item">📂 Open...</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="closeWindow('win-mediaplayer')">✕ Exit</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-mp-play')">Play
+      <div class="dropdown" id="menu-mp-play">
+        <div class="dd-item" onclick="mpTogglePlay()">▶ Play/Pause</div>
+        <div class="dd-item" onclick="mpStop()">⏹ Stop</div>
+        <div class="dd-item" onclick="mpNext()">⏭ Next</div>
+        <div class="dd-item" onclick="mpPrev()">⏮ Previous</div>
+      </div>
+    </div>
+  </div>
+  <div class="mp-body">
+    <div class="mp-vis" id="mp-vis">
+      <div class="mp-bars" id="mp-bars"></div>
+    </div>
+    <div class="mp-controls">
+      <div class="mp-track"><b id="mp-title">Linkin Park - In The End</b><br><span id="mp-artist">Hybrid Theory (2000)</span></div>
+      <div class="mp-prog" onclick="mpSeek(event)"><div class="mp-prog-fill" id="mp-prog" style="width:30%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:#aaa;"><span id="mp-cur">1:12</span><span id="mp-dur">3:36</span></div>
+      <div class="mp-btn-row">
+        <div class="mp-btn" onclick="mpPrev()" title="Previous">⏮</div>
+        <div class="mp-btn" onclick="mpStop()" title="Stop">⏹</div>
+        <div class="mp-btn play-btn" id="mp-play-btn" onclick="mpTogglePlay()" title="Play/Pause">▶</div>
+        <div class="mp-btn" onclick="mpNext()" title="Next">⏭</div>
+        <div class="mp-btn" onclick="mpShuffle()" id="mp-shuf" title="Shuffle">🔀</div>
+      </div>
+      <div class="mp-vol">🔈<input type="range" min="0" max="100" value="70" oninput="mpVol(this.value)">🔊</div>
+    </div>
+    <div class="mp-playlist" id="mp-playlist"></div>
+  </div>
+  <div class="resize-handle" onmousedown="startResize(event,'win-mediaplayer')" ontouchstart="startResizeTouch(event,'win-mediaplayer')">◢</div>
+</div>
+
+<!-- ═══ CONTROL PANEL WINDOW ═══ -->
+<div class="window" id="win-controlpanel" style="top:60px;left:80px;width:520px;height:360px;display:none;">
+  <div class="titlebar" id="tb-controlpanel" onmousedown="startDrag(event,'win-controlpanel')" ontouchstart="startDragTouch(event,'win-controlpanel')">
+    <span class="title-icon">📋</span><span class="title-text">Control Panel</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-min" onclick="minimizeWindow('win-controlpanel')">_</div>
+      <div class="wc-btn wc-max" onclick="maximizeWindow('win-controlpanel')">▫</div>
+      <div class="wc-btn wc-close" onclick="closeWindow('win-controlpanel')">✕</div>
+    </div>
+  </div>
+  <div class="menubar">
+    <div class="menu-item" onclick="toggleMenu(event,'menu-cp-view')">View
+      <div class="dropdown" id="menu-cp-view">
+        <div class="dd-item">✓ Category View</div>
+        <div class="dd-item">Classic View</div>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="tb-btn" onclick="goBack('win-controlpanel')">◀ Back</div>
+    <div class="tb-btn">▶ Forward</div>
+    <div class="tb-btn">⬆ Up</div>
+    <div class="tb-sep"></div>
+    <div class="tb-btn">🔍 Search</div>
+    <div class="tb-btn">📁 Folders</div>
+  </div>
+  <div class="win-body">
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Control Panel</div>
+        <div class="sidebar-link">🏠 Switch to Category View</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">See Also</div>
+        <div class="sidebar-link" onclick="openHelpDialog()">❓ Help and Support</div>
+        <div class="sidebar-link" onclick="openNetwork()">🌐 Windows Update</div>
+      </div>
+    </div>
+    <div class="file-view">
+      <div class="cp-grid">
+        <div class="cp-item" ondblclick="openDisplayProps()"><div class="cp-icon">🖥️</div><div class="cp-label">Display</div></div>
+        <div class="cp-item" ondblclick="showNotImpl('Sound')"><div class="cp-icon">🔊</div><div class="cp-label">Sounds and Audio</div></div>
+        <div class="cp-item" ondblclick="showNotImpl('Mouse')"><div class="cp-icon">🖱️</div><div class="cp-label">Mouse</div></div>
+        <div class="cp-item" ondblclick="showNotImpl('Keyboard')"><div class="cp-icon">⌨️</div><div class="cp-label">Keyboard</div></div>
+        <div class="cp-item" ondblclick="openSystemInfo()"><div class="cp-icon">💻</div><div class="cp-label">System</div></div>
+        <div class="cp-item" ondblclick="showNotImpl('Network')"><div class="cp-icon">🌐</div><div class="cp-label">Network Connections</div></div>
+        <div class="cp-item" ondblclick="showNotImpl('Power')"><div class="cp-icon">⚡</div><div class="cp-label">Power Options</div></div>
+        <div class="cp-item" ondblclick="showNotImpl('User Accounts')"><div class="cp-icon">👤</div><div class="cp-label">User Accounts</div></div>
+        <div class="cp-item" ondblclick="showNotImpl('Date and Time')"><div class="cp-icon">📅</div><div class="cp-label">Date and Time</div></div>
+        <div class="cp-item" ondblclick="showNotImpl('Regional Settings')"><div class="cp-icon">🌍</div><div class="cp-label">Regional Options</div></div>
+        <div class="cp-item" ondblclick="showNotImpl('Fonts')"><div class="cp-icon">🔤</div><div class="cp-label">Fonts</div></div>
+        <div class="cp-item" ondblclick="showNotImpl('Printers')"><div class="cp-icon">🖨️</div><div class="cp-label">Printers and Faxes</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="statusbar"><div class="status-panel">12 objects</div><div class="status-panel" style="flex:1;"></div></div>
+  <div class="resize-handle" onmousedown="startResize(event,'win-controlpanel')" ontouchstart="startResizeTouch(event,'win-controlpanel')">◢</div>
+</div>
+
+<!-- ═══ RECYCLE BIN WINDOW ═══ -->
+<div class="window" id="win-recyclebin" style="top:70px;left:120px;width:440px;height:300px;display:none;">
+  <div class="titlebar" id="tb-recyclebin" onmousedown="startDrag(event,'win-recyclebin')" ontouchstart="startDragTouch(event,'win-recyclebin')">
+    <span class="title-icon">🗑️</span><span class="title-text">Recycle Bin</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-min" onclick="minimizeWindow('win-recyclebin')">_</div>
+      <div class="wc-btn wc-max" onclick="maximizeWindow('win-recyclebin')">▫</div>
+      <div class="wc-btn wc-close" onclick="closeWindow('win-recyclebin')">✕</div>
+    </div>
+  </div>
+  <div class="menubar">
+    <div class="menu-item" onclick="toggleMenu(event,'menu-rb-file')">File
+      <div class="dropdown" id="menu-rb-file">
+        <div class="dd-item" onclick="emptyRecycleBin()">🗑 Empty Recycle Bin</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="closeWindow('win-recyclebin')">✕ Close</div>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="tb-btn" onclick="emptyRecycleBin()">🗑 Empty Recycle Bin</div>
+    <div class="tb-btn" onclick="rbRestore()">♻️ Restore All Items</div>
+  </div>
+  <div class="win-body">
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Recycle Bin Tasks</div>
+        <div class="sidebar-link" onclick="emptyRecycleBin()">🗑 Empty Recycle Bin</div>
+        <div class="sidebar-link" onclick="rbRestore()">♻️ Restore All Items</div>
+      </div>
+    </div>
+    <div class="file-view" id="rb-fileview">
+      <div class="file-grid" id="rb-grid">
+        <div class="file-item" onclick="rbSelectItem(this)"><div class="file-icon">📝</div><div class="file-name">secret_photos.zip</div></div>
+        <div class="file-item" onclick="rbSelectItem(this)"><div class="file-icon">📄</div><div class="file-name">homework.doc</div></div>
+        <div class="file-item" onclick="rbSelectItem(this)"><div class="file-icon">🎵</div><div class="file-name">cool_song.mp3</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="statusbar"><div class="status-panel" id="rb-status">3 objects</div><div class="status-panel" style="flex:1;"></div><div class="status-panel">Recycle Bin</div></div>
+  <div class="resize-handle" onmousedown="startResize(event,'win-recyclebin')" ontouchstart="startResizeTouch(event,'win-recyclebin')">◢</div>
+</div>
+
+<!-- ═══ MY DOCUMENTS WINDOW ═══ -->
+<div class="window" id="win-mydocs" style="top:60px;left:90px;width:480px;height:340px;display:none;">
+  <div class="titlebar" id="tb-mydocs" onmousedown="startDrag(event,'win-mydocs')" ontouchstart="startDragTouch(event,'win-mydocs')">
+    <span class="title-icon">🗂️</span><span class="title-text">My Documents</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-min" onclick="minimizeWindow('win-mydocs')">_</div>
+      <div class="wc-btn wc-max" onclick="maximizeWindow('win-mydocs')">▫</div>
+      <div class="wc-btn wc-close" onclick="closeWindow('win-mydocs')">✕</div>
+    </div>
+  </div>
+  <div class="menubar">
+    <div class="menu-item" onclick="toggleMenu(event,'menu-md-file')">File
+      <div class="dropdown" id="menu-md-file">
+        <div class="dd-item" onclick="showNotImpl('New Folder')">📁 New Folder</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" onclick="closeWindow('win-mydocs')">✕ Close</div>
+      </div>
+    </div>
+    <div class="menu-item" onclick="toggleMenu(event,'menu-md-view')">View
+      <div class="dropdown" id="menu-md-view">
+        <div class="dd-item">Icons</div>
+        <div class="dd-item">✓ Tiles</div>
+        <div class="dd-item">List</div>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="tb-btn" onclick="goBack('win-mydocs')">◀ Back</div>
+    <div class="tb-btn">▶ Forward</div>
+    <div class="tb-btn">⬆ Up</div>
+    <div class="tb-sep"></div>
+    <div class="tb-btn" onclick="openSearchDialog()">🔍 Search</div>
+    <div class="tb-btn">📁 Folders</div>
+  </div>
+  <div class="addressbar"><label>Address</label><input type="text" value="C:\Documents and Settings\User\My Documents" readonly/><button class="go-btn">Go</button></div>
+  <div class="win-body">
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">File and Folder Tasks</div>
+        <div class="sidebar-link" onclick="showNotImpl('New Folder')">📁 Make a new folder</div>
+        <div class="sidebar-link" onclick="showNotImpl('Publish')">🌐 Publish to Web</div>
+        <div class="sidebar-link" onclick="showNotImpl('Share Folder')">📤 Share this folder</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Other Places</div>
+        <div class="sidebar-link" onclick="openMyComputer()">🖥 My Computer</div>
+        <div class="sidebar-link" onclick="openControlPanel()">📋 Control Panel</div>
+      </div>
+    </div>
+    <div class="file-view">
+      <div class="file-grid">
+        <div class="file-item" ondblclick="openPaint()"><div class="file-icon">🖼️</div><div class="file-name">My Pictures</div></div>
+        <div class="file-item" ondblclick="openMediaPlayer()"><div class="file-icon">🎵</div><div class="file-name">My Music</div></div>
+        <div class="file-item" ondblclick="openNotepad()"><div class="file-icon">📝</div><div class="file-name">README.txt</div></div>
+        <div class="file-item" ondblclick="openNotepad()"><div class="file-icon">📄</div><div class="file-name">homework.doc</div></div>
+        <div class="file-item" ondblclick="showNotImpl('Videos')"><div class="file-icon">🎬</div><div class="file-name">My Videos</div></div>
+        <div class="file-item" ondblclick="openNotepad()"><div class="file-icon">📝</div><div class="file-name">diary.txt</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="statusbar"><div class="status-panel">6 objects</div><div class="status-panel" style="flex:1;"></div></div>
+  <div class="resize-handle" onmousedown="startResize(event,'win-mydocs')" ontouchstart="startResizeTouch(event,'win-mydocs')">◢</div>
+</div>
+
+<!-- ═══ NETWORK WINDOW ═══ -->
+<div class="window" id="win-network" style="top:70px;left:100px;width:420px;height:300px;display:none;">
+  <div class="titlebar" id="tb-network" onmousedown="startDrag(event,'win-network')" ontouchstart="startDragTouch(event,'win-network')">
+    <span class="title-icon">🌐</span><span class="title-text">My Network Places</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-min" onclick="minimizeWindow('win-network')">_</div>
+      <div class="wc-btn wc-max" onclick="maximizeWindow('win-network')">▫</div>
+      <div class="wc-btn wc-close" onclick="closeWindow('win-network')">✕</div>
+    </div>
+  </div>
+  <div class="menubar">
+    <div class="menu-item" onclick="toggleMenu(event,'menu-net-file')">File
+      <div class="dropdown" id="menu-net-file">
+        <div class="dd-item" onclick="closeWindow('win-network')">✕ Close</div>
+      </div>
+    </div>
+  </div>
+  <div class="win-body" style="display:block;overflow:auto;">
+    <div style="padding:10px;font-size:11px;">
+      <div style="font-weight:bold;margin-bottom:8px;">Network Status: <span style="color:green;">✓ Connected</span></div>
+      <div class="net-item"><span style="font-size:24px;">🖥</span><div><b>WORKGROUP</b><br>Local Area Network<br><span style="color:#666;">192.168.1.1 — 4 computers</span></div></div>
+      <div class="net-item"><span style="font-size:24px;">🌐</span><div><b>Internet</b><br>Broadband Connection<br><span style="color:#666;">Connected — 512 Kbps DSL</span></div></div>
+      <div class="net-item"><span style="font-size:24px;">🖨</span><div><b>HP LaserJet 1020</b><br>Shared Printer<br><span style="color:#666;">\\WORKGROUP\HP_LASER</span></div></div>
+      <div class="net-item"><span style="font-size:24px;">📁</span><div><b>Shared Documents</b><br>Network Share<br><span style="color:#666;">\\WORKGROUP\SHARED</span></div></div>
+    </div>
+  </div>
+  <div class="statusbar"><div class="status-panel">4 network places</div><div class="status-panel" style="flex:1;"></div></div>
+  <div class="resize-handle" onmousedown="startResize(event,'win-network')" ontouchstart="startResizeTouch(event,'win-network')">◢</div>
+</div>
+
+<!-- ═══ GENERIC DIALOG ═══ -->
+<div class="dialog" id="dialog-generic" style="top:180px;left:50%;transform:translateX(-50%);display:none;min-width:280px;">
+  <div class="titlebar" id="tb-dialog-generic" onmousedown="startDrag(event,'dialog-generic')" ontouchstart="startDragTouch(event,'dialog-generic')">
+    <span class="title-icon" id="dialog-icon-el">⚠️</span>
+    <span class="title-text" id="dialog-title-el">Dialog</span>
+    <div class="win-controls">
+      <div class="wc-btn wc-close" onclick="closeDialog()">✕</div>
+    </div>
+  </div>
+  <div class="dialog-body">
+    <div class="dialog-icon" id="dialog-body-icon">⚠️</div>
+    <div class="dialog-text" id="dialog-body-text">Message here.</div>
+  </div>
+  <div class="dialog-btns" id="dialog-btns">
+    <button class="dialog-btn default" onclick="closeDialog()">OK</button>
+  </div>
+</div>
+
+<!-- ═══ TURN OFF DIALOG ═══ -->
+<div class="dialog" id="dialog-turnoff" style="top:160px;left:50%;transform:translateX(-50%);display:none;">
+  <div class="titlebar" onmousedown="startDrag(event,'dialog-turnoff')" ontouchstart="startDragTouch(event,'dialog-turnoff')">
+    <span class="title-icon">⏻</span><span class="title-text">Turn off computer</span>
+    <div class="win-controls"><div class="wc-btn wc-close" onclick="document.getElementById('dialog-turnoff').style.display='none'">✕</div></div>
+  </div>
+  <div style="padding:16px;text-align:center;font-size:12px;">
+    <div style="font-size:32px;margin-bottom:10px;">⏻</div>
+    <div style="margin-bottom:16px;">What do you want the computer to do?</div>
+    <div style="display:flex;justify-content:center;gap:12px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;" onclick="showShutdownScreen('standby')">
+        <div style="font-size:28px;background:#ece9d8;border:2px solid #808080;border-radius:4px;padding:8px;">😴</div>
+        <div style="font-size:11px;">Stand By</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;" onclick="showShutdownScreen('off')">
+        <div style="font-size:28px;background:#ece9d8;border:2px solid #808080;border-radius:4px;padding:8px;">⏻</div>
+        <div style="font-size:11px;">Turn Off</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;" onclick="showShutdownScreen('restart')">
+        <div style="font-size:28px;background:#ece9d8;border:2px solid #808080;border-radius:4px;padding:8px;">🔄</div>
+        <div style="font-size:11px;">Restart</div>
+      </div>
+    </div>
+  </div>
+  <div class="dialog-btns"><button class="dialog-btn" onclick="document.getElementById('dialog-turnoff').style.display='none'">Cancel</button></div>
+</div>
+
+<!-- SHUTDOWN SCREEN -->
+<div id="shutdown-screen" style="display:none;position:fixed;inset:0;background:#003399;z-index:99999;flex-direction:column;align-items:center;justify-content:center;color:white;font-family:var(--font);">
+  <div style="font-size:18px;font-weight:bold;margin-bottom:20px;" id="shutdown-msg">Windows is shutting down...</div>
+  <div style="width:200px;height:12px;background:#002080;border:1px solid #6080ff;border-radius:2px;overflow:hidden;">
+    <div style="height:100%;background:linear-gradient(90deg,#00a0ff,#0040ff);animation:progress 2s ease-in-out;"></div>
+  </div>
+  <div style="margin-top:40px;font-size:12px;opacity:0.7;">Please do not turn off or unplug your computer.</div>
+  <style>@keyframes progress{from{width:0}to{width:100%}}</style>
+</div>
+
+<!-- START MENU -->
+<div id="start-menu">
+  <div class="sm-left">
+    <div class="sm-header">
+      <div class="sm-avatar">👤</div>
+      <div class="sm-username">User</div>
+    </div>
+    <div class="sm-programs">
+      <div class="sm-item" onclick="openIE();closeStartMenu()"><span class="si-icon">🌐</span><div><div class="si-label">Internet</div><div class="si-sub">Internet Explorer</div></div></div>
+      <div class="sm-item" onclick="openOutlookExpress()"><span class="si-icon">📧</span><div><div class="si-label">E-mail</div><div class="si-sub">Outlook Express</div></div></div>
+      <div class="sm-sep"></div>
+      <div class="sm-item" onclick="openNotepad();closeStartMenu()"><span class="si-icon">📝</span><div><div class="si-label">Notepad</div></div></div>
+      <div class="sm-item" onclick="openPaint();closeStartMenu()"><span class="si-icon">🎨</span><div><div class="si-label">Paint</div></div></div>
+      <div class="sm-item" onclick="openMediaPlayer();closeStartMenu()"><span class="si-icon">🎵</span><div><div class="si-label">Windows Media Player</div></div></div>
+      <div class="sm-item" onclick="openMinesweeper();closeStartMenu()"><span class="si-icon">💣</span><div><div class="si-label">Minesweeper</div></div></div>
+      <div class="sm-item" onclick="openCalc();closeStartMenu()"><span class="si-icon">🧮</span><div><div class="si-label">Calculator</div></div></div>
+      <div class="sm-sep"></div>
+      <div class="sm-item" style="color:#316ac5;"><span class="si-icon" style="font-size:14px;">📋</span><div><div style="font-size:11px;color:#316ac5;">All Programs ▶</div></div></div>
+    </div>
+    <div class="sm-footer">
+      <button class="sm-foot-btn" onclick="openLogOff()">🔒 Log Off</button>
+      <button class="sm-foot-btn" onclick="openTurnOff()">⏻ Turn Off</button>
+    </div>
+  </div>
+  <div class="sm-right">
+    <div class="sm-right-item" onclick="openMyDocs();closeStartMenu()">🗂 My Documents</div>
+    <div class="sm-right-item" onclick="openPaint();closeStartMenu()">🖼 My Pictures</div>
+    <div class="sm-right-item" onclick="openMediaPlayer();closeStartMenu()">🎵 My Music</div>
+    <div class="sm-right-item" onclick="openMyComputer();closeStartMenu()">🖥 My Computer</div>
+    <div class="sm-right-sep"></div>
+    <div class="sm-right-item" onclick="openNetwork();closeStartMenu()">🌐 My Network Places</div>
+    <div class="sm-right-item" onclick="openControlPanel();closeStartMenu()">📋 Control Panel</div>
+    <div class="sm-right-item" onclick="showNotImpl('Printers and Faxes')">🖨 Printers and Faxes</div>
+    <div class="sm-right-sep"></div>
+    <div class="sm-right-item" onclick="openHelpDialog()">❓ Help and Support</div>
+    <div class="sm-right-item" onclick="openSearchDialog()">🔍 Search</div>
+    <div class="sm-right-item" onclick="openRunDialog()">⚡ Run...</div>
+  </div>
+</div>
+
+<!-- RUN DIALOG -->
+<div class="dialog" id="dialog-run" style="top:40%;left:50%;transform:translateX(-50%);display:none;width:340px;">
+  <div class="titlebar" onmousedown="startDrag(event,'dialog-run')" ontouchstart="startDragTouch(event,'dialog-run')">
+    <span class="title-icon">⚡</span><span class="title-text">Run</span>
+    <div class="win-controls"><div class="wc-btn wc-close" onclick="document.getElementById('dialog-run').style.display='none'">✕</div></div>
+  </div>
+  <div class="dialog-body">
+    <div class="dialog-icon">⚡</div>
+    <div style="flex:1;">
+      <div style="font-size:11px;margin-bottom:8px;">Type the name of a program, folder, document, or Internet resource, and Windows will open it for you.</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;"><label>Open:</label><input id="run-input" type="text" style="flex:1;padding:2px 4px;border:1px inset #999;font-size:11px;" placeholder="notepad.exe" onkeydown="if(event.key==='Enter')runCommand()"></div>
+    </div>
+  </div>
+  <div class="dialog-btns">
+    <button class="dialog-btn default" onclick="runCommand()">OK</button>
+    <button class="dialog-btn" onclick="document.getElementById('dialog-run').style.display='none'">Cancel</button>
+    <button class="dialog-btn" onclick="showNotImpl('Browse')">Browse...</button>
+  </div>
+</div>
+
+<!-- SEARCH DIALOG -->
+<div class="dialog" id="dialog-search" style="top:60px;left:50%;transform:translateX(-50%);display:none;width:360px;">
+  <div class="titlebar" onmousedown="startDrag(event,'dialog-search')" ontouchstart="startDragTouch(event,'dialog-search')">
+    <span class="title-icon">🔍</span><span class="title-text">Search Results</span>
+    <div class="win-controls"><div class="wc-btn wc-close" onclick="document.getElementById('dialog-search').style.display='none'">✕</div></div>
+  </div>
+  <div style="display:flex;height:280px;">
+    <div style="width:140px;background:linear-gradient(180deg,#6fa8dc,#3060b0);padding:8px;display:flex;flex-direction:column;gap:8px;">
+      <div style="color:white;font-size:11px;font-weight:bold;text-shadow:1px 1px 2px #0008;">Search Companion</div>
+      <div style="font-size:28px;text-align:center;">🐕</div>
+      <div style="color:white;font-size:10px;text-shadow:1px 1px 2px #0008;">What are you looking for?</div>
+      <div style="background:rgba(255,255,255,0.1);padding:6px;border-radius:3px;">
+        <div style="color:white;font-size:10px;cursor:pointer;padding:2px 0;" onclick="showNotImpl('Pictures')">🖼 Pictures, music, or video</div>
+        <div style="color:white;font-size:10px;cursor:pointer;padding:2px 0;" onclick="showNotImpl('Documents')">📄 Documents</div>
+        <div style="color:white;font-size:10px;cursor:pointer;padding:2px 0;" onclick="showNotImpl('All Files')">🗂 All files and folders</div>
+        <div style="color:white;font-size:10px;cursor:pointer;padding:2px 0;" onclick="openIE()">🌐 Internet</div>
+      </div>
+    </div>
+    <div style="flex:1;background:white;padding:8px;display:flex;flex-direction:column;gap:6px;font-size:11px;">
+      <div>Search: <input id="search-input" type="text" style="width:calc(100% - 60px);padding:2px;border:1px inset #999;font-size:11px;" placeholder="Enter search..."></div>
+      <button onclick="doSearch()" style="align-self:flex-start;padding:4px 12px;background:var(--xp-btn);border:1px solid #808080;font-size:11px;cursor:pointer;">Search</button>
+      <div id="search-results" style="flex:1;overflow:auto;border:1px inset #999;padding:4px;"></div>
+    </div>
+  </div>
+  <div class="dialog-btns"><button class="dialog-btn" onclick="document.getElementById('dialog-search').style.display='none'">Close</button></div>
+</div>
+
+<!-- TASKBAR -->
+<div id="taskbar">
+  <button id="start-btn" onclick="toggleStartMenu(event)">
+    <span style="font-size:18px;">⊞</span> start
+  </button>
+  <div class="quicklaunch">
+    <div class="ql-btn" title="Show Desktop" onclick="showDesktop()">🖥</div>
+    <div class="ql-btn" title="Internet Explorer" onclick="openIE()">🌐</div>
+    <div class="ql-btn" title="MSN Messenger" onclick="openMessenger()">💬</div>
+    <div class="ql-btn" title="Media Player" onclick="openMediaPlayer()">🎵</div>
+  </div>
+  <div class="taskbar-windows" id="taskbar-windows"></div>
+  <div class="systray">
+    <span class="tray-icon" title="Volume" onclick="showVolumeCtrl()">🔊</span>
+    <span class="tray-icon" title="Network Connected">🌐</span>
+    <span class="tray-icon" title="Virus Scan Active">🛡</span>
+    <div id="clock"></div>
+  </div>
+</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// CLOCK
+// ══════════════════════════════════════════
+function updateClock() {
+  const now = new Date();
+  let h = now.getHours(), m = now.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  document.getElementById('clock').innerHTML = `${h}:${String(m).padStart(2,'0')}<br>${ampm}`;
+}
+updateClock(); setInterval(updateClock, 1000);
+
+// ══════════════════════════════════════════
+// WINDOW MANAGEMENT
+// ══════════════════════════════════════════
+const windows = {
+  'win-mycomputer':   { title:'My Computer', icon:'🖥️' },
+  'win-notepad':      { title:'Notepad', icon:'📝' },
+  'win-ie':           { title:'Internet Explorer', icon:'🌐' },
+  'win-minesweeper':  { title:'Minesweeper', icon:'💣' },
+  'win-calc':         { title:'Calculator', icon:'🧮' },
+  'win-paint':        { title:'Paint', icon:'🎨' },
+  'win-mediaplayer':  { title:'Media Player', icon:'🎵' },
+  'win-controlpanel': { title:'Control Panel', icon:'📋' },
+  'win-recyclebin':   { title:'Recycle Bin', icon:'🗑️' },
+  'win-mydocs':       { title:'My Documents', icon:'🗂️' },
+  'win-network':      { title:'Network Places', icon:'🌐' },
+};
+let focusedWindow = null, zBase = 100;
+
+function focusWindow(id) {
+  if (!windows[id]) return;
+  document.querySelectorAll('.window').forEach(w => {
+    w.classList.remove('focused');
+    const tb = w.querySelector('.titlebar');
+    if (tb) tb.classList.add('inactive');
+  });
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add('focused');
+    el.style.zIndex = ++zBase;
+    const tb = el.querySelector('.titlebar');
+    if (tb) tb.classList.remove('inactive');
+  }
+  focusedWindow = id;
+  updateTaskbar();
+}
+
+function closeWindow(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = 'none';
+  if (focusedWindow === id) focusedWindow = null;
+  updateTaskbar();
+}
+
+function minimizeWindow(id) {
+  const el = document.getElementById(id);
+  if (el) { el.style.display = 'none'; el.dataset.minimized = '1'; }
+  if (focusedWindow === id) focusedWindow = null;
+  updateTaskbar();
+}
+
+let maximizedState = {};
+function maximizeWindow(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const taskH = 32;
+  if (el.dataset.maximized === '1') {
+    const s = maximizedState[id];
+    if (s) { el.style.top=s.top; el.style.left=s.left; el.style.width=s.width; el.style.height=s.height; }
+    el.dataset.maximized = '';
+  } else {
+    maximizedState[id] = { top:el.style.top, left:el.style.left, width:el.style.width, height:el.style.height };
+    el.style.top='0'; el.style.left='0';
+    el.style.width=window.innerWidth+'px';
+    el.style.height=(window.innerHeight-taskH)+'px';
+    el.dataset.maximized = '1';
+  }
+}
+
+function showWindow(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'flex';
+  el.style.flexDirection = 'column';
+  el.dataset.minimized = '';
+  focusWindow(id);
+}
+
+function updateTaskbar() {
+  const container = document.getElementById('taskbar-windows');
+  container.innerHTML = '';
+  Object.entries(windows).forEach(([id, info]) => {
+    const el = document.getElementById(id);
+    if (!el || el.style.display === 'none') return;
+    const btn = document.createElement('div');
+    btn.className = 'tb-window' + (id === focusedWindow ? ' active' : '');
+    btn.innerHTML = info.icon + ' ' + info.title;
+    btn.onclick = () => {
+      if (id === focusedWindow) minimizeWindow(id);
+      else focusWindow(id);
+    };
+    container.appendChild(btn);
+  });
+}
+
+// Click window to focus
+document.querySelectorAll('.window').forEach(w => {
+  w.addEventListener('mousedown', () => focusWindow(w.id));
+  w.addEventListener('touchstart', () => focusWindow(w.id), {passive:true});
+});
+
+// ══════════════════════════════════════════
+// DRAG (mouse + touch)
+// ══════════════════════════════════════════
+let dragState = null;
+function startDrag(e, id) {
+  const el = document.getElementById(id);
+  focusWindow(id);
+  const rect = el.getBoundingClientRect();
+  dragState = { id, dx: e.clientX - rect.left, dy: e.clientY - rect.top };
+  e.preventDefault();
+}
+function startDragTouch(e, id) {
+  const t = e.touches[0];
+  const el = document.getElementById(id);
+  focusWindow(id);
+  const rect = el.getBoundingClientRect();
+  dragState = { id, dx: t.clientX - rect.left, dy: t.clientY - rect.top };
+}
+function doDrag(cx, cy) {
+  if (!dragState) return;
+  const el = document.getElementById(dragState.id);
+  const x = Math.max(0, Math.min(window.innerWidth - 100, cx - dragState.dx));
+  const y = Math.max(0, Math.min(window.innerHeight - 62, cy - dragState.dy));
+  el.style.left = x + 'px'; el.style.top = y + 'px';
+}
+document.addEventListener('mousemove', e => doDrag(e.clientX, e.clientY));
+document.addEventListener('mouseup', () => dragState = null);
+document.addEventListener('touchmove', e => { if(dragState) { e.preventDefault(); const t=e.touches[0]; doDrag(t.clientX, t.clientY); } }, {passive:false});
+document.addEventListener('touchend', () => dragState = null);
+
+// ══════════════════════════════════════════
+// RESIZE (mouse + touch)
+// ══════════════════════════════════════════
+let resizeState = null;
+function startResize(e, id) {
+  const el = document.getElementById(id);
+  resizeState = { id, sx:e.clientX, sy:e.clientY, sw:el.offsetWidth, sh:el.offsetHeight };
+  e.preventDefault(); e.stopPropagation();
+}
+function startResizeTouch(e, id) {
+  const t = e.touches[0];
+  const el = document.getElementById(id);
+  resizeState = { id, sx:t.clientX, sy:t.clientY, sw:el.offsetWidth, sh:el.offsetHeight };
+  e.stopPropagation();
+}
+function doResize(cx, cy) {
+  if (!resizeState) return;
+  const el = document.getElementById(resizeState.id);
+  el.style.width = Math.max(180, resizeState.sw + (cx - resizeState.sx)) + 'px';
+  el.style.height = Math.max(80, resizeState.sh + (cy - resizeState.sy)) + 'px';
+}
+document.addEventListener('mousemove', e => doResize(e.clientX, e.clientY));
+document.addEventListener('mouseup', () => resizeState = null);
+document.addEventListener('touchmove', e => { if(resizeState) { e.preventDefault(); const t=e.touches[0]; doResize(t.clientX, t.clientY); } }, {passive:false});
+document.addEventListener('touchend', () => resizeState = null);
+
+// ══════════════════════════════════════════
+// START MENU
+// ══════════════════════════════════════════
+function toggleStartMenu(e) {
+  document.getElementById('start-menu').classList.toggle('open');
+  e.stopPropagation();
+}
+function closeStartMenu(e) {
+  if (e && e.target && e.target.closest && e.target.closest('#start-menu,#start-btn')) return;
+  document.getElementById('start-menu').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') { closeStartMenu(); closeAllMenus(); } });
+document.getElementById('desktop').addEventListener('mousedown', e => {
+  closeStartMenu(e);
+  if(e.target.id==='desktop') {
+    document.querySelectorAll('.window').forEach(w=>{w.classList.remove('focused');const tb=w.querySelector('.titlebar');if(tb)tb.classList.add('inactive');});
+    focusedWindow=null;
+    updateTaskbar();
+  }
+  closeAllMenus();
+});
+
+// ══════════════════════════════════════════
+// DROPDOWN MENUS
+// ══════════════════════════════════════════
+function toggleMenu(e, id) {
+  e.stopPropagation();
+  const dd = document.getElementById(id);
+  const isOpen = dd.classList.contains('open');
+  closeAllMenus();
+  if (!isOpen) { dd.classList.add('open'); e.currentTarget.classList.add('active'); }
+}
+function closeAllMenus() {
+  document.querySelectorAll('.dropdown.open').forEach(d=>d.classList.remove('open'));
+  document.querySelectorAll('.menu-item.active').forEach(m=>m.classList.remove('active'));
+}
+document.addEventListener('click', closeAllMenus);
+
+// ══════════════════════════════════════════
+// DIALOG HELPERS
+// ══════════════════════════════════════════
+function showDialog(title, icon, text, buttons) {
+  document.getElementById('dialog-icon-el').textContent = icon;
+  document.getElementById('dialog-title-el').textContent = title;
+  document.getElementById('dialog-body-icon').textContent = icon;
+  document.getElementById('dialog-body-text').innerHTML = text.replace(/\n/g,'<br>');
+  const btns = document.getElementById('dialog-btns');
+  btns.innerHTML = '';
+  (buttons || ['OK']).forEach((b,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'dialog-btn' + (i===0?' default':'');
+    btn.textContent = b;
+    btn.onclick = closeDialog;
+    btns.appendChild(btn);
+  });
+  const d = document.getElementById('dialog-generic');
+  d.style.display = 'flex'; d.style.flexDirection = 'column';
+  d.style.zIndex = ++zBase;
+}
+function closeDialog() { document.getElementById('dialog-generic').style.display='none'; }
+function showNotImpl(name) { showDialog('Windows XP','ℹ️',`<b>${name}</b> is not available in this simulation.`,['OK']); }
+
+// ══════════════════════════════════════════
+// OPEN WINDOW FUNCTIONS
+// ══════════════════════════════════════════
+function openMyComputer() { showWindow('win-mycomputer'); }
+function openNotepad() { showWindow('win-notepad'); }
+function openIE() { ieNavigate('msn'); showWindow('win-ie'); }
+function openMinesweeper() { showWindow('win-minesweeper'); if(!msBoard.length) msNewGame(); }
+function openCalc() { showWindow('win-calc'); }
+function openPaint() { showWindow('win-paint'); initPaint(); }
+function openMediaPlayer() { showWindow('win-mediaplayer'); initMP(); }
+function openControlPanel() { showWindow('win-controlpanel'); }
+function openRecycleBin() { showWindow('win-recyclebin'); }
+function openMyDocs() { showWindow('win-mydocs'); }
+function openNetwork() { showWindow('win-network'); }
+function openTurnOff() { document.getElementById('dialog-turnoff').style.display='flex'; document.getElementById('dialog-turnoff').style.flexDirection='column'; document.getElementById('dialog-turnoff').style.zIndex=++zBase; closeStartMenu(); }
+function openLogOff() { showDialog('Log Off Windows','👤','Are you sure you want to log off?',['Log Off','Cancel']); closeStartMenu(); }
+function openRunDialog() { document.getElementById('dialog-run').style.display='flex'; document.getElementById('dialog-run').style.flexDirection='column'; document.getElementById('dialog-run').style.zIndex=++zBase; closeStartMenu(); setTimeout(()=>document.getElementById('run-input').focus(),50); }
+function openSearchDialog() { document.getElementById('dialog-search').style.display='flex'; document.getElementById('dialog-search').style.flexDirection='column'; document.getElementById('dialog-search').style.zIndex=++zBase; closeStartMenu(); }
+function openHelpDialog() { showDialog('Help and Support','❓','<b>Windows XP Help and Support</b><br><br>• Press F1 in any application for help<br>• Visit <u>support.microsoft.com</u> online<br>• Call 1-800-MICROSOFT<br><br>Windows XP Professional SP2<br>© 2001-2004 Microsoft Corporation'); closeStartMenu(); }
+function openAbout() { showDialog('About Windows XP','🪟','<b>Microsoft Windows XP</b><br>Professional Edition<br>Version 2002, Service Pack 2<br><br>Copyright © 2001-2004 Microsoft Corporation<br><br>This product is licensed to: User<br>This computer: DESKTOP-XP<br><br>Physical Memory: 512 MB RAM'); }
+function openSystemInfo() { showDialog('System Properties','💻','<b>System:</b> Microsoft Windows XP<br>Professional, Version 2002, SP2<br><br><b>Processor:</b> Intel® Pentium® 4 CPU<br>2.40 GHz, 2.39 GHz<br><br><b>RAM:</b> 512 MB<br><b>HD:</b> 80 GB (12.4 GB free)<br><b>GPU:</b> NVIDIA GeForce FX 5200<br><br><b>Computer:</b> DESKTOP-XP<br><b>Workgroup:</b> WORKGROUP'); }
+function openDisplayProps() { showDialog('Display Properties','🖥️','<b>Display Properties</b><br><br>Screen resolution: 1024 × 768<br>Color quality: 32-bit<br>Refresh rate: 60 Hz<br>Theme: Windows XP<br><br>To change your display settings,<br>please use a real computer! 😄'); }
+function openCDrive() { showDialog('Local Disk C:','💾','<b>Local Disk (C:)</b><br><br>File system: NTFS<br>Used space: 32,416,088,064 bytes (30.1 GB)<br>Free space: 13,313,232,896 bytes (12.4 GB)<br>Capacity: 85,899,345,920 bytes (80.0 GB)<br><br>Drive C: is healthy.'); }
+function openOutlookExpress() { showDialog('Outlook Express','📧','<b>Outlook Express 6</b><br><br>You have <b>3 unread messages</b><br><br>From: Mom — "Dinner tonight?"<br>From: Microsoft — "Important Security Update"<br>From: unknown@hotmail.com — "You won $1,000,000!!!"<br><br><i>Please do not click the spam email.</i>'); closeStartMenu(); }
+function openMessenger() { showDialog('MSN Messenger','💬','<b>MSN Messenger 6.2</b><br><br>🟢 CoolKid2003 — Online<br>🟡 xX_G4mer_Xx — Away<br>🔴 BFF4ever — Busy<br>🟢 MusicFan99 — Online (Listening to Linkin Park)<br>⚫ BrotherMike — Offline<br><br>Send a message!'); closeStartMenu(); }
+function openMyPics() { showDialog('My Pictures','🖼️','<b>My Pictures</b><br><br>📸 vacation_2003.jpg<br>📸 birthday_party.jpg<br>📸 doggy.jpg<br>📸 school_photo.jpg<br><br>To view pictures, double-click an image file.'); }
+function openMsgs() { showDialog('Hotmail','📧','<b>Hotmail Inbox</b><br><br>You have 3 new messages!'); }
+
+function showVolumeCtrl() { showDialog('Volume','🔊','<b>Master Volume</b><br><br>Current volume: 70%<br><br>Use the system volume controls on your device to adjust volume.'); }
+function showFavorites() { showDialog('Favorites','⭐','<b>Your Favorites</b><br><br>⭐ MSN.com<br>⭐ Hotmail<br>⭐ Google<br>⭐ Download.com<br>⭐ GameFAQs<br>⭐ Newgrounds<br>⭐ MapQuest'); }
+function openAboutIE() { showDialog('About Internet Explorer','🌐','<b>Microsoft Internet Explorer 6.0</b><br>Version: 6.00.2900.5512<br>Update Versions: SP1<br><br>© 1995-2004 Microsoft Corporation<br><br>Warning: This browser is now over 20 years old!'); }
+
+function showDesktop() {
+  const anyVisible = Object.keys(windows).some(id => { const el=document.getElementById(id); return el && el.style.display !== 'none'; });
+  Object.keys(windows).forEach(id => { if(anyVisible) minimizeWindow(id); else showWindow(id); });
+}
+
+function showShutdownScreen(type) {
+  document.getElementById('dialog-turnoff').style.display='none';
+  const screen = document.getElementById('shutdown-screen');
+  const msgs = { standby:'Preparing to stand by...', off:'Windows is shutting down...', restart:'Windows is restarting...' };
+  document.getElementById('shutdown-msg').textContent = msgs[type];
+  screen.style.display='flex';
+  setTimeout(() => { if(type==='restart') { screen.style.display='none'; } }, 3500);
+}
+
+function runCommand() {
+  const cmd = document.getElementById('run-input').value.toLowerCase().trim();
+  document.getElementById('dialog-run').style.display='none';
+  const cmds = { 'notepad':openNotepad, 'notepad.exe':openNotepad, 'calc':openCalc, 'calc.exe':openCalc, 'mspaint':openPaint, 'mspaint.exe':openPaint, 'minesweeper.exe':openMinesweeper, 'control':openControlPanel, 'control.exe':openControlPanel, 'explorer':openMyComputer, 'explorer.exe':openMyComputer, 'winamp':openMediaPlayer, 'wmplayer':openMediaPlayer, 'iexplore.exe':openIE, 'iexplore':openIE };
+  if (cmds[cmd]) { cmds[cmd](); } else if (cmd) { showDialog('Run','⚠️',`Cannot find: <b>${cmd}</b><br>Make sure you typed the name correctly.`); } 
+}
+
+function doSearch() {
+  const q = document.getElementById('search-input').value;
+  const results = ['README.txt','homework.doc','diary.txt','cool_song.mp3','vacation_2003.jpg'];
+  const filtered = q ? results.filter(r=>r.toLowerCase().includes(q.toLowerCase())) : results;
+  document.getElementById('search-results').innerHTML = filtered.length ? filtered.map(f=>`<div style="padding:3px;cursor:pointer;" ondblclick="openNotepad()">📄 ${f}</div>`).join('') : '<div style="color:#666;">No results found.</div>';
+}
+
+function goBack(winId) { showDialog('Navigation','ℹ️','There are no more pages to go back to.'); }
+function goForward(winId) { showDialog('Navigation','ℹ️','There are no more pages to go forward to.'); }
+function msBestTimes() { showDialog('Fastest Mine Sweepers','🏆','<b>Beginner:</b> 49 seconds — Anonymous<br><b>Intermediate:</b> 99 seconds — Anonymous<br><b>Expert:</b> 199 seconds — Anonymous<br><br>No records set yet. Play a game!'); }
+function msHelp() { showDialog('Minesweeper Help','💣','<b>How to Play Minesweeper</b><br><br>• <b>Left click</b> to reveal a square<br>• <b>Right click / Long press</b> to flag a mine<br>• Numbers show adjacent mines<br>• Find all non-mine squares to win!<br>• Click the 😊 face to reset<br><br>Difficulty:<br>• Beginner: 9×9, 10 mines<br>• Intermediate: 16×16, 40 mines<br>• Expert: 16×30, 99 mines'); }
+
+// ══════════════════════════════════════════
+// INTERNET EXPLORER
+// ══════════════════════════════════════════
+let ieHistory = [], ieHistIdx = -1;
+const iePages = {
+  msn: { url:'http://www.msn.com', title:'MSN.com — Microsoft Internet Explorer', content: `
+    <div style="background:linear-gradient(90deg,#003399,#0066cc);color:white;padding:8px 16px;margin:-12px -12px 12px;font-size:18px;font-weight:bold;">🌐 MSN</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:160px;">
+        <div style="background:#ffffcc;border:1px solid #c0c000;padding:6px;margin-bottom:8px;font-size:11px;"><b>🔍 Search the Web</b><br><input type="text" id="ie-search" placeholder="Search..." style="width:100%;margin-top:4px;padding:2px;font-size:11px;"><button onclick="ieSearch()" style="margin-top:3px;padding:2px 8px;font-size:10px;cursor:pointer;">Go</button></div>
+        <b style="color:#003399;">TOP STORIES</b><hr style="border-color:#003399;margin:4px 0;">
+        <a href="#" style="display:block;margin:3px 0;font-size:11px;" onclick="ieNavigate('news')">📰 Windows XP Fastest-Selling OS Ever</a>
+        <a href="#" style="display:block;margin:3px 0;font-size:11px;" onclick="ieNavigate('news')">📰 Broadband Hits 10 Million Users</a>
+        <a href="#" style="display:block;margin:3px 0;font-size:11px;" onclick="ieNavigate('news')">📰 Nokia Releases Color Screen Phone</a>
+        <a href="#" style="display:block;margin:3px 0;font-size:11px;" onclick="ieNavigate('news')">📰 Napster Shuts Down Music Service</a>
+        <a href="#" style="display:block;margin:3px 0;font-size:11px;" onclick="ieNavigate('news')">🎬 Matrix Reloaded Breaks Box Office</a>
+      </div>
+      <div style="flex:1;min-width:160px;">
+        <b style="color:#003399;">MY MSN</b><hr style="border-color:#003399;margin:4px 0;">
+        <div style="font-size:11px;color:#333;line-height:1.8;">☀️ Weather: 72°F, Sunny<br>📧 Hotmail: 3 new messages<br>💬 MSN Messenger: 5 online<br>🎵 Now playing: Linkin Park</div>
+        <br><b style="color:#003399;">QUICK LINKS</b><hr style="border-color:#003399;margin:4px 0;">
+        <a href="#" style="display:block;font-size:11px;" onclick="ieNavigate('hotmail')">💌 Hotmail</a>
+        <a href="#" style="display:block;font-size:11px;" onclick="ieNavigate('google')">🔍 Google</a>
+        <a href="#" style="display:block;font-size:11px;" onclick="ieNavigate('games')">🎮 Games</a>
+      </div>
+    </div>
+    <div style="margin-top:10px;background:#f0f0ff;border:1px solid #9090cc;padding:6px;font-size:11px;">⚠️ <b>Security Warning:</b> Install ActiveX control "MSN Toolbar Helper"? <a href="#" style="color:#003399;">Install</a> | <a href="#" style="color:#003399;">Dismiss</a></div>` },
+  hotmail: { url:'http://www.hotmail.com', title:'Hotmail — Microsoft Internet Explorer', content:`
+    <div style="background:#003399;color:white;padding:8px 16px;margin:-12px -12px 12px;font-size:16px;font-weight:bold;">📧 Hotmail</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <button style="padding:4px 10px;font-size:11px;cursor:pointer;" onclick="showDialog('Hotmail','📧','Compose message feature requires a real email client!')">✏️ Compose</button>
+      <button style="padding:4px 10px;font-size:11px;cursor:pointer;">🗑️ Delete</button>
+      <button style="padding:4px 10px;font-size:11px;cursor:pointer;">📁 Move</button>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:11px;">
+      <tr style="background:#003399;color:white;"><th style="padding:4px 8px;text-align:left;">From</th><th style="padding:4px 8px;text-align:left;">Subject</th><th style="padding:4px 8px;text-align:left;">Date</th></tr>
+      <tr style="background:#e8f0ff;font-weight:bold;cursor:pointer;" onclick="showDialog('Hotmail','📧','<b>From: Mom</b><br><br>Hi honey! Are you coming for dinner tonight? Your father made spaghetti.<br><br>Love, Mom')"><td style="padding:4px 8px;">Mom</td><td style="padding:4px 8px;">Dinner tonight?</td><td style="padding:4px 8px;">Today</td></tr>
+      <tr style="font-weight:bold;cursor:pointer;" onclick="showDialog('Hotmail','📧','<b>From: Microsoft</b><br><br>Please download the latest security patch for Windows XP.<br>Visit windowsupdate.microsoft.com<br><br>Microsoft Security Team')"><td style="padding:4px 8px;">Microsoft</td><td style="padding:4px 8px;">Important Security Update</td><td style="padding:4px 8px;">Yesterday</td></tr>
+      <tr style="font-weight:bold;cursor:pointer;" onclick="showDialog('Hotmail','⚠️','<b>From: prince_nigerian@yahoo.com</b><br><br>CONGRATULATIONS!!! You have won $1,000,000 USD!<br>Please send your bank details to claim your prize!<br><br><i>This is spam. Do not reply.</i>')"><td style="padding:4px 8px;color:red;">prince_nigerian@...</td><td style="padding:4px 8px;">You WON $1,000,000!!!</td><td style="padding:4px 8px;">2 days ago</td></tr>
+      <tr style="cursor:pointer;" onclick="showDialog('Hotmail','📧','<b>From: CoolKid2003</b><br><br>dude check out this game its so cool<br>www.newgrounds.com/portal/view/12345<br><br>lol see you at school tomorrow')"><td style="padding:4px 8px;">CoolKid2003</td><td style="padding:4px 8px;">Re: check this out</td><td style="padding:4px 8px;">3 days ago</td></tr>
+    </table>` },
+  google: { url:'http://www.google.com', title:'Google — Microsoft Internet Explorer', content:`
+    <div style="text-align:center;padding:40px 20px;">
+      <div style="font-size:52px;font-weight:bold;margin-bottom:20px;"><span style="color:#4285f4">G</span><span style="color:#ea4335">o</span><span style="color:#fbbc05">o</span><span style="color:#4285f4">g</span><span style="color:#34a853">l</span><span style="color:#ea4335">e</span></div>
+      <div style="display:inline-flex;gap:4px;margin-bottom:12px;width:100%;max-width:400px;">
+        <input id="google-q" type="text" placeholder="" style="flex:1;padding:6px 10px;border:1px solid #ccc;border-radius:2px;font-size:14px;outline:none;">
+        <button onclick="ieSearch()" style="padding:6px 12px;background:#f8f8f8;border:1px solid #ccc;cursor:pointer;font-size:12px;">Google Search</button>
+        <button onclick="showDialog('Google','🔍','I\'m feeling lucky! 🍀')" style="padding:6px 12px;background:#f8f8f8;border:1px solid #ccc;cursor:pointer;font-size:12px;">I\'m Feeling Lucky</button>
+      </div>
+      <div style="font-size:11px;color:#666;">Web | Images | Groups | Directory | News</div>
+      <div style="font-size:10px;color:#666;margin-top:20px;">Google Search the world's information.<br>Advertising Programs - Business Solutions - About Google<br><br>©2003 Google</div>
+    </div>` },
+  news: { url:'http://news.msn.com', title:'MSN News — Microsoft Internet Explorer', content:`
+    <div style="background:#003399;color:white;padding:8px 16px;margin:-12px -12px 12px;font-size:16px;font-weight:bold;">📰 MSN News</div>
+    <div style="display:flex;flex-direction:column;gap:10px;font-size:11px;">
+      <div style="border-bottom:1px solid #ccc;padding-bottom:10px;cursor:pointer;" onclick="showDialog('News','📰','<b>Windows XP Now Fastest-Selling OS</b><br><br>Microsoft\'s Windows XP has become the fastest-selling operating system in history, surpassing 17 million copies sold in just two months since its October 2001 launch.')"><b style="color:#003399;font-size:13px;">Windows XP Now Fastest-Selling OS In History</b><br><span style="color:#666;">AP Technology | October 2003</span><br>Microsoft reports record sales figures for Windows XP Professional...</div>
+      <div style="border-bottom:1px solid #ccc;padding-bottom:10px;cursor:pointer;" onclick="showDialog('News','📰','<b>Matrix Reloaded Breaks Records</b><br><br>The Matrix Reloaded has smashed box office records with $134 million in its opening weekend, making it the biggest R-rated opening in history.')"><b style="color:#003399;font-size:13px;">Matrix Reloaded Shatters Box Office Records</b><br><span style="color:#666;">Entertainment | May 2003</span><br>The sequel to The Matrix opens to $134 million in its first weekend...</div>
+      <div style="border-bottom:1px solid #ccc;padding-bottom:10px;cursor:pointer;" onclick="showDialog('News','📰','<b>Napster Shuts Down</b><br><br>The pioneering music-sharing service Napster has officially shut down after losing its battle with the RIAA. The site served over 80 million users at its peak.')"><b style="color:#003399;font-size:13px;">Napster Officially Shuts Down Music Service</b><br><span style="color:#666;">Technology | July 2001</span><br>After lengthy legal battles, Napster closes its doors forever...</div>
+      <div style="cursor:pointer;" onclick="showDialog('News','📰','<b>Broadband Reaches 10 Million</b><br><br>The number of U.S. broadband subscribers has reached 10 million, according to a new report. DSL and cable internet continue to replace dial-up connections.')"><b style="color:#003399;font-size:13px;">U.S. Broadband Users Hit 10 Million Milestone</b><br><span style="color:#666;">Technology | August 2003</span><br>High-speed internet adoption continues to surge across America...</div>
+    </div>` },
+  games: { url:'http://games.msn.com', title:'MSN Games — Microsoft Internet Explorer', content:`
+    <div style="background:linear-gradient(90deg,#660099,#9900cc);color:white;padding:8px 16px;margin:-12px -12px 12px;font-size:16px;font-weight:bold;">🎮 MSN Games</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:11px;">
+      <div style="width:120px;text-align:center;cursor:pointer;" onclick="openMinesweeper()"><div style="font-size:32px;">💣</div><b>Minesweeper</b><br><span style="color:#666;">Classic puzzle game</span><br><button style="margin-top:4px;font-size:10px;padding:2px 8px;cursor:pointer;">Play Now</button></div>
+      <div style="width:120px;text-align:center;cursor:pointer;" onclick="showDialog('Solitaire','🃏','Solitaire is loading...\n\n(Not implemented in this demo)')"><div style="font-size:32px;">🃏</div><b>Solitaire</b><br><span style="color:#666;">Classic card game</span><br><button style="margin-top:4px;font-size:10px;padding:2px 8px;cursor:pointer;">Play Now</button></div>
+      <div style="width:120px;text-align:center;cursor:pointer;" onclick="showDialog('Pinball','🎰','3D Pinball is loading...\n\n(Not implemented in this demo)')"><div style="font-size:32px;">🎰</div><b>3D Pinball</b><br><span style="color:#666;">Arcade action</span><br><button style="margin-top:4px;font-size:10px;padding:2px 8px;cursor:pointer;">Play Now</button></div>
+      <div style="width:120px;text-align:center;cursor:pointer;" onclick="showDialog('Hearts','♥','Hearts is loading...\n\n(Not implemented in this demo)')"><div style="font-size:32px;">♥</div><b>Hearts</b><br><span style="color:#666;">Multiplayer card game</span><br><button style="margin-top:4px;font-size:10px;padding:2px 8px;cursor:pointer;">Play Now</button></div>
+    </div>` },
+};
+
+function ieNavigate(key) {
+  const page = iePages[key] || iePages.msn;
+  document.getElementById('ie-url').value = page.url;
+  document.getElementById('ie-title').textContent = page.title;
+  document.getElementById('ie-content').innerHTML = page.content;
+  document.getElementById('ie-status').textContent = 'Done';
+  document.getElementById('ie-content').style.height='100%';
+  ieHistory = ieHistory.slice(0, ieHistIdx+1);
+  ieHistory.push(key);
+  ieHistIdx = ieHistory.length - 1;
+}
+function ieSearch() {
+  const q = document.getElementById('ie-search') || document.getElementById('google-q');
+  const term = q ? q.value : '';
+  showDialog('Search Results','🔍',`Searching for: <b>${term||'(empty)'}</b><br><br>In Windows XP era, this would open a Bing/MSN search.<br>Try navigating to different pages via the Favorites menu!`);
+}
+function ieBack() { if(ieHistIdx>0) { ieHistIdx--; ieNavigate(ieHistory[ieHistIdx]); } }
+function ieForward() { if(ieHistIdx<ieHistory.length-1) { ieHistIdx++; ieNavigate(ieHistory[ieHistIdx]); } }
+function ieRefresh() { if(ieHistory[ieHistIdx]) ieNavigate(ieHistory[ieHistIdx]); }
+
+// ══════════════════════════════════════════
+// NOTEPAD
+// ══════════════════════════════════════════
+let npDirty = false, npWordWrap = true;
+function notepadChanged() {
+  npDirty = true;
+  updateNpTitle();
+  const ta = document.getElementById('notepad-text');
+  const text = ta.value.substring(0, ta.selectionStart);
+  const lines = text.split('\n');
+  document.getElementById('np-status').textContent = `Ln ${lines.length}, Col ${lines[lines.length-1].length+1}`;
+}
+function updateNpTitle() {
+  document.getElementById('notepad-title').textContent = (npDirty?'*':'') + 'Untitled - Notepad';
+}
+function notepadNew() {
+  if(npDirty && !confirm('Save changes?')) return;
+  document.getElementById('notepad-text').value = '';
+  npDirty = false; updateNpTitle();
+}
+function notepadSave() {
+  const text = document.getElementById('notepad-text').value;
+  const blob = new Blob([text], {type:'text/plain'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='Untitled.txt'; a.click();
+  npDirty = false; updateNpTitle();
+}
+function notepadOpen() { showDialog('Open File','📂','File browsing is not supported in this simulation.<br>You can type directly in the Notepad window.'); }
+function notepadFindReplace() { showDialog('Find','🔍','Find/Replace not implemented in this demo.<br>Use Ctrl+F in your actual browser instead.'); }
+function insertTimeStamp() { const now=new Date(); document.getElementById('notepad-text').value += '\n'+now.toLocaleTimeString()+' '+now.toLocaleDateString(); notepadChanged(); }
+function toggleWordWrap() { const ta=document.getElementById('notepad-text'); npWordWrap=!npWordWrap; ta.style.whiteSpace=npWordWrap?'pre-wrap':'nowrap'; ta.style.overflowX=npWordWrap?'hidden':'scroll'; }
+function notepadFont() { showDialog('Font','🔤','Font selection not available in this demo.<br>Current font: Courier New, 12pt'); }
+
+// ══════════════════════════════════════════
+// RECYCLE BIN
+// ══════════════════════════════════════════
+function emptyRecycleBin() {
+  showDialog('Confirm Delete','🗑️','Are you sure you want to permanently delete all items in the Recycle Bin?',['Yes','No']);
+  setTimeout(()=>{
+    document.getElementById('rb-grid').innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100px;color:#666;gap:8px;width:100%;"><span style="font-size:40px;">🗑️</span><span style="font-size:11px;">Recycle Bin is empty</span></div>';
+    document.getElementById('rb-status').textContent = '0 objects';
+  }, 500);
+}
+function rbRestore() { showDialog('Restore','♻️','All items have been restored to their original locations.'); }
+function rbSelectItem(el) { document.querySelectorAll('#rb-grid .file-item').forEach(i=>i.classList.remove('selected')); el.classList.add('selected'); }
+
+// ══════════════════════════════════════════
+// MINESWEEPER
+// ══════════════════════════════════════════
+let msBoard=[], msRows=9, msCols=9, msMines=10, msRevealed=0, msGameOver=false, msStarted=false, msTimerInt=null, msTime=0, msFlags=0;
+
+const msDiffs = {
+  beginner:     {rows:9,  cols:9,  mines:10},
+  intermediate: {rows:16, cols:16, mines:40},
+  expert:       {rows:16, cols:30, mines:99},
+};
+let msCurDiff = 'beginner';
+
+function msSetDiff(d) {
+  msCurDiff = d;
+  document.querySelectorAll('.ms-diff-btn').forEach(b=>b.classList.remove('active'));
+  const btn = document.getElementById('ms-btn-'+d);
+  if(btn) btn.classList.add('active');
+  msRows=msDiffs[d].rows; msCols=msDiffs[d].cols; msMines=msDiffs[d].mines;
+  msNewGame();
+}
+
+function msNewGame() {
+  clearInterval(msTimerInt);
+  msBoard=[]; msRevealed=0; msGameOver=false; msStarted=false; msTime=0; msFlags=0;
+  document.getElementById('ms-face').textContent='🙂';
+  document.getElementById('ms-timer').textContent='000';
+  document.getElementById('ms-mines').textContent=String(msMines).padStart(3,'0');
+
+  // Build board
+  for(let r=0;r<msRows;r++){msBoard[r]=[];for(let c=0;c<msCols;c++)msBoard[r][c]={mine:false,revealed:false,flagged:false,count:0};}
+
+  // Place mines
+  let placed=0;
+  while(placed<msMines){const r=Math.floor(Math.random()*msRows),c=Math.floor(Math.random()*msCols);if(!msBoard[r][c].mine){msBoard[r][c].mine=true;placed++;}}
+
+  // Count neighbors
+  for(let r=0;r<msRows;r++)for(let c=0;c<msCols;c++)if(!msBoard[r][c].mine)msBoard[r][c].count=msCountNeighbors(r,c);
+
+  msRender();
+}
+
+function msCountNeighbors(r,c){let n=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=r+dr,nc=c+dc;if(nr>=0&&nr<msRows&&nc>=0&&nc<msCols&&msBoard[nr][nc].mine)n++;}return n;}
+
+function msRender() {
+  const grid = document.getElementById('ms-grid');
+  grid.style.gridTemplateColumns = `repeat(${msCols},1fr)`;
+  grid.innerHTML='';
+
+  for(let r=0;r<msRows;r++) for(let c=0;c<msCols;c++) {
+    const cell = document.createElement('div');
+    cell.className='ms-cell';
+    const cell_data = msBoard[r][c];
+
+    if(cell_data.revealed) {
+      cell.classList.add('revealed');
+      if(cell_data.mine) { cell.textContent='💣'; cell.classList.add('mine-hit'); }
+      else if(cell_data.count>0) { cell.textContent=cell_data.count; cell.classList.add('ms-n'+cell_data.count); }
+    } else if(cell_data.flagged) {
+      cell.textContent='🚩';
     }
 
-    toggle.onclick = () => {
-      document.body.classList.toggle("dark");
-      localStorage.theme = document.body.classList.contains("dark") ? "dark" : "light";
-      toggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-    };
+    // Mouse events
+    cell.addEventListener('click', ()=>msClick(r,c));
+    cell.addEventListener('contextmenu', e=>{e.preventDefault();msRightClick(r,c);});
 
-    // 🔎 SEARCH
-    document.getElementById("search").oninput = e => {
-      let t = e.target.value.toLowerCase();
-      document.querySelectorAll(".post").forEach(p =>
-        p.style.display = p.innerText.toLowerCase().includes(t) ? "" : "none"
-      );
-    };
+    // Touch: long press = flag
+    let pressTimer;
+    cell.addEventListener('touchstart', ()=>{ pressTimer=setTimeout(()=>msRightClick(r,c),500); },{passive:true});
+    cell.addEventListener('touchend', ()=>clearTimeout(pressTimer),{passive:true});
+    cell.addEventListener('touchmove', ()=>clearTimeout(pressTimer),{passive:true});
 
-    // 🎞️ IMAGE SLIDERS (MULTIPLE SUPPORTED)
-    document.querySelectorAll(".slider-container").forEach(container => {
-      const slider = container.querySelector(".slider");
-      const slides = container.querySelectorAll(".slide");
-      const nextBtn = container.querySelector(".right");
-      const prevBtn = container.querySelector(".left");
+    grid.appendChild(cell);
+  }
+}
 
-      let currentSlide = 0;
+function msClick(r,c) {
+  if(msGameOver||msBoard[r][c].revealed||msBoard[r][c].flagged) return;
+  if(!msStarted) { msStarted=true; msTimerInt=setInterval(()=>{msTime++;document.getElementById('ms-timer').textContent=String(Math.min(999,msTime)).padStart(3,'0');},1000); }
+  if(msBoard[r][c].mine) { msGameLose(r,c); return; }
+  msReveal(r,c);
+  if(msRevealed===msRows*msCols-msMines) msGameWin();
+  msRender();
+}
 
-      function updateSlide() {
-        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-      }
+function msReveal(r,c) {
+  if(r<0||r>=msRows||c<0||c>=msCols||msBoard[r][c].revealed||msBoard[r][c].flagged) return;
+  msBoard[r][c].revealed=true; msRevealed++;
+  if(msBoard[r][c].count===0 && !msBoard[r][c].mine) for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++) msReveal(r+dr,c+dc);
+}
 
-      nextBtn.addEventListener("click", () => {
-        currentSlide = (currentSlide + 1) % slides.length;
-        updateSlide();
-      });
+function msRightClick(r,c) {
+  if(msGameOver||msBoard[r][c].revealed) return;
+  msBoard[r][c].flagged=!msBoard[r][c].flagged;
+  msFlags += msBoard[r][c].flagged ? 1 : -1;
+  document.getElementById('ms-mines').textContent=String(Math.max(0,msMines-msFlags)).padStart(3,'0');
+  msRender();
+}
 
-      prevBtn.addEventListener("click", () => {
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        updateSlide();
-      });
+function msGameLose(hr,hc) {
+  clearInterval(msTimerInt); msGameOver=true;
+  document.getElementById('ms-face').textContent='😵';
+  for(let r=0;r<msRows;r++) for(let c=0;c<msCols;c++) if(msBoard[r][c].mine) msBoard[r][c].revealed=true;
+  msBoard[hr][hc].hitMine=true;
+  msRender();
+  // Highlight hit mine
+  const cells = document.getElementById('ms-grid').children;
+  cells[hr*msCols+hc].style.background='#f00';
+}
 
-      // Auto-slide every 4 seconds
-      setInterval(() => {
-        currentSlide = (currentSlide + 1) % slides.length;
-        updateSlide();
-      }, 99999999999999);
-    });
-  </script>
+function msGameWin() {
+  clearInterval(msTimerInt); msGameOver=true;
+  document.getElementById('ms-face').textContent='😎';
+  showDialog('You Win!','🎉',`Congratulations! You cleared the board!<br>Time: <b>${msTime} seconds</b><br>Difficulty: <b>${msCurDiff}</b>`);
+}
 
+// ══════════════════════════════════════════
+// CALCULATOR
+// ══════════════════════════════════════════
+let calcDisplay='0', calcOper=null, calcPrev=null, calcNew=true, calcMem=0;
+function calcShow(v){const d=document.getElementById('calc-display');d.textContent=String(v).substring(0,14);calcDisplay=String(v);}
+function calcInput(n){if(calcNew){calcDisplay='';calcNew=false;}if(calcDisplay==='0'&&n!=='.') calcDisplay='';calcDisplay+=n;calcShow(calcDisplay);}
+function calcDot(){if(calcNew){calcDisplay='0';calcNew=false;}if(!calcDisplay.includes('.'))calcDisplay+='.';calcShow(calcDisplay);}
+function calcOp(op){
+  const val=parseFloat(calcDisplay)||0;
+  if(calcOper!==null&&!calcNew){
+    try{const res=calcDoOp(calcPrev,val,calcOper);calcShow(parseFloat(res.toFixed(10)));calcPrev=parseFloat(res.toFixed(10));}catch(e){calcShow('Error');calcPrev=0;}
+  } else {calcPrev=val;}
+  calcOper=op;calcNew=true;
+}
+function calcDoOp(a,b,op){switch(op){case'+':return a+b;case'-':return a-b;case'*':return a*b;case'/':if(b===0)throw'div0';return a/b;}return b;}
+function calcEquals(){
+  if(calcOper===null){return;}
+  const val=parseFloat(calcDisplay)||0;
+  try{const res=calcDoOp(calcPrev,val,calcOper);calcShow(parseFloat(res.toFixed(10)));}catch(e){calcShow('Cannot divide by zero');}
+  calcOper=null;calcPrev=null;calcNew=true;
+}
+function calcBack(){if(calcDisplay.length>1)calcDisplay=calcDisplay.slice(0,-1);else calcDisplay='0';calcShow(calcDisplay);}
+function calcCE(){calcDisplay='0';calcNew=false;calcShow('0');}
+function calcC(){calcDisplay='0';calcOper=null;calcPrev=null;calcNew=true;calcShow('0');}
+function calcSqrt(){const v=parseFloat(calcDisplay);if(v<0){calcShow('Invalid input');}else{calcShow(parseFloat(Math.sqrt(v).toFixed(10)));calcNew=true;}}
+function calcPercent(){const v=parseFloat(calcDisplay);calcShow(parseFloat((v/100).toFixed(10)));calcNew=true;}
+function calcInverse(){const v=parseFloat(calcDisplay);if(v===0){calcShow('Cannot divide by zero');}else{calcShow(parseFloat((1/v).toFixed(10)));calcNew=true;}}
+function calcMC(){calcMem=0;}
+function calcMR(){calcDisplay=String(calcMem);calcNew=false;calcShow(calcDisplay);}
+function calcMS(){calcMem=parseFloat(calcDisplay)||0;}
+function calcMPlus(){calcMem+=(parseFloat(calcDisplay)||0);}
+
+// Keyboard support for calc
+document.addEventListener('keydown',e=>{
+  if(focusedWindow==='win-calc'){
+    if(e.key>='0'&&e.key<='9') calcInput(e.key);
+    else if(e.key==='.') calcDot();
+    else if(e.key==='+') calcOp('+');
+    else if(e.key==='-') calcOp('-');
+    else if(e.key==='*') calcOp('*');
+    else if(e.key==='/'){e.preventDefault();calcOp('/');}
+    else if(e.key==='Enter'||e.key==='=') calcEquals();
+    else if(e.key==='Backspace') calcBack();
+    else if(e.key==='Escape') calcC();
+  }
+});
+
+// ══════════════════════════════════════════
+// PAINT
+// ══════════════════════════════════════════
+let paintTool='pencil', paintColor='#000000', paintBgColor='#ffffff', paintSize=3, paintDrawing=false, paintStartX=0, paintStartY=0, paintSnapshot=null, paintHistory=[];
+
+const paintColors_list = ['#000000','#808080','#800000','#808000','#008000','#008080','#000080','#800080','#808040','#004040','#0080ff','#004080','#4000ff','#804000','#ffffff','#c0c0c0','#ff0000','#ffff00','#00ff00','#00ffff','#0000ff','#ff00ff','#ffff80','#00ff80','#80ffff','#8080ff','#ff0080','#ff8040','#ff8000','#ffd700'];
+
+function initPaint() {
+  const canvas = document.getElementById('paint-canvas');
+  const wrap = document.getElementById('paint-canvas-wrap');
+  const ctx = canvas.getContext('2d');
+  canvas.width = Math.max(400, wrap.clientWidth);
+  canvas.height = Math.max(300, wrap.clientHeight);
+  ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Build color palette
+  const palette = document.getElementById('paint-colors');
+  palette.innerHTML = '';
+  const swatches = document.createElement('div');
+  swatches.style.cssText='display:flex;align-items:center;gap:4px;margin-right:6px;';
+  const fg = document.createElement('div'); fg.id='paint-fg'; fg.style.cssText='width:22px;height:22px;background:#000;border:2px solid #000;cursor:pointer;';
+  const bg = document.createElement('div'); bg.id='paint-bg-swatch'; bg.style.cssText='width:16px;height:16px;background:#fff;border:1px solid #000;margin-top:4px;margin-left:-10px;cursor:pointer;';
+  swatches.appendChild(fg); swatches.appendChild(bg); palette.appendChild(swatches);
+
+  paintColors_list.forEach(c=>{
+    const sw = document.createElement('div');
+    sw.className='paint-color';
+    sw.style.background=c;
+    sw.title=c;
+    sw.onclick=()=>{ paintColor=c; updatePaintSwatches(); };
+    sw.addEventListener('contextmenu',e=>{e.preventDefault();paintBgColor=c;updatePaintSwatches();});
+    palette.appendChild(sw);
+  });
+
+  canvas.addEventListener('mousedown', paintStart);
+  canvas.addEventListener('mousemove', paintMove);
+  canvas.addEventListener('mouseup', paintEnd);
+  canvas.addEventListener('mouseleave', paintEnd);
+  canvas.addEventListener('touchstart', e=>{ e.preventDefault(); const t=e.touches[0]; const rect=canvas.getBoundingClientRect(); paintStart({clientX:t.clientX,clientY:t.clientY,preventDefault:()=>{}}, rect); }, {passive:false});
+  canvas.addEventListener('touchmove', e=>{ e.preventDefault(); const t=e.touches[0]; paintMove({clientX:t.clientX,clientY:t.clientY}); }, {passive:false});
+  canvas.addEventListener('touchend', paintEnd, {passive:true});
+  canvas.addEventListener('mousemove', e=>{ const r=canvas.getBoundingClientRect(); document.getElementById('paint-coords').textContent=`${Math.floor(e.clientX-r.left)},${Math.floor(e.clientY-r.top)}`; });
+}
+
+function updatePaintSwatches() {
+  const fg = document.getElementById('paint-fg'); if(fg) fg.style.background=paintColor;
+  const bg = document.getElementById('paint-bg-swatch'); if(bg) bg.style.background=paintBgColor;
+}
+
+function setPaintTool(t) {
+  paintTool=t;
+  document.querySelectorAll('.paint-tool').forEach(b=>b.classList.remove('active'));
+  const el = document.getElementById('pt-'+t); if(el) el.classList.add('active');
+}
+
+function paintSizeChange() { paintSize=parseInt(document.getElementById('paint-size').value); }
+
+function getCanvasPos(e) {
+  const rect = document.getElementById('paint-canvas').getBoundingClientRect();
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+}
+
+function paintStart(e) {
+  paintDrawing=true;
+  const canvas=document.getElementById('paint-canvas'), ctx=canvas.getContext('2d');
+  const pos=getCanvasPos(e);
+  paintStartX=pos.x; paintStartY=pos.y;
+  if(paintTool==='fill') { paintFill(ctx,Math.floor(pos.x),Math.floor(pos.y)); paintDrawing=false; return; }
+  paintSnapshot=ctx.getImageData(0,0,canvas.width,canvas.height);
+  ctx.beginPath(); ctx.moveTo(pos.x,pos.y);
+  ctx.strokeStyle=paintColor; ctx.lineWidth=paintSize; ctx.lineCap='round'; ctx.lineJoin='round';
+  paintHistory.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+  if(paintHistory.length>20) paintHistory.shift();
+}
+
+function paintMove(e) {
+  if(!paintDrawing) return;
+  const canvas=document.getElementById('paint-canvas'), ctx=canvas.getContext('2d');
+  const pos=getCanvasPos(e);
+  if(paintTool==='pencil'||paintTool==='brush') {
+    ctx.lineTo(pos.x,pos.y); ctx.strokeStyle=paintColor; ctx.lineWidth=paintTool==='brush'?paintSize*2:paintSize; ctx.lineCap='round'; ctx.stroke();
+  } else if(paintTool==='eraser') {
+    ctx.clearRect(pos.x-paintSize,pos.y-paintSize,paintSize*2,paintSize*2);
+    ctx.fillStyle=paintBgColor; ctx.fillRect(pos.x-paintSize,pos.y-paintSize,paintSize*2,paintSize*2);
+  } else if(paintSnapshot) {
+    ctx.putImageData(paintSnapshot,0,0);
+    ctx.strokeStyle=paintColor; ctx.fillStyle=paintColor; ctx.lineWidth=paintSize;
+    if(paintTool==='line'){ctx.beginPath();ctx.moveTo(paintStartX,paintStartY);ctx.lineTo(pos.x,pos.y);ctx.stroke();}
+    else if(paintTool==='rect'){ctx.strokeRect(paintStartX,paintStartY,pos.x-paintStartX,pos.y-paintStartY);}
+    else if(paintTool==='circle'){ctx.beginPath();ctx.ellipse((paintStartX+pos.x)/2,(paintStartY+pos.y)/2,Math.abs(pos.x-paintStartX)/2,Math.abs(pos.y-paintStartY)/2,0,0,Math.PI*2);ctx.stroke();}
+  }
+}
+
+function paintEnd() { if(paintDrawing){paintDrawing=false;} }
+
+function paintFill(ctx,sx,sy) {
+  const canvas=document.getElementById('paint-canvas');
+  const imageData=ctx.getImageData(0,0,canvas.width,canvas.height);
+  const data=imageData.data;
+  const w=canvas.width,h=canvas.height;
+  const idx=(y,x)=>(y*w+x)*4;
+  const target=[data[idx(sy,sx)],data[idx(sy,sx)+1],data[idx(sy,sx)+2],data[idx(sy,sx)+3]];
+  const fill=hexToRgb(paintColor);
+  if(!fill) return;
+  if(target[0]===fill.r&&target[1]===fill.g&&target[2]===fill.b) return;
+  const stack=[[sx,sy]];
+  const visited=new Uint8Array(w*h);
+  const match=(x,y)=>{const i=idx(y,x);return data[i]===target[0]&&data[i+1]===target[1]&&data[i+2]===target[2]&&data[i+3]===target[3];};
+  while(stack.length){
+    const [x,y]=stack.pop();
+    if(x<0||x>=w||y<0||y>=h||visited[y*w+x]||!match(x,y)) continue;
+    visited[y*w+x]=1;
+    const i=idx(y,x);data[i]=fill.r;data[i+1]=fill.g;data[i+2]=fill.b;data[i+3]=255;
+    stack.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]);
+  }
+  ctx.putImageData(imageData,0,0);
+}
+
+function hexToRgb(hex){const r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);return r?{r:parseInt(r[1],16),g:parseInt(r[2],16),b:parseInt(r[3],16)}:null;}
+
+function paintNew() { const c=document.getElementById('paint-canvas'),ctx=c.getContext('2d');ctx.fillStyle=paintBgColor;ctx.fillRect(0,0,c.width,c.height); }
+function paintSave() { const a=document.createElement('a');a.href=document.getElementById('paint-canvas').toDataURL();a.download='untitled.png';a.click(); }
+function paintUndo() { if(paintHistory.length>0){const c=document.getElementById('paint-canvas'),ctx=c.getContext('2d');ctx.putImageData(paintHistory.pop(),0,0);} }
+function paintClear() { paintNew(); }
+function paintFlipH() { const c=document.getElementById('paint-canvas'),ctx=c.getContext('2d'),img=ctx.getImageData(0,0,c.width,c.height);ctx.clearRect(0,0,c.width,c.height);ctx.save();ctx.translate(c.width,0);ctx.scale(-1,1);ctx.putImageData(img,0,0);ctx.restore(); }
+function paintFlipV() { const c=document.getElementById('paint-canvas'),ctx=c.getContext('2d'),img=ctx.getImageData(0,0,c.width,c.height);ctx.clearRect(0,0,c.width,c.height);ctx.save();ctx.translate(0,c.height);ctx.scale(1,-1);ctx.putImageData(img,0,0);ctx.restore(); }
+function paintInvert() { const c=document.getElementById('paint-canvas'),ctx=c.getContext('2d'),img=ctx.getImageData(0,0,c.width,c.height),d=img.data;for(let i=0;i<d.length;i+=4){d[i]=255-d[i];d[i+1]=255-d[i+1];d[i+2]=255-d[i+2];}ctx.putImageData(img,0,0); }
+
+// ══════════════════════════════════════════
+// MEDIA PLAYER
+// ══════════════════════════════════════════
+const mpTracks = [
+  {title:'In The End',artist:'Linkin Park',album:'Hybrid Theory',duration:216,emoji:'🎸'},
+  {title:'Lose Yourself',artist:'Eminem',album:'8 Mile Soundtrack',duration:320,emoji:'🎤'},
+  {title:'Complicated',artist:'Avril Lavigne',album:'Let Go',duration:244,emoji:'🎀'},
+  {title:'Sk8er Boi',artist:'Avril Lavigne',album:'Let Go',duration:204,emoji:'🛹'},
+  {title:'Beautiful',artist:'Christina Aguilera',album:'Stripped',duration:228,emoji:'✨'},
+  {title:'Work It',artist:"Missy Elliott",album:'Under Construction',duration:255,emoji:'🎵'},
+  {title:'Crazy in Love',artist:'Beyoncé',album:'Dangerously in Love',duration:236,emoji:'💃'},
+  {title:'In Da Club',artist:'50 Cent',album:'Get Rich or Die Tryin\'',duration:201,emoji:'🥳'},
+];
+let mpPlaying=false, mpCurTrack=0, mpPos=0, mpInterval=null, mpShuffle=false, mpInited=false;
+
+function initMP() {
+  if(mpInited) return; mpInited=true;
+  // Build bars
+  const bars=document.getElementById('mp-bars');
+  for(let i=0;i<12;i++){const b=document.createElement('div');b.className='mp-bar';b.style.animationDelay=(i*0.07)+'s';b.style.animationDuration=(0.5+Math.random()*0.5)+'s';bars.appendChild(b);}
+  // Build playlist
+  const pl=document.getElementById('mp-playlist');
+  mpTracks.forEach((t,i)=>{
+    const item=document.createElement('div'); item.className='mp-pl-item'+(i===0?' active':''); item.id='mp-pl-'+i;
+    item.innerHTML=`${t.emoji} ${t.title} — ${t.artist}`;
+    item.onclick=()=>mpGoTrack(i);
+    pl.appendChild(item);
+  });
+  mpLoadTrack();
+}
+
+function mpLoadTrack() {
+  const t=mpTracks[mpCurTrack];
+  document.getElementById('mp-title').textContent=t.title;
+  document.getElementById('mp-artist').textContent=t.artist+' ('+t.album+')';
+  document.getElementById('mp-dur').textContent=mpFmtTime(t.duration);
+  mpPos=0; mpUpdateProgress();
+  document.querySelectorAll('.mp-pl-item').forEach((el,i)=>el.classList.toggle('active',i===mpCurTrack));
+}
+function mpFmtTime(s){return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');}
+function mpUpdateProgress(){const t=mpTracks[mpCurTrack];document.getElementById('mp-prog').style.width=(mpPos/t.duration*100)+'%';document.getElementById('mp-cur').textContent=mpFmtTime(mpPos);}
+function mpTogglePlay(){
+  mpPlaying=!mpPlaying;
+  document.getElementById('mp-play-btn').textContent=mpPlaying?'⏸':'▶';
+  const bars=document.getElementById('mp-bars');
+  bars.querySelectorAll('.mp-bar').forEach(b=>b.style.animationPlayState=mpPlaying?'running':'paused');
+  if(mpPlaying){mpInterval=setInterval(()=>{mpPos++;if(mpPos>=mpTracks[mpCurTrack].duration)mpNext();else mpUpdateProgress();},1000);}
+  else clearInterval(mpInterval);
+}
+function mpStop(){clearInterval(mpInterval);mpPlaying=false;mpPos=0;document.getElementById('mp-play-btn').textContent='▶';mpUpdateProgress();const bars=document.getElementById('mp-bars');bars.querySelectorAll('.mp-bar').forEach(b=>b.style.animationPlayState='paused');}
+function mpNext(){const wasPlaying=mpPlaying;mpStop();mpCurTrack=mpShuffle?Math.floor(Math.random()*mpTracks.length):(mpCurTrack+1)%mpTracks.length;mpLoadTrack();if(wasPlaying)mpTogglePlay();}
+function mpPrev(){const wasPlaying=mpPlaying;mpStop();mpCurTrack=(mpCurTrack-1+mpTracks.length)%mpTracks.length;mpLoadTrack();if(wasPlaying)mpTogglePlay();}
+function mpGoTrack(i){const wasPlaying=mpPlaying;mpStop();mpCurTrack=i;mpLoadTrack();if(wasPlaying)mpTogglePlay();}
+function mpSeek(e){const prog=e.currentTarget;mpPos=Math.floor((e.offsetX/prog.offsetWidth)*mpTracks[mpCurTrack].duration);mpUpdateProgress();}
+function mpVol(v){/* Volume visual only */}
+function mpShuffle(){mpShuffle=!mpShuffle;document.getElementById('mp-shuf').style.background=mpShuffle?'#0060d0':'#333';}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+showWindow('win-mycomputer');
+ieNavigate('msn');
+
+// Init minesweeper bars
+for(let i=0;i<12;i++){const b=document.createElement('div');b.className='mp-bar';}
+msNewGame();
+</script>
 </body>
-
 </html>
