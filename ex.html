@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DIO Over Heaven — Eyes of Heaven</title>
+<title>DIO — Over Heaven</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&display=swap');
 
@@ -11,443 +11,427 @@
   --gold: #c9a84c;
   --gold-bright: #f5d97a;
   --gold-dim: #5a3e10;
+  --gold-glow: rgba(201,168,76,0.35);
   --white: #f0ece2;
+  --white-dim: rgba(240,236,226,0.45);
   --bg: #000;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
 html, body {
   background: var(--bg);
   color: var(--white);
   font-family: 'Cinzel', serif;
   overflow-x: hidden;
+  cursor: crosshair;
 }
 
-/* ── LOADING ── */
+/* ══ LOADING SCREEN ══ */
 #loading {
   position: fixed; inset: 0;
   background: #000;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  z-index: 999;
-  transition: opacity 0.8s;
+  z-index: 9999;
+  transition: opacity 1s ease;
 }
-#loading h2 {
+#loading.hide { opacity: 0; pointer-events: none; }
+
+#loading-title {
   font-family: 'Cinzel Decorative', serif;
-  color: var(--gold); font-size: 12px;
-  letter-spacing: 6px; margin-bottom: 20px;
-}
-#prog-wrap { width: 160px; height: 1px; background: rgba(201,168,76,0.12); }
-#prog-bar {
-  height: 1px; width: 0%;
-  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
-  box-shadow: 0 0 6px var(--gold);
-  transition: width 0.2s;
-}
-#loading p {
-  margin-top: 14px; font-size: 8px;
-  letter-spacing: 4px; color: rgba(255,255,255,0.15);
-}
-
-/* ── SCROLL PROGRESS ── */
-#scroll-prog {
-  position: fixed; top: 0; left: 0; height: 1px;
-  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
-  box-shadow: 0 0 6px var(--gold);
-  z-index: 998; width: 0%;
-  transition: width 0.1s linear;
-}
-
-/* ── BACK BUTTON — nobyl signature ── */
-#back-btn {
-  position: fixed; top: 18px; left: 18px; z-index: 997;
-  display: flex; align-items: center; gap: 7px;
-  background: rgba(5,4,2,0.88);
-  border: 1px solid var(--gold-dim);
+  font-size: clamp(11px, 3vw, 16px);
+  letter-spacing: 8px;
   color: var(--gold);
-  font-family: 'Cinzel', serif;
-  font-size: 9px; font-weight: 700;
-  letter-spacing: 4px; text-transform: uppercase;
-  padding: 9px 16px 9px 12px;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  text-decoration: none;
-  clip-path: polygon(10px 0%,100% 0%,100% 100%,0% 100%,0% 10px);
-  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+  margin-bottom: 32px;
+  text-shadow: 0 0 30px rgba(201,168,76,.7);
+  animation: loadPulse 1.5s ease-in-out infinite;
 }
-#back-btn:hover {
+@keyframes loadPulse {
+  0%,100%{ opacity:.6; } 50%{ opacity:1; }
+}
+
+#prog-wrap {
+  width: 200px; height: 1px;
   background: rgba(201,168,76,0.1);
-  border-color: var(--gold);
-  box-shadow: 0 0 20px rgba(201,168,76,0.2);
-}
-
-/* ── STARS ── */
-#stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-.star {
-  position: absolute; border-radius: 50%; background: #fff;
-  animation: twinkle var(--d) ease-in-out infinite alternate;
-}
-@keyframes twinkle {
-  from { opacity: 0.05; }
-  to   { opacity: 0.7; }
-}
-
-/* ── HEADER ── */
-#top-header {
-  position: relative; z-index: 1;
-  text-align: center;
-  padding: 68px 20px 0;
-}
-#game-label {
-  font-size: 8px; letter-spacing: 5px;
-  color: rgba(255,255,255,0.2);
-  text-transform: uppercase; margin-bottom: 12px;
-}
-#top-header h1 {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(32px, 9vw, 60px);
-  font-weight: 900; letter-spacing: 10px;
-  color: var(--white);
-  text-shadow: 0 0 40px rgba(201,168,76,0.4), 0 0 80px rgba(201,168,76,0.1);
-  line-height: 1;
-}
-#top-header h1 span {
-  display: block;
-  font-family: 'Cinzel', serif;
-  font-size: clamp(9px, 2.5vw, 13px);
-  letter-spacing: 9px; color: var(--gold);
-  font-weight: 400; margin-top: 10px;
-  text-shadow: 0 0 16px rgba(201,168,76,0.6);
-}
-.divider {
-  width: 180px; height: 1px; margin: 16px auto 0;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: 0.35;
-}
-
-/* ── 3D CARD ── */
-#model-card-wrap {
-  position: relative; z-index: 1;
-  max-width: 480px;
-  margin: 32px auto 0;
-  padding: 0 20px;
-}
-
-#model-card {
+  margin-bottom: 16px;
   position: relative;
-  border: 1px solid rgba(201,168,76,0.18);
-  background: linear-gradient(180deg, rgba(201,168,76,0.04) 0%, rgba(0,0,0,0) 100%);
-  overflow: hidden;
-
-  /* card corners */
-  clip-path: polygon(
-    14px 0%, calc(100% - 14px) 0%,
-    100% 14px, 100% calc(100% - 14px),
-    calc(100% - 14px) 100%, 14px 100%,
-    0% calc(100% - 14px), 0% 14px
-  );
 }
-
-/* corner accents */
-#model-card::before, #model-card::after {
+#prog-bar {
+  height: 1px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
+  box-shadow: 0 0 8px var(--gold), 0 0 20px var(--gold-dim);
+  transition: width 0.3s ease;
+}
+#prog-bar::after {
   content: '';
   position: absolute;
-  width: 20px; height: 20px;
-  border-color: var(--gold);
-  border-style: solid;
-  opacity: 0.5;
-  z-index: 3;
-  pointer-events: none;
-}
-#model-card::before { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
-#model-card::after  { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
-
-.card-corner-tr, .card-corner-bl {
-  position: absolute; width: 20px; height: 20px;
-  border-color: var(--gold); border-style: solid; opacity: 0.5;
-  z-index: 3; pointer-events: none;
-}
-.card-corner-tr { top: 6px; right: 6px; border-width: 1px 1px 0 0; }
-.card-corner-bl { bottom: 6px; left: 6px; border-width: 0 0 1px 1px; }
-
-/* card label strip */
-.card-label-top {
-  position: absolute; top: 0; left: 0; right: 0;
-  z-index: 3; pointer-events: none;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 18px;
-}
-.card-label-top span {
-  font-size: 7px; letter-spacing: 4px;
-  color: rgba(201,168,76,0.35); text-transform: uppercase;
-}
-
-/* viewer canvas area */
-#viewer {
-  width: 100%;
-  height: 52vw;
-  max-height: 340px;
-  min-height: 220px;
-  position: relative;
-  overflow: hidden;
-  pointer-events: none; /* no touch/drag */
-  user-select: none;
-}
-#viewer canvas {
-  display: block; width: 100% !important; height: 100% !important;
-}
-#viewer::before, #viewer::after {
-  content: ''; position: absolute; left: 0; right: 0; height: 55px; z-index: 2; pointer-events: none;
-}
-#viewer::before { top: 0; background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 100%); }
-#viewer::after  { bottom: 0; background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%); }
-.side-vignette {
-  position: absolute; inset: 0; pointer-events: none; z-index: 2;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.65) 100%);
-}
-
-/* card bottom strip */
-.card-label-bottom {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  z-index: 3; pointer-events: none;
-  display: flex; justify-content: center;
-  padding: 8px;
-}
-.card-label-bottom span {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: 8px; letter-spacing: 5px;
-  color: rgba(201,168,76,0.5);
-}
-
-/* ── INFO ── */
-#info {
-  position: relative; z-index: 1;
-  padding: 28px 24px 60px;
-  max-width: 700px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-#char-name {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(12px, 3vw, 18px);
-  letter-spacing: 5px; color: var(--gold);
-  margin-bottom: 6px;
-}
-.section-divider {
-  width: 100px; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.35), transparent);
-  margin: 12px auto 18px;
-}
-#description {
-  font-size: clamp(11px, 2.4vw, 13px);
-  line-height: 2.1; color: rgba(240,236,226,0.48);
-  letter-spacing: 0.4px; margin-bottom: 36px;
-}
-
-/* ── BAR STATS ── */
-.stats-label {
-  font-size: 8px; letter-spacing: 5px;
-  color: rgba(201,168,76,0.3); text-transform: uppercase;
-  margin-bottom: 18px;
-}
-#stats-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 16px 28px; margin-bottom: 40px; text-align: left;
-}
-@media (max-width: 360px) { #stats-grid { grid-template-columns: 1fr; } }
-.stat-row { display: flex; flex-direction: column; gap: 5px; }
-.stat-name {
-  font-size: 8px; letter-spacing: 3px;
-  color: rgba(255,255,255,0.28); text-transform: uppercase;
-  display: flex; justify-content: space-between;
-}
-.stat-name span { color: var(--gold); font-size: 9px; }
-.stat-bar-bg { height: 1px; background: rgba(255,255,255,0.06); position: relative; }
-.stat-bar-fill {
-  height: 1px;
-  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
-  box-shadow: 0 0 5px var(--gold);
-  width: 0%; transition: width 1.5s cubic-bezier(0.16,1,0.3,1);
-}
-
-/* ── RADAR ── */
-.radar-title {
-  font-size: 8px; letter-spacing: 5px;
-  color: rgba(201,168,76,0.3); text-transform: uppercase;
-  margin-bottom: 22px;
-}
-#radar-wrap {
-  display: flex; flex-direction: column; align-items: center;
-  margin-bottom: 40px;
-}
-#radarSvg { overflow: visible; }
-.radar-legend {
-  display: flex; flex-wrap: wrap; gap: 10px 18px;
-  justify-content: center; margin-top: 16px;
-}
-.rl-item {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 8px; letter-spacing: 3px;
-  text-transform: uppercase; color: rgba(201,168,76,0.35);
-}
-.rl-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink:0; }
-
-/* ── ABILITY ── */
-#ability {
-  border: 1px solid rgba(201,168,76,0.1);
-  padding: 22px 20px;
-  position: relative; margin-bottom: 40px;
-}
-#ability::before {
-  content: '✦  STAND ABILITY  ✦';
-  position: absolute; top: -7px; left: 50%;
-  transform: translateX(-50%);
-  background: #000; padding: 0 12px;
-  font-size: 7px; letter-spacing: 4px;
-  color: var(--gold); white-space: nowrap;
-}
-#ability h4 {
-  font-size: clamp(10px, 2.5vw, 13px);
-  letter-spacing: 4px; color: var(--white); margin-bottom: 10px;
-}
-#ability p {
-  font-size: clamp(10px, 2.2vw, 12px);
-  line-height: 1.9; color: rgba(240,236,226,0.42); letter-spacing: 0.3px;
-}
-
-/* ── ABOUT STEVEN ── */
-#about {
-  border: 1px solid rgba(201,168,76,0.1);
-  padding: 26px 22px;
-  position: relative; margin-bottom: 8px;
-  clip-path: polygon(16px 0%,100% 0%,100% calc(100% - 16px),calc(100% - 16px) 100%,0% 100%,0% 16px);
-  text-align: left;
-}
-#about::before {
-  content: '✦  CURATOR  ✦';
-  position: absolute; top: -7px; left: 50%;
-  transform: translateX(-50%);
-  background: #000; padding: 0 12px;
-  font-size: 7px; letter-spacing: 4px;
-  color: var(--gold); white-space: nowrap;
-}
-/* big N watermark */
-#about::after {
-  content: 'S';
-  position: absolute; top: 0; right: 16px;
-  font-family: 'Cinzel Decorative', serif;
-  font-size: 100px; color: rgba(201,168,76,0.03);
-  pointer-events: none; line-height: 1;
-}
-.about-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
-.about-badge {
-  width: 42px; height: 42px;
-  border: 1px solid var(--gold);
+  right: -4px; top: -3px;
+  width: 7px; height: 7px;
+  background: var(--gold-bright);
   border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 10px var(--gold-bright), 0 0 24px var(--gold);
+}
+
+#loading-sub {
+  font-size: 8px; letter-spacing: 5px;
+  color: rgba(255,255,255,0.15);
+  text-transform: uppercase;
+}
+
+/* ══ BACKGROUND LAYERS ══ */
+#bg-canvas {
+  position: fixed; inset: 0;
+  z-index: 0; pointer-events: none;
+}
+
+/* Radial gold vignette center */
+.bg-vignette {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 60% 70% at 50% 42%,
+    rgba(201,168,76,0.04) 0%, transparent 70%);
+}
+
+/* ══ HERO SECTION ══ */
+.hero {
+  position: relative; z-index: 10;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  padding-top: 40px;
+  overflow: hidden;
+}
+
+/* ── TITLE ── */
+.title-wrap {
+  text-align: center; position: relative; z-index: 20;
+  opacity: 0; animation: revealDown .9s .2s cubic-bezier(.22,1,.36,1) forwards;
+}
+.game-label {
+  font-size: 7px; letter-spacing: 5px;
+  color: rgba(255,255,255,0.18); text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.title-main {
   font-family: 'Cinzel Decorative', serif;
-  font-size: 18px; color: var(--gold);
+  font-size: clamp(36px, 10vw, 72px);
+  font-weight: 900; letter-spacing: 14px;
+  color: var(--white);
+  text-shadow:
+    0 0 20px rgba(201,168,76,.5),
+    0 0 60px rgba(201,168,76,.15),
+    0 0 120px rgba(201,168,76,.05);
+  position: relative;
+  animation: titleGlow 4s 1.5s ease-in-out infinite;
+}
+@keyframes titleGlow {
+  0%,100%{ text-shadow: 0 0 20px rgba(201,168,76,.4), 0 0 60px rgba(201,168,76,.1); }
+  50%{ text-shadow: 0 0 40px rgba(201,168,76,.7), 0 0 100px rgba(201,168,76,.25), 0 0 180px rgba(201,168,76,.08); }
+}
+
+.title-sub {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(8px, 2vw, 11px);
+  letter-spacing: 10px; color: var(--gold);
+  font-weight: 400; margin-top: 10px;
+  text-shadow: 0 0 20px rgba(201,168,76,.8);
+}
+
+/* Gold line */
+.gold-line {
+  width: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 16px auto 0;
+  animation: expandLine .8s .9s ease forwards;
+}
+@keyframes expandLine { to { width: 240px; } }
+
+/* ── 3D VIEWER ── */
+#viewer {
+  position: relative;
+  width: 100%; max-width: 600px;
+  height: clamp(360px, 65vw, 520px);
+  margin: -20px auto 0;
   flex-shrink: 0;
-  box-shadow: 0 0 16px rgba(201,168,76,0.2);
 }
-.about-name {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: 14px; letter-spacing: 3px; color: var(--gold);
+#viewer canvas { display:block; width:100%!important; height:100%!important; }
+
+/* top/bottom fades */
+#viewer::before, #viewer::after {
+  content:''; position:absolute; left:0; right:0; height:80px; z-index:5; pointer-events:none;
 }
-.about-handle {
-  font-size: 7px; letter-spacing: 4px;
-  color: rgba(201,168,76,0.3); text-transform: uppercase; margin-top: 4px;
-}
-.about-bio {
-  font-size: clamp(10px, 2.3vw, 12px);
-  line-height: 1.95; color: rgba(240,236,226,0.42);
-  letter-spacing: 0.3px; margin-bottom: 18px;
-}
-.about-bio strong { color: var(--gold); font-weight: 400; }
-.about-tags { display: flex; flex-wrap: wrap; gap: 7px; }
-.atag {
-  font-size: 7px; letter-spacing: 3px; text-transform: uppercase;
-  color: rgba(201,168,76,0.35);
-  border: 1px solid rgba(201,168,76,0.12);
-  padding: 4px 11px;
-  clip-path: polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);
+#viewer::before { top:0; background:linear-gradient(180deg,#000 0%,transparent 100%); }
+#viewer::after  { bottom:0; background:linear-gradient(0deg,#000 0%,transparent 100%); }
+
+/* side vignette */
+.side-vignette {
+  position:absolute; inset:0; pointer-events:none; z-index:4;
+  background: radial-gradient(ellipse 70% 90% at 50% 50%, transparent 50%, rgba(0,0,0,.75) 100%);
 }
 
-/* ── FOOTER ── */
-#footer {
-  position: relative; z-index: 1;
-  border-top: 1px solid rgba(201,168,76,0.06);
-  text-align: center; padding: 24px 20px;
-  font-size: 8px; letter-spacing: 3px;
-  color: rgba(255,255,255,0.07);
+/* ── SCAN LINE SWEEP across viewer ── */
+.scan-sweep {
+  position:absolute; left:0; right:0; height:2px; z-index:6; pointer-events:none;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent);
+  animation: scanDown 6s ease-in-out infinite;
+  opacity:0;
 }
-#footer span {
-  display: block; margin-top: 6px;
-  font-family: 'Cinzel Decorative', serif;
-  font-size: 9px; letter-spacing: 4px;
-  color: rgba(201,168,76,0.18);
+@keyframes scanDown {
+  0%  { top:0%;   opacity:0; }
+  5%  { opacity:1; }
+  95% { opacity:1; }
+  100%{ top:100%; opacity:0; }
 }
 
-/* ── REVEAL ── */
-.reveal {
-  opacity: 0; transform: translateY(24px);
-  transition: opacity 0.9s ease, transform 0.9s ease;
+/* ── CORNER FRAMES around viewer ── */
+.viewer-frame {
+  position:absolute; inset:0; z-index:6; pointer-events:none;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+.corner {
+  position:absolute; width:24px; height:24px;
+  border-color: rgba(201,168,76,0.45); border-style:solid;
+  opacity:0; animation:cornerReveal .5s ease forwards;
+}
+.corner.tl { top:12px; left:12px; border-width:1px 0 0 1px; animation-delay:1.2s; }
+.corner.tr { top:12px; right:12px; border-width:1px 1px 0 0; animation-delay:1.3s; }
+.corner.bl { bottom:12px; left:12px; border-width:0 0 1px 1px; animation-delay:1.4s; }
+.corner.br { bottom:12px; right:12px; border-width:0 1px 1px 0; animation-delay:1.5s; }
+@keyframes cornerReveal { to { opacity:1; } }
+
+/* ── RUNE RINGS (rotating decorative rings around viewer) ── */
+.rune-ring {
+  position:absolute;
+  border-radius:50%;
+  border:1px solid rgba(201,168,76,0.08);
+  pointer-events:none; z-index:3;
+  top:50%; left:50%;
+  transform: translate(-50%,-50%);
+}
+.rune-ring-1 {
+  width:500px; height:500px;
+  animation: ringRotate 30s linear infinite;
+  border-color: rgba(201,168,76,0.06);
+}
+.rune-ring-2 {
+  width:700px; height:700px;
+  animation: ringRotate 50s linear infinite reverse;
+  border-color: rgba(201,168,76,0.03);
+  border-style: dashed;
+}
+@keyframes ringRotate { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+/* ── CHARACTER NAME PLATE ── */
+.name-plate {
+  position:absolute; bottom:60px; left:50%; transform:translateX(-50%);
+  z-index:10; text-align:center; pointer-events:none;
+  opacity:0; animation:revealUp .8s 1.6s ease forwards;
+}
+.char-name {
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(10px,2.5vw,14px);
+  letter-spacing:6px; color:var(--gold);
+  text-shadow:0 0 20px rgba(201,168,76,.7);
+  margin-bottom:6px;
+}
+.char-sub {
+  font-size:7px; letter-spacing:4px;
+  color:rgba(255,255,255,.2); text-transform:uppercase;
+}
+
+/* ══ BOTTOM CONTENT ══ */
+.bottom-wrap {
+  position:relative; z-index:10;
+  max-width:700px; margin:0 auto;
+  padding:0 clamp(18px,5vw,40px) 80px;
+}
+
+/* Section block */
+.sec {
+  border-top:1px solid rgba(201,168,76,0.09);
+  padding-top:44px; margin-bottom:48px;
+  opacity:0; transform:translateY(22px);
+  transition:opacity .9s ease, transform .9s ease;
+}
+.sec.visible { opacity:1; transform:translateY(0); }
+
+.sec-label {
+  font-size:7px; letter-spacing:6px; text-transform:uppercase;
+  color:rgba(201,168,76,0.35); margin-bottom:18px;
+}
+
+/* Description */
+.desc-text {
+  font-size:clamp(10px,2.2vw,12px);
+  line-height:2.1; letter-spacing:.4px;
+  color:var(--white-dim);
+  font-family:'Cinzel',serif;
+}
+
+/* Stats */
+#stats-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:18px 36px;
+}
+@media(max-width:380px){ #stats-grid{ grid-template-columns:1fr; } }
+
+.stat-row { display:flex; flex-direction:column; gap:7px; }
+.stat-name {
+  font-size:8px; letter-spacing:3px;
+  color:rgba(255,255,255,.25); text-transform:uppercase;
+  display:flex; justify-content:space-between;
+}
+.stat-name .grade { color:var(--gold); font-size:9px; letter-spacing:1px; }
+.stat-track { height:1px; background:rgba(255,255,255,0.05); position:relative; }
+.stat-fill {
+  height:1px; width:0%;
+  background:linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
+  box-shadow:0 0 6px var(--gold);
+  transition:width 1.6s cubic-bezier(.22,1,.36,1);
+  position:relative;
+}
+.stat-fill::after {
+  content:''; position:absolute; right:-2px; top:-3px;
+  width:7px; height:7px; border-radius:50%;
+  background:var(--gold-bright);
+  box-shadow:0 0 8px var(--gold-bright), 0 0 18px var(--gold);
+  opacity:0; transition:opacity 1.6s ease;
+}
+.stat-fill.lit::after { opacity:1; }
+
+/* Ability box */
+.ability-box {
+  border:1px solid rgba(201,168,76,0.12);
+  padding:26px 22px; position:relative;
+  background: linear-gradient(135deg, rgba(201,168,76,0.02), transparent);
+}
+.ability-box::before {
+  content:'✦  STAND ABILITY  ✦';
+  position:absolute; top:-7px; left:50%; transform:translateX(-50%);
+  background:#000; padding:0 14px;
+  font-size:7px; letter-spacing:4px; color:var(--gold); white-space:nowrap;
+  text-shadow:0 0 16px rgba(201,168,76,.6);
+}
+/* animated gold shimmer on ability border */
+.ability-box::after {
+  content:'';
+  position:absolute; inset:-1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,.12),transparent);
+  background-size:200%;
+  animation:shimmerBorder 4s linear infinite;
+  pointer-events:none;
+  border: 1px solid transparent;
+}
+@keyframes shimmerBorder { 0%{background-position:0%} 100%{background-position:200%} }
+
+.ability-title {
+  font-size:clamp(10px,2.5vw,13px);
+  letter-spacing:4px; color:var(--white); margin-bottom:12px;
+}
+.ability-text {
+  font-size:clamp(9px,2.2vw,11px); line-height:2;
+  color:var(--white-dim); letter-spacing:.3px;
+}
+
+/* ══ EXTRA: FLOATING GOLD PARTICLES (CSS) ══ */
+.particles {
+  position:fixed; inset:0; z-index:2; pointer-events:none; overflow:hidden;
+}
+.p {
+  position:absolute; bottom:-10px;
+  background:var(--gold);
+  border-radius:50%;
+  opacity:0;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp {
+  0%  { transform:translateY(0) scale(1); opacity:0; }
+  10% { opacity:.55; }
+  90% { opacity:.15; }
+  100%{ transform:translateY(-110vh) scale(0); opacity:0; }
+}
+
+/* ══ GLITCH title effect on hover ══ */
+.title-main:hover {
+  animation: glitchText .4s steps(1) forwards, titleGlow 4s ease-in-out infinite;
+}
+@keyframes glitchText {
+  0%  { text-shadow: 0 0 40px rgba(201,168,76,.7); clip-path:inset(0 0 0 0); }
+  10% { clip-path:inset(20% 0 40% 0); transform:translate(-3px,0); }
+  20% { clip-path:inset(60% 0 10% 0); transform:translate(3px,0); }
+  30% { clip-path:inset(0 0 0 0);     transform:translate(0,0); }
+  40% { clip-path:inset(40% 0 30% 0); transform:translate(-2px,0); }
+  50% { clip-path:inset(0 0 0 0);     transform:translate(0,0); }
+  100%{ clip-path:inset(0 0 0 0);     transform:translate(0,0); }
+}
+
+/* ══ FOOTER ══ */
+.footer {
+  border-top:1px solid rgba(201,168,76,0.06);
+  text-align:center; padding:22px 20px;
+  font-size:7px; letter-spacing:3px;
+  color:rgba(255,255,255,0.06);
+  position:relative; z-index:10;
+}
+
+/* Reveal animations */
+@keyframes revealDown { from{opacity:0;transform:translateY(-18px);} to{opacity:1;transform:translateY(0);} }
+@keyframes revealUp   { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
+@keyframes fadeIn     { from{opacity:0;} to{opacity:1;} }
 </style>
 </head>
 <body>
 
 <!-- LOADING -->
 <div id="loading">
-  <h2>OVER HEAVEN</h2>
+  <div id="loading-title">OVER HEAVEN</div>
   <div id="prog-wrap"><div id="prog-bar"></div></div>
-  <p>SUMMONING DIO...</p>
+  <div id="loading-sub">Summoning DIO...</div>
 </div>
 
-<div id="scroll-prog"></div>
+<!-- BG PARTICLE CANVAS -->
+<canvas id="bg-canvas"></canvas>
+<div class="bg-vignette"></div>
 
-<!-- BACK BUTTON — nobyl / steven signature -->
-<a id="back-btn" href="javascript:history.back()">◂ &nbsp;Back</a>
+<!-- CSS PARTICLE DOTS -->
+<div class="particles" id="particles"></div>
 
-<!-- STARS -->
-<div id="stars"></div>
+<!-- ══ HERO ══ -->
+<div class="hero">
 
-<!-- HEADER -->
-<div id="top-header">
-  <div id="game-label">JoJo's Bizarre Adventure: Eyes of Heaven</div>
-  <h1>DIO<span>OVER HEAVEN</span></h1>
-  <div class="divider"></div>
-</div>
+  <div class="title-wrap">
+    <div class="game-label">JoJo's Bizarre Adventure: Eyes of Heaven</div>
+    <div class="title-main">DIO</div>
+    <div class="title-sub">OVER HEAVEN</div>
+    <div class="gold-line"></div>
+  </div>
 
-<!-- 3D MODEL CARD -->
-<div id="model-card-wrap" class="reveal">
-  <div id="model-card">
-    <div class="card-corner-tr"></div>
-    <div class="card-corner-bl"></div>
-    <div class="card-label-top">
-      <span>Stand</span>
-      <span>Eyes of Heaven</span>
+  <!-- 3D VIEWER -->
+  <div id="viewer">
+    <div class="side-vignette"></div>
+    <div class="scan-sweep"></div>
+    <div class="rune-ring rune-ring-1"></div>
+    <div class="rune-ring rune-ring-2"></div>
+    <div class="viewer-frame">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
     </div>
-
-    <div id="viewer">
-      <div class="side-vignette"></div>
-    </div>
-
-    <div class="card-label-bottom">
-      <span>The World Over Heaven</span>
+    <div class="name-plate">
+      <div class="char-name">THE WORLD OVER HEAVEN</div>
+      <div class="char-sub">Stand User · DIO</div>
     </div>
   </div>
+
 </div>
 
-<!-- INFO -->
-<div id="info">
-  <div class="reveal">
-    <div id="char-name">THE WORLD OVER HEAVEN</div>
-    <div class="section-divider"></div>
-    <p id="description">
+<!-- ══ BOTTOM ══ -->
+<div class="bottom-wrap">
+
+  <div class="sec" id="descSec">
+    <div class="sec-label">Origin</div>
+    <p class="desc-text">
       Having obtained the Saint's Corpse and rewritten the very laws of reality,
       DIO ascended beyond all limits of power and time. He is not merely a villain —
       he is a god who remade the universe in his image. In Eyes of Heaven,
@@ -456,51 +440,40 @@ html, body {
     </p>
   </div>
 
-  <!-- BAR STATS -->
-  <div class="reveal">
-    <div class="stats-label">Stand Statistics</div>
+  <div class="sec" id="statsSec">
+    <div class="sec-label">Stand Statistics</div>
     <div id="stats-grid">
       <div class="stat-row">
-        <div class="stat-name">Destructive Power <span>∞</span></div>
-        <div class="stat-bar-bg"><div class="stat-bar-fill" data-pct="100"></div></div>
+        <div class="stat-name">Destructive Power <span class="grade">∞</span></div>
+        <div class="stat-track"><div class="stat-fill" data-pct="100"></div></div>
       </div>
       <div class="stat-row">
-        <div class="stat-name">Speed <span>∞</span></div>
-        <div class="stat-bar-bg"><div class="stat-bar-fill" data-pct="100"></div></div>
+        <div class="stat-name">Speed <span class="grade">∞</span></div>
+        <div class="stat-track"><div class="stat-fill" data-pct="100"></div></div>
       </div>
       <div class="stat-row">
-        <div class="stat-name">Range <span>∞</span></div>
-        <div class="stat-bar-bg"><div class="stat-bar-fill" data-pct="100"></div></div>
+        <div class="stat-name">Range <span class="grade">∞</span></div>
+        <div class="stat-track"><div class="stat-fill" data-pct="100"></div></div>
       </div>
       <div class="stat-row">
-        <div class="stat-name">Durability <span>∞</span></div>
-        <div class="stat-bar-bg"><div class="stat-bar-fill" data-pct="100"></div></div>
+        <div class="stat-name">Durability <span class="grade">∞</span></div>
+        <div class="stat-track"><div class="stat-fill" data-pct="100"></div></div>
       </div>
       <div class="stat-row">
-        <div class="stat-name">Precision <span>A</span></div>
-        <div class="stat-bar-bg"><div class="stat-bar-fill" data-pct="90"></div></div>
+        <div class="stat-name">Precision <span class="grade">A</span></div>
+        <div class="stat-track"><div class="stat-fill" data-pct="88"></div></div>
       </div>
       <div class="stat-row">
-        <div class="stat-name">Potential <span>∞</span></div>
-        <div class="stat-bar-bg"><div class="stat-bar-fill" data-pct="100"></div></div>
+        <div class="stat-name">Potential <span class="grade">∞</span></div>
+        <div class="stat-track"><div class="stat-fill" data-pct="100"></div></div>
       </div>
     </div>
   </div>
 
-  <!-- RADAR -->
-  <div class="reveal">
-    <div class="radar-title">Official Stand Parameters</div>
-    <div id="radar-wrap">
-      <svg id="radarSvg" width="260" height="260" viewBox="0 0 260 260"></svg>
-      <div class="radar-legend" id="radarLegend"></div>
-    </div>
-  </div>
-
-  <!-- ABILITY -->
-  <div class="reveal">
-    <div id="ability">
-      <h4>HEAVEN ASCENSION</h4>
-      <p>
+  <div class="sec" id="abilitySec">
+    <div class="ability-box">
+      <div class="ability-title">HEAVEN ASCENSION</div>
+      <p class="ability-text">
         The World Over Heaven grants its user the power to overwrite reality itself.
         Any surface struck by its fists is rewritten — people, objects, timelines,
         even the fabric of the universe. Time stop is merely secondary.
@@ -509,257 +482,298 @@ html, body {
     </div>
   </div>
 
-  <!-- ABOUT STEVEN -->
-  <div class="reveal">
-    <div id="about">
-      <div class="about-header">
-        <div class="about-badge">S</div>
-        <div>
-          <div class="about-name">Steven</div>
-          <div class="about-handle">guevaradechernobyl-debug.github.io &nbsp;·&nbsp; Sevenc0rp</div>
-        </div>
-      </div>
-      <p class="about-bio">
-        Page crafted by <strong>Steven</strong> — devoted
-        JoJo enthusiast building digital shrines. 
-        Every detail on this page is intentional: the gold, the spacing, the slow rotating model.
-        <br><br>
-      
-      </p>
-      
-    </div>
-  </div>
 </div>
 
-<!-- FOOTER -->
-<div id="footer">
-  JoJo's Bizarre Adventure: Eyes of Heaven &nbsp;·&nbsp; Bandai Namco &nbsp;·&nbsp; Hirohiko Araki
-  <span>Sevenc0rp &nbsp;·&nbsp; guevaradechernobyl-debug.github.io</span>
+<div class="footer">
+  JoJo's Bizarre Adventure: Eyes of Heaven &nbsp;·&nbsp; Bandai Namco &nbsp;·&nbsp; 2015
 </div>
 
 <script>
-/* ── STARS ── */
-var starsEl = document.getElementById('stars');
-for (var i = 0; i < 110; i++) {
-  var s = document.createElement('div');
-  s.className = 'star';
-  var sz = Math.random() * 1.8 + 0.3;
-  s.style.cssText = 'width:'+sz+'px;height:'+sz+'px;top:'+(Math.random()*100)+'%;left:'+(Math.random()*100)+'%;--d:'+(2+Math.random()*5)+'s;animation-delay:'+(Math.random()*5)+'s';
-  starsEl.appendChild(s);
-}
-
-/* ── SCROLL PROGRESS ── */
-window.addEventListener('scroll', function() {
-  var p = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
-  document.getElementById('scroll-prog').style.width = p + '%';
-});
-
-/* ── REVEAL ── */
-var revEls = document.querySelectorAll('.reveal');
-var revObs = new IntersectionObserver(function(entries) {
-  entries.forEach(function(e) {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      e.target.querySelectorAll('.stat-bar-fill').forEach(function(b) {
-        b.style.width = b.dataset.pct + '%';
-      });
-    }
-  });
-}, { threshold: 0.1 });
-revEls.forEach(function(r) { revObs.observe(r); });
-
-/* ── RADAR ── */
-(function buildRadar() {
-  var data = [
-    { label: 'Power',     v: 1.00 },
-    { label: 'Speed',     v: 1.00 },
-    { label: 'Range',     v: 1.00 },
-    { label: 'Stamina',   v: 1.00 },
-    { label: 'Precision', v: 0.90 },
-    { label: 'Potential', v: 1.00 },
-  ];
-  var svg = document.getElementById('radarSvg');
-  var legend = document.getElementById('radarLegend');
-  var cx = 130, cy = 130, R = 90, N = data.length, LEVELS = 5;
-
-  function pt(i, r) {
-    var a = (Math.PI * 2 / N) * i - Math.PI / 2;
-    return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
+/* ══════════════════════════════════════════
+   CSS PARTICLE SPAWNER
+══════════════════════════════════════════ */
+(function(){
+  const wrap = document.getElementById('particles');
+  const COUNT = 28;
+  for(let i = 0; i < COUNT; i++){
+    const p = document.createElement('div');
+    p.className = 'p';
+    const size = 1 + Math.random() * 2.5;
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      width:${size}px; height:${size}px;
+      animation-duration:${10 + Math.random()*18}s;
+      animation-delay:${-Math.random()*20}s;
+      opacity:0;
+    `;
+    wrap.appendChild(p);
   }
-  function toPath(pts) {
-    return pts.map(function(p,i){ return (i===0?'M':'L')+p.x.toFixed(1)+','+p.y.toFixed(1); }).join(' ')+'Z';
-  }
-  function el(tag, attrs) {
-    var e = document.createElementNS('http://www.w3.org/2000/svg', tag);
-    Object.keys(attrs).forEach(function(k){ e.setAttribute(k, attrs[k]); });
-    return e;
-  }
-
-  // grid rings
-  for (var lv = 1; lv <= LEVELS; lv++) {
-    var r = R * (lv / LEVELS);
-    svg.appendChild(el('path', {
-      d: toPath(data.map(function(_,i){ return pt(i,r); })),
-      fill: 'none', stroke: 'rgba(201,168,76,0.1)', 'stroke-width': '1'
-    }));
-  }
-  // axes
-  data.forEach(function(_,i) {
-    var ep = pt(i, R);
-    svg.appendChild(el('line', {
-      x1: cx, y1: cy, x2: ep.x.toFixed(1), y2: ep.y.toFixed(1),
-      stroke: 'rgba(201,168,76,0.08)', 'stroke-width': '1'
-    }));
-  });
-  // fill
-  svg.appendChild(el('path', {
-    d: toPath(data.map(function(s,i){ return pt(i, R*s.v); })),
-    fill: 'rgba(201,168,76,0.12)',
-    stroke: '#c9a84c', 'stroke-width': '1.5', 'stroke-linejoin': 'round'
-  }));
-  // dots + labels
-  data.forEach(function(s,i) {
-    var dp = pt(i, R*s.v);
-    var lp = pt(i, R+22);
-    svg.appendChild(el('circle', { cx: dp.x.toFixed(1), cy: dp.y.toFixed(1), r:'3.5', fill:'#c9a84c' }));
-    var txt = el('text', {
-      x: lp.x.toFixed(1), y: lp.y.toFixed(1),
-      'text-anchor': 'middle', 'dominant-baseline': 'middle',
-      'font-family': 'Cinzel,serif', 'font-size': '7.5',
-      'letter-spacing': '1.5', fill: 'rgba(201,168,76,0.35)'
-    });
-    txt.textContent = s.label.toUpperCase();
-    svg.appendChild(txt);
-    legend.insertAdjacentHTML('beforeend',
-      '<div class="rl-item"><div class="rl-dot"></div>'+s.label+'</div>');
-  });
 })();
 
-/* ── THREE.JS MODEL ── */
-function loadScript(src, cb) {
-  var s = document.createElement('script');
-  s.src = src; s.onload = cb; document.head.appendChild(s);
+/* ══════════════════════════════════════════
+   BACKGROUND CANVAS — subtle shimmer grid
+══════════════════════════════════════════ */
+(function(){
+  const c = document.getElementById('bg-canvas');
+  const ctx = c.getContext('2d');
+  let W, H;
+  function resize(){
+    W = c.width = window.innerWidth;
+    H = c.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let t = 0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // Subtle radial breathing
+    t += 0.005;
+    const r = 0.03 + Math.sin(t) * 0.01;
+    const grad = ctx.createRadialGradient(W/2, H*0.42, 0, W/2, H*0.42, Math.min(W,H)*0.55);
+    grad.addColorStop(0, `rgba(201,168,76,${r})`);
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,W,H);
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ══════════════════════════════════════════
+   LOAD THREE.JS → GLTFLOADER → INIT
+══════════════════════════════════════════ */
+function loadScript(src, cb){
+  const s = document.createElement('script');
+  s.src = src; s.onload = cb;
+  document.head.appendChild(s);
 }
 
-loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', function() {
+loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', function(){
   loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js', initScene);
 });
 
-function initScene() {
-  var wrap = document.getElementById('viewer');
-  var W = wrap.clientWidth, H = wrap.clientHeight;
+function initScene(){
+  const wrap = document.getElementById('viewer');
+  let W = wrap.clientWidth;
+  let H = wrap.clientHeight;
 
-  var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(36, W/H, 0.01, 100);
-  camera.position.set(0, 0.3, 3.2);
-  camera.lookAt(0, 0.3, 0);
-
-  var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  const scene    = new THREE.Scene();
+  const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
   renderer.setClearColor(0x000000, 0);
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setSize(W, H);
   renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.toneMapping = THREE.ReinhardToneMapping;
-  renderer.toneMappingExposure = 1.6;
-  renderer.shadowMap.enabled = true;
+  renderer.toneMapping    = THREE.ReinhardToneMapping;
+  renderer.toneMappingExposure = 1.8;
+  renderer.shadowMap.enabled   = true;
   wrap.appendChild(renderer.domElement);
 
-  /* disable ALL pointer events on canvas so user can't interact */
-  renderer.domElement.style.pointerEvents = 'none';
+  // Camera — we'll reposition after loading model
+  const camera = new THREE.PerspectiveCamera(36, W/H, 0.01, 200);
 
-  // Lights
-  scene.add(new THREE.AmbientLight(0x111000, 2.5));
-  var key = new THREE.DirectionalLight(0xfff2d0, 5);
-  key.position.set(3, 5, 4); key.castShadow = true; scene.add(key);
-  var rim = new THREE.DirectionalLight(0x2244ff, 1.8);
-  rim.position.set(-4, 1, -5); scene.add(rim);
-  var fill = new THREE.DirectionalLight(0xffaa33, 1.0);
-  fill.position.set(0, -3, 3); scene.add(fill);
-  var glow = new THREE.PointLight(0xd4a030, 4, 6);
-  glow.position.set(0, 0.5, 1.5); scene.add(glow);
+  /* ── LIGHTS ── */
+  scene.add(new THREE.AmbientLight(0x110a00, 3));
 
-  // Particles
-  var ptN = 180;
-  var ptArr = new Float32Array(ptN * 3);
-  for (var i = 0; i < ptN; i++) {
-    var r = Math.random() * 2.5 + 0.6;
-    var a = Math.random() * Math.PI * 2;
+  const key = new THREE.DirectionalLight(0xfff0c8, 5.5);
+  key.position.set(2, 4, 5); key.castShadow = true;
+  scene.add(key);
+
+  const rim = new THREE.DirectionalLight(0x2233cc, 2.2);
+  rim.position.set(-5, 2, -6);
+  scene.add(rim);
+
+  const fill = new THREE.DirectionalLight(0xffaa22, 1.2);
+  fill.position.set(0, -2, 4);
+  scene.add(fill);
+
+  const glow = new THREE.PointLight(0xd4a030, 6, 8);
+  glow.position.set(0, 1, 2.5);
+  scene.add(glow);
+
+  // Extra dramatic back light
+  const back = new THREE.DirectionalLight(0xffd080, 1.5);
+  back.position.set(0, 6, -8);
+  scene.add(back);
+
+  /* ── PARTICLES ── */
+  const ptN = 220;
+  const ptArr = new Float32Array(ptN * 3);
+  for(let i = 0; i < ptN; i++){
+    const r = .8 + Math.random() * 3;
+    const a = Math.random() * Math.PI * 2;
     ptArr[i*3]   = Math.cos(a) * r;
-    ptArr[i*3+1] = Math.random() * 4 - 0.8;
+    ptArr[i*3+1] = Math.random() * 6 - 1;
     ptArr[i*3+2] = Math.sin(a) * r;
   }
-  var ptGeo = new THREE.BufferGeometry();
+  const ptGeo  = new THREE.BufferGeometry();
   ptGeo.setAttribute('position', new THREE.BufferAttribute(ptArr, 3));
-  var ptMesh = new THREE.Points(ptGeo, new THREE.PointsMaterial({
-    color: 0xd4a030, size: 0.018, transparent: true, opacity: 0.55
+  const ptMesh = new THREE.Points(ptGeo, new THREE.PointsMaterial({
+    color:0xd4a030, size:.022, transparent:true, opacity:.5
   }));
   scene.add(ptMesh);
 
-  // Load model
-  var loader = new THREE.GLTFLoader();
-  loader.load('dio.glb',
-    function(gltf) {
-      var model = gltf.scene;
-      var box = new THREE.Box3().setFromObject(model);
-      var center = box.getCenter(new THREE.Vector3());
-      var size   = box.getSize(new THREE.Vector3());
-      var maxDim = Math.max(size.x, size.y, size.z);
-      var sc = 2.2 / maxDim;
-      model.scale.setScalar(sc);
-      model.position.sub(center.multiplyScalar(sc));
-      model.position.y += size.y * sc * 0.18;
-      model.traverse(function(c) {
-        if (c.isMesh) { c.castShadow = true; c.receiveShadow = true; }
-      });
-      scene.add(model);
+  /* ── GROUND GLOW DISC ── */
+  const discGeo = new THREE.CircleGeometry(1.2, 64);
+  const discMat = new THREE.MeshBasicMaterial({
+    color:0xc9a84c, transparent:true, opacity:.06, side:THREE.DoubleSide
+  });
+  const disc = new THREE.Mesh(discGeo, discMat);
+  disc.rotation.x = -Math.PI/2;
+  scene.add(disc);
 
-      var mixer = null;
-      if (gltf.animations && gltf.animations.length) {
+  /* ── LOAD MODEL ── */
+  const loader = new THREE.GLTFLoader();
+  loader.load('dio.glb',
+    function(gltf){
+      const model = gltf.scene;
+
+      // ── FIX PIVOT: measure bounding box ──
+      // The model's origin is at the feet.
+      // We create a pivot group so we rotate around the body center.
+      const box    = new THREE.Box3().setFromObject(model);
+      const size   = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+
+      // Scale to fit nicely in view
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const s      = 2.0 / maxDim;
+      model.scale.setScalar(s);
+
+      // Recompute after scale
+      const box2   = new THREE.Box3().setFromObject(model);
+      const size2  = box2.getSize(new THREE.Vector3());
+      const center2= box2.getCenter(new THREE.Vector3());
+
+      // Place pivot group at the world center
+      const pivot = new THREE.Group();
+      scene.add(pivot);
+
+      // Offset model inside pivot so it rotates around body center
+      // (not feet) — shift model down by half its scaled height
+      model.position.set(-center2.x, -center2.y, -center2.z);
+      pivot.add(model);
+
+      // Position pivot so DIO is centered in view (body/face region)
+      // Slightly above center to show chest+face prominently
+      pivot.position.set(0, 0, 0);
+
+      // Aim camera at mid-torso level
+      const torsoY = 0.05; // slight upward shift
+      camera.position.set(0, torsoY, 3.4);
+      camera.lookAt(0, torsoY, 0);
+
+      // Place disc glow at feet level
+      disc.position.y = -center2.y - size2.y/2 + 0.01;
+
+      model.traverse(c => {
+        if(c.isMesh){ c.castShadow=true; c.receiveShadow=true; }
+      });
+
+      // Animations
+      let mixer = null;
+      if(gltf.animations && gltf.animations.length){
         mixer = new THREE.AnimationMixer(model);
         mixer.clipAction(gltf.animations[0]).play();
       }
 
       // Hide loader
-      var ld = document.getElementById('loading');
-      ld.style.opacity = '0';
-      setTimeout(function() { ld.style.display = 'none'; }, 800);
+      const ld = document.getElementById('loading');
+      ld.classList.add('hide');
+      setTimeout(()=>{ ld.style.display='none'; }, 1000);
 
-      var clock = new THREE.Clock();
-      var t = 0;
-      (function loop() {
+      // Trigger stat bars
+      setTimeout(setupScrollReveal, 500);
+
+      /* ── RENDER LOOP ── */
+      const clock = new THREE.Clock();
+      let   t     = 0;
+
+      (function loop(){
         requestAnimationFrame(loop);
-        t += 0.004; // slow logo-speed rotation
-        if (mixer) mixer.update(clock.getDelta());
-        model.rotation.y = t;
-        glow.intensity = 3.5 + Math.sin(t * 3) * 0.8;
-        // particles drift
-        var pos = ptGeo.attributes.position.array;
-        for (var i = 0; i < ptN; i++) {
+        const d = clock.getDelta();
+        t += 0.003; // slow cinematic rotation
+
+        if(mixer) mixer.update(d);
+
+        // Rotate pivot (body center) — infinite, no user input
+        pivot.rotation.y = t;
+
+        // Gentle float
+        pivot.position.y = Math.sin(t * 0.8) * 0.04;
+
+        // Glow breathe
+        glow.intensity = 5 + Math.sin(t * 2.5) * 1.5;
+
+        // Particles drift up
+        const pos = ptGeo.attributes.position.array;
+        for(let i = 0; i < ptN; i++){
           pos[i*3+1] += 0.003;
-          if (pos[i*3+1] > 3.2) pos[i*3+1] = -0.8;
+          if(pos[i*3+1] > 5) pos[i*3+1] = -1;
         }
         ptGeo.attributes.position.needsUpdate = true;
-        ptMesh.rotation.y = t * 0.05;
+        ptMesh.rotation.y = t * 0.04;
+
+        // Disc pulse
+        discMat.opacity = 0.04 + Math.sin(t*1.5)*0.03;
+
         renderer.render(scene, camera);
       })();
     },
-    function(xhr) {
-      if (xhr.lengthComputable)
+    function(xhr){
+      if(xhr.lengthComputable){
         document.getElementById('prog-bar').style.width =
-          (xhr.loaded / xhr.total * 100).toFixed(0) + '%';
+          (xhr.loaded/xhr.total*100).toFixed(0)+'%';
+      }
     },
-    function() {
+    function(err){
+      console.error(err);
       document.getElementById('loading').innerHTML =
-        '<h2 style="color:#c0392b;font-family:Cinzel,serif;letter-spacing:5px;font-size:13px;">LOAD ERROR</h2>' +
-        '<p style="color:rgba(255,255,255,0.2);font-size:9px;margin-top:14px;letter-spacing:3px;font-family:Cinzel,serif;">dio.glb must be in the same folder</p>';
+        `<div style="font-family:Cinzel,serif;color:#c0392b;font-size:12px;letter-spacing:5px;text-align:center;">
+           LOAD ERROR<br>
+           <span style="color:rgba(255,255,255,.2);font-size:9px;letter-spacing:3px;display:block;margin-top:14px;">
+             dio.glb must be in the same folder
+           </span>
+         </div>`;
     }
   );
 
-  window.addEventListener('resize', function() {
-    var W2 = wrap.clientWidth, H2 = wrap.clientHeight;
-    camera.aspect = W2 / H2;
+  // Resize
+  window.addEventListener('resize', ()=>{
+    W = wrap.clientWidth; H = wrap.clientHeight;
+    camera.aspect = W/H;
     camera.updateProjectionMatrix();
-    renderer.setSize(W2, H2);
+    renderer.setSize(W, H);
+  });
+}
+
+/* ══════════════════════════════════════════
+   SCROLL REVEAL + STAT BARS
+══════════════════════════════════════════ */
+function setupScrollReveal(){
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        // Animate stat fills when stats section appears
+        if(e.target.id === 'statsSec'){
+          setTimeout(()=>{
+            e.target.querySelectorAll('.stat-fill').forEach((bar, i) => {
+              setTimeout(()=>{
+                bar.style.width = bar.dataset.pct + '%';
+                setTimeout(()=>bar.classList.add('lit'), 1600);
+              }, i * 150);
+            });
+          }, 200);
+        }
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  ['descSec','statsSec','abilitySec'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) obs.observe(el);
   });
 }
 </script>
