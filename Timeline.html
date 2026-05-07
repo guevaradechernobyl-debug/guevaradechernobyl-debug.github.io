@@ -1,295 +1,877 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Steven — About Me</title>
+  <meta charset="UTF-8" />
+  <title>Steven — Personal Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="piclog.css">
+<link rel="icon" href="warpstar.png" type="image/png">
+  <!-- Open Graph Meta Tags for Social Sharing -->
+<meta property="og:title" content="Sevenc0rp.org">
+<meta property="og:description" content="A personal blog inspired by JJBA, Undertale, and Neocities. I'm a programmer who codes random stuff.">
+<meta property="og:image" content="https://guevaradechernobyl-debug.github.io/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://guevaradechernobyl-debug.github.io/">
+<meta property="og:type" content="website">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Steven — Personal Blog">
+<meta name="twitter:description" content="A personal blog inspired by JJBA, Undertale, and Neocities.">
+<meta name="twitter:image" content="https://guevaradechernobyl-debug.github.io/preview.png">
 
+<!-- ============================================================
+     PIXEL PANEL OVERRIDES — drop these into your style.css
+     or keep them here in a <style> block
+============================================================ -->
 <style>
-:root {
-  --card: rgba(255,255,255,0.85);
-  --text: #2d2a3a;
-  --border: #7a4f8a;
-  --accent: #af9ff4;
-}
 
-body.dark {
-  --card: rgba(20,20,30,0.85);
-  --text: #f3f1ff;
-  --border: #d5c8b5;
-  --accent: #000;
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: Inter, sans-serif;
-  color: var(--text);
-  overflow-x: hidden;
-}
-
-/* FULLSCREEN VIDEO BACKGROUND */
-video.bg-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
-}
-
-/* dark overlay for readability */
-.video-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  z-index: -1;
-}
-
-/* MAIN CONTENT BLOCK */
-.site-wrapper {
-  max-width: 1100px;
-  margin: 60px auto;
-  padding: 20px;
-  border-radius: 18px;
-  transition: 0.3s;
-}
-
-/* HEADER */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-}
-
-header h1 {
-  margin: 0;
-}
-
-.toggle {
-  cursor: pointer;
-  font-size: 22px;
-}
-
-/* PIXEL INTRO PANEL */
+/* ── PANEL SHELL ──
+   Keep your existing border/bg/scanlines.
+   Only changes: block layout instead of flex,
+   and a bit more padding so it breathes.          */
 .pixel-panel {
-  background: #111;
-  color: #d9d9d9;
-  padding: 20px;
-  border: 3px solid #888;
-  box-shadow: inset 0 0 0 2px #fff;
-  display: flex;
-  gap: 25px;
-  align-items: flex-start;
-  margin-bottom: 40px;
-  font-family: monospace;
+  display: block !important;   /* override the flex — Dimden stacks vertically */
+  padding: 0 !important;       /* we control padding per-zone */
+  margin-bottom: 12px;
   position: relative;
+
+  /* keep your existing look */
+  background: var(--bg);
+  color: #d9d9d9;
+  border: 3px solid #888;
+  box-shadow: inset 0 0 0 2px var(--card);
+  font-family: monospace;
+  flex: 1;
 }
 
-.pixel-panel::after {
-
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255,255,255,0.03),
-    rgba(255,255,255,0.03) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  pointer-events: none;
+body.dark .pixel-panel {
+  background: #000;
+  border: 2px solid #888;
+  box-shadow: inset 0 0 0 2px var(--card);
+  min-height: unset;           /* let content decide height */
 }
 
+/* ── ZONE 1: WELCOME HEADING ──
+   This is the Dimden move — big greeting ABOVE
+   the avatar, acts as the dominant visual anchor. */
+.panel-welcome {
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+/* Light mode: your existing pink pixel-title style */
+.panel-welcome .pixel-title {
+  font-size: clamp(13px, 2.5vw, 20px);
+  display: block !important;   /* always show the welcome line */
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
+/* Dark mode: show the typing box here instead,
+   hide the static pixel-title */
+body.dark .panel-welcome .pixel-title {
+  display: none !important;
+}
+body.dark #titlebox {
+  display: block !important;   /* override the global hide */
+}
+
+/* ── ZONE 2: BODY ROW ──
+   Avatar floats left, text wraps around it —
+   exactly how Dimden does it.                     */
+.panel-body {
+  padding: 16px 20px 18px;
+}
+
+/* clearfix */
+.panel-body::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* ── AVATAR ──
+   Float left so text wraps. Bigger: 140px.
+   Keep your existing pink border + bg.             */
 .pixel-avatar {
-  width: 120px;
-  background: black;
+  float: left !important;
+  width: 140px !important;      /* up from 112 — more presence */
+  height: auto !important;      /* let it grow with content */
+  margin: 0 18px 10px 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  padding: 0 !important;
+
+  border: none !important;      /* border moves to inner pieces */
+  background: transparent !important;
+}
+
+/* the actual image wrapper — gets the pink border */
+.avatar-img-box {
   border: 2px solid #ff00bf;
-  text-align: center;
+  background: #000;
+  box-shadow:
+    0 0 10px rgba(255, 0, 191, .5),
+    0 0 24px rgba(255, 0, 191, .18);
+  animation: avatarGlow 2.8s ease-in-out infinite alternate;
+  line-height: 0;
+}
+
+@keyframes avatarGlow {
+  from { box-shadow: 0 0 8px rgba(255,0,191,.4), 0 0 18px rgba(255,0,191,.12); }
+  to   { box-shadow: 0 0 18px rgba(255,0,191,.8), 0 0 38px rgba(255,0,191,.3); }
+}
+
+body.dark .avatar-img-box {
+  border: 2px solid hsl(278, 80%, 70%);
+  animation: none;
 }
 
 .pixel-avatar img {
-  width: 100%;
+  width: 140px !important;      /* match new avatar size */
+  height: 130px !important;
+  display: block !important;
   image-rendering: pixelated;
+  border: none !important;
 }
 
-.pixel-avatar small {
-  display: block;
+/* karma bar — fused to bottom, no gap (Dimden style) */
+.karma-fused {
+  background: #000;
+  border: 2px solid #ff00bf;
+  border-top: none;             /* seamless join to image border */
+  padding: 5px 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 5px 12px rgba(255,0,191,.25);
+}
+
+body.dark .karma-fused {
+  border-color: hsl(278, 80%, 70%);
+}
+
+.karma-fused a {
+  /* kill inherited link styles inside the bar */
+  display: flex !important;
+  gap: 6px;
+  text-decoration: none !important;
+  border: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.karma-fused a:hover {
+  background: transparent !important;
+}
+
+/* keep your existing stat-change glow */
+.stat-change {
   font-family: "Press Start 2P", monospace;
-  font-size: 8px;
-  padding: 6px 0;
-  color: #ff00bf;
+  font-size: 7px;
+  color: #ffffff;
+  animation: neonPulse 2.5s ease-in-out infinite;
 }
 
-.pixel-title {
-  font-family: "Press Start 2P", monospace;
-  font-size: 18px;
-  color: #ff00bf;
-  text-shadow: 2px 2px #004d4d;
-  margin-bottom: 15px;
+/* ── RIGHT-COLUMN TEXT ──
+   No left-column/right-column flex split needed —
+   the float handles it. This is now just a plain div
+   that flows next to the floated avatar.            */
+.right-column {
+  /* nothing special needed — float does the work */
+  min-width: 0;
 }
 
+/* bigger, more readable body text — Dimden's key move */
+.panel-body p {
+  font-size: clamp(14px, 2.2vw, 17px);
+  line-height: 1.75;
+  color: #c8c0d8;
+  margin-bottom: 8px;
+}
+
+body.dark .panel-body p {
+  color: #b0a8c8;
+}
+
+/* pixel-list: slightly bigger too */
 .pixel-list {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 15px;
+  font-size: clamp(13px, 2vw, 16px);
+  margin-top: 10px;
 }
 
 .pixel-list li {
-  margin-bottom: 8px;
-  padding-left: 18px;
-  position: relative;
+  margin-bottom: 7px;
+  line-height: 1.55;
+  color: #b0a8c8;
 }
 
-.pixel-list li::before {
-  content: "■";
-  position: absolute;
-  left: 0;
-  color: #ff00bf;
+body.dark .pixel-list li {
+  color: #9a90b8;
 }
 
-/* ABOUT SECTION */
-.about-section {
-  margin-top: 30px;
-  line-height: 1.7;
+/* ── ZONE 3: FOOTER STRIP ──
+   online status + meta info at the bottom         */
+.panel-footer {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: rgba(0,0,0,0.15);
 }
 
-/* FOOTER */
-footer {
-  margin-top: 50px;
-  text-align: center;
-  font-size: 13px;
-  opacity: 0.7;
+.panel-footer-meta {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  font-family: monospace;
+  display: flex;
+  gap: 14px;
 }
 
-/* MOBILE */
-@media(max-width:700px) {
-  .pixel-panel {
+/* ── MOBILE ──
+   On small screens: unstack the float             */
+@media (max-width: 520px) {
+  .pixel-avatar {
+    float: none !important;
+    flex-direction: row !important;
+    width: auto !important;
+    margin: 0 0 14px 0 !important;
+    align-items: flex-end !important;
+  }
+
+  .pixel-avatar img {
+    width: 100px !important;
+    height: 95px !important;
+  }
+
+  .karma-fused {
+    border-top: 2px solid #ff00bf !important;
+    border-left: none;
     flex-direction: column;
-    text-align: center;
-    align-items: center;
+    gap: 2px;
+    padding: 6px 10px;
+    align-self: stretch;
+    justify-content: center;
+    flex: 1;
+  }
+
+  .panel-welcome .pixel-title {
+    font-size: 11px;
   }
 }
-  /* BACK BUTTON */
-    .back-btn {
-      margin-bottom: 20px;
-      padding: 8px 14px;
-      background: #410e4b;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }body {
-  background: url("ice-wolf.gif") no-repeat center center fixed;
-  background-size: contain;
-  background-color: black; /* fills empty sides */
-}
+
 </style>
 </head>
 
 <body>
+<canvas id="snow-back"></canvas>
+<canvas id="snow"></canvas>
+  
+  <div class="site-wrapper">
 
-
-
-<div class="site-wrapper">
-
-<div class="pixel-panel">
-
-  <div>  
-  <button onclick="window.history.back()" class="back-btn">← Go Back</button>
-
-
+<!--HERE! Banner-->
+<div class="top-banner">
+  <img src="banneroblox.gif" alt="Site Banner" style="image-rendering: pixelated; image-rendering: crisp-edges;">
+   <span class="banner-url"></span>
+   <span class="top-banner-date">7/22/2009</span>
 </div>
-<header>
-<div class="about-section">
-  <div class="pixel-title">WHY THIS BLOG EXIST</div>
-  <div>
 
+  <div class="layout">
 
-<p>This wasn’t supposed to be serious.</p>
+  <!-- LEFT COLUMN -->
+  <div class="main-column">
 
-<p>It started as a school project. Just another requirement. Just another grade.</p>
+    <!-- =====================================================
+         PIXEL PANEL — redesigned with Dimden-style layout
+         Three zones: welcome heading / body+avatar / footer
+    ====================================================== -->
+    <div class="pixel-panel">
 
-<p>
-But somewhere between fixing broken code, debugging errors at midnight,
-and finally understanding how the logic actually worked… something clicked.
-</p>
+      <!-- ZONE 1: big welcome heading — the Dimden anchor -->
+      <div class="panel-welcome">
 
-<p>
-There’s a strange kind of euphoria in solving a problem that once made no sense.
-In turning imagination into something functional.
-In watching variables, conditions, and lines of code come together like they were always meant to.
-</p>
+        <!-- shown in LIGHT mode -->
+        <span class="pixel-title">✦ WELCOME TO SEVEN.C0RP!</span>
 
-<p>What began as homework slowly became obsession.</p>
+        <!-- shown in DARK mode — your typing animation -->
+        <div id="titlebox">
+          <span id="title">
+            <span id="text"></span><span id="underscore">_</span>
+          </span>
+        </div>
 
-<p>So I added more features.<br>
-Then more.<br>
-Then I decided to publish it.</p>
+      </div>
 
-<p>
-Now it lives here — on the internet, publicly.
-And this time, it’s not for a grade.
-</p>
+      <!-- ZONE 2: body — avatar floats left, text wraps -->
+      <div class="panel-body">
 
+        <!-- AVATAR (floated left) -->
+        <div class="pixel-avatar">
+          <div class="avatar-img-box">
+            <img src="Ryo.png" style="image-rendering: crisp-edges; image-rendering: pixelated;">
+          </div>
+          <!-- karma fused directly under the image, no gap -->
+          <div class="karma-fused">
+            <a href="MOOD.html" class="post-link">
+              <span class="stat-change">+0.52 / -0.14</span>
+            </a>
+          </div>
+        </div>
 
-<div class="pixel-title">WEBSITE STATUS: <mark>VERY ACTIVE</mark> </div>
-<p>I update this website every now and then</p>
-<p> Making little project for this blog, basically this is just the foundation. The next is projects that is a feature to this blog website.</p>
-<p> Stay tuned for more updates and features, i'd be glad to add those i find interesting and helpful.</p>
+        <!-- TEXT wraps around the float naturally -->
+        <div class="right-column">
+          <p>This is my little website and blog. Inspired by what I like
+          (e.g. JJBA, Undertale, Neocities).</p>
+          <p>I'm a programmer who codes random stuff when I feel like it.</p>
+          <ul class="pixel-list">
+            <li>From somewhere, joined in 2026</li>
+            <li>Main language: JavaScript (sometimes Python)</li>
+            <li>I love the <a href="#" style="color: red;">SUN</a></li>
+            <li>I'm in Senior High in some random Philippine school.</li>
+            <li>I make websites, bots, servers, scripts and random stuffs</li>
+          </ul>
+        </div>
 
-<div class="pixel-title">WHO AM I</div>
+      </div><!-- /panel-body -->
 
-<p>I’m Steven.<br>
-16. Grade 11. ICT student.</p>
+      <!-- ZONE 3: status strip at the bottom -->
+      <div class="panel-footer">
+        <div class="status-inner">
+          <span class="im-text">I'm</span>
+          <span id="userStatus" class="status online">ONLINE!</span>
+        </div>
+        <div class="panel-footer-meta">
+          <span>Est. 2025</span>
+          <span>JS · PY</span>
+          <span>PH 🇵🇭</span>
+        </div>
+      </div>
 
-<p>
-I mostly work with JavaScript (sometimes Python).
-I build websites, bots, scripts — whatever feels interesting enough to chase.
-</p>
+    </div><!-- /pixel-panel -->
 
-<p>I live in Quezon City, Philippines.</p>
+    <!-- =====================================================
+         REST OF YOUR PAGE — untouched
+    ====================================================== -->
+    <main id="posts">
 
-<p>
-I don’t have everything figured out yet.
-Part of me sees a future in tech.
-Another part feels pulled toward ministry.
-My faith matters to me, and so does growth.
-</p>
+      <section class="blog-section">
+        <h1 class="blog-heading"><img src="rouxlssad.gif" width="40px" bottom="7px">BLOG POSTS </h1>
 
-<p>For now, I’m learning. And building.</p>
+        <div class="posts-container" id="postsContainer">
 
+          <article class="post pinned" data-tags="intro">
+            <img src="must.gif" class="STAR" width="40px">
+            <a href="Start.html" class="post-link">
+              <h2>* START HERE — About Me</h2>
+              <p>If you're new, read this first.</p>
+              <div class="date">🗓️Feb 21, 2026 |⏱️~4 minute read</div>
+            </a>
+          </article>
 
-<div class="pixel-title">THINGS I LIKE</div>
+          <article class="post">
+            <div class="post-tag" data-tags="rant">BLOG POST</div>
+            <a href="Adespise.html" class="post-link">
+              <h2>A Random List of Silly Things I Hate</h2>
+              <p>Apparently this is a thing now, so I'm gonna join in. <img src="cat.png"></p>
+              <div class="date">🗓️Feb 06, 2026 |⏱️~2 minute read</div>
+            </a>
+          </article>
 
-<p>I love the sky — the moon, the sun, the clouds.</p>
+          <article class="post" data-tags="music">
+            <a href="Musicprot.html" class="post-link">
+              <h2>My Top Music Tracks</h2>
+              <p>Ive figured putting my top tracks in this blog.</p>
+              <div class="date">🗓️Feb 07, 2026 |⏱️~4 minute read</div>
+            </a>
+          </article>
 
-<p>
-I binge-watch shows and get too invested in fictional characters.
-I tell myself “one more episode” and regret it later.
-</p>
+          <article class="post" data-tags="anime">
+            <a href="JOJO.html" class="post-link">
+              <h2>Anime Tierlist</h2>
+              <p>Purely subjective.</p>
+              <div class="date">🗓️Jan 29, 2026 |⏱️~5 minute read</div>
+            </a>
+          </article>
 
-<p>I like improving little by little. Progress feels better than perfection.</p>
+          <article class="post">
+            <a href="#" class="post-link">
+              <h2>Family Outings</h2>
+              <p>Stories and warm moments.</p>
+              <div class="date">🗓️Feb 12, 2026 |⏱️~??? minute read</div>
+            </a>
+          </article>
 
-<p>This blog is a record of that progress.</p>
+          <article class="post"><a class="post-link">
+            <h2>My Hobbies</h2>
+            <p>Things I developed and dropped.</p>
+            <div class="date">🗓️Feb 12, 2026 |⏱️~5 minute read</div>
+          </a></article>
 
-<p>
-If you’re reading this, you’re seeing me in the middle of becoming something.
-</p>
+          <article class="post"><a class="post-link">
+            <h2>Reflections</h2>
+            <p>Philosophy, psychology, life thoughts.</p>
+            <div class="date">🗓️Feb 1, 2026 |⏱️~10 minute read</div>
+          </a></article>
 
-<p><strong>Gratitude. Abundance. Purpose.</strong></p>
+        </div>
 
-<p>— Steven</p>
-<footer>
-  © 2026 Steven Ignacio
+        <button id="seeMoreBtn" class="see-more-btn">SEE MORE</button>
+
+        <div class="dev-note">
+          <div class="dev-note-track">
+            <span>NOTE: This website is still a work in progress... </span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="message">
+            <div class="love">
+              thank you for visiting<br>
+              have fun exploring<br>
+              goodbye and have a<br>
+              happy life
+            </div>
+            <div class="queen">
+              <a style="margin-right: 70px;">See you</a><br>
+              <img src="tobynap.gif" class="queen-gif">
+            </div>
+          </div>
+
+          <a href="photo.html" class="piclog-link">
+            <div class="piclog">
+              <div class="inner">
+                <img id="piclogImage" src="Jonathan.jpg" alt="piclog photo">
+              </div>
+              <img src="heartlog.png" class="heart-frame">
+              <div class="hearttext">
+                <span>p</span><span>i</span><span>c</span>
+                <span>l</span><span>o</span><span>g</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </section>
+    </main>
+
+    <aside>
+      <div class="intro-row">
+        <div class="star-menu-panel">
+          <div class="star-menu-header">
+            <img src="warpstar.png" class="warpstar-icon" alt="Warp Star">
+            <h3 class="star-title">STARS</h3>
+          </div>
+          <div class="star-menu-content">
+            <ul>
+              <li><a href="Contact.html"><img src="starp.png" class="star-icon"> E-Mail <img src="mail.png"></a></li>
+              <li><a href="diary.html"><img src="starp.png" class="star-icon"> Diary</a></li>
+              <li><a href="photo.html"><img src="starp.png" class="star-icon"><span>Gallery Wall</span><span class="alert">(!)</span></a></li>
+              <li><a href="index.html"><img src="starp.png" class="star-icon"> Blog</a></li>
+              <li><a href="MOOD.html"><img src="starp.png" class="star-icon"> Mood Tracker</a></li>
+              <li><a href="Family.html"><img src="starp.png" class="star-icon"> <img src="BYs-removebg-preview.png" width="80px"></a></li>
+              <li><a href="#"><img src="starp.png" class="star-icon"> Family</a></li>
+              <li><a href="nobody.html"><img src="starp.png" class="star-icon"> Where Am I?</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-marquee">
+        <div class="button-track">
+          <div class="track-inner slide-left">
+            <a href="#"><img src="noweb3.gif"></a>
+            <a href="#"><img src="1080p.gif"></a>
+            <a href="#"><img src="windows.gif"></a>
+            <a href="#"><img src="vscode.gif"></a>
+            <a href="#"><img src="https://nekoweb.org/assets/buttons/button11.gif"></a>
+            <a href="#"><img src="made.gif"></a>
+            <a href="#"><img src="valid-css.gif"></a>
+            <a href="#"><img src="waifu.gif"></a>
+            <a href="#"><img src="valid-rss.gif"></a>
+            <a href="#"><img src="anybrow.gif"></a>
+          </div>
+        </div>
+        <div class="button-track">
+          <div class="track-inner slide-right">
+            <a href="#"><img src="cool.gif"></a>
+            <a href="#"><img src="maid.gif"></a>
+            <a href="#"><img src="ukraine.gif"></a>
+            <a href="#"><img src="PROUDLY.gif"></a>
+            <a href="#"><img src="soon.gif"></a>
+            <a href="#"><img src="BREAKDOWN.gif" width="88px" height="31px"></a>
+            <a href="#"><img src="plasma.gif"></a>
+            <a href="#"><img src="calciume.gif"></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-row">
+        <div class="sidebar-box theme-box">
+          <h3>THEME</h3>
+          <img id="themeToggle" src="moon.gif" class="toggle-icon">
+        </div>
+        <div class="sidebar-box filter-box">
+          <h3>FILTER</h3>
+          <div class="tag" data-filter="all">All</div>
+          <div class="tag" data-filter="music">Music</div>
+          <div class="tag" data-filter="rant">Rants</div>
+        </div>
+      </div>
+
+      <!-- status box MOVED to panel footer — keep this hidden or remove it -->
+      <!-- <div class="status-box">...</div> -->
+
+      <a href="ex.html" class="giorno">
+        <img src="GOLDEXPERIENCE.png" width="240px">
+      </a>
+
+      <div class="obsession-panel" id="obsessionPanel">
+        <div class="obsession-header">CURRENT OBSESSION</div>
+        <div class="obsession-body glitch-switch" id="obsessionContent">
+          <img id="obsessionImage" src="song.jpg">
+          <div class="obsession-text">
+            <h3 id="obsessionTitle">Song Title</h3>
+            <div class="sub" id="obsessionSub">Artist Name</div>
+            <div class="obsession-meta" id="obsessionMeta">Last Changed: 1 hour ago</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="socials">
+        <h3>SOCIALS</h3>
+        <div class="social-icons">
+          <a href="https://www.facebook.com/sevencorpse"><img src="fblogo.avif"></a>
+          <a href="https://www.instagram.com/sevenc0rp"><img src="instaglogo.jpg"></a>
+          <a href="https://www.tiktok.com/@boolean.str"><img src="tiklogo.avif"></a>
+          <a href="https://www.discord.com/user/loadstring.json"><img src="disc.avif"></a>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+<footer class="retro-footer">
+  <div class="retro-buttons">
+    <div class="button-row slide-left">
+      <a href="#"><img src="anybrow.gif"></a>
+      <a href="#"><img src="1080p.gif"></a>
+      <a href="#"><img src="windows.gif"></a>
+      <a href="#"><img src="vscode.gif"></a>
+      <a href="#"><img src="noweb3.gif"></a>
+    </div>
+    <div class="button-row slide-right">
+      <a href="#"><img src="valid-html5.gif"></a>
+      <a href="#"><img src="valid-css.gif"></a>
+      <a href="#"><img src="valid-rss.gif"></a>
+      <a href="#"><img src="made.gif"></a>
+    </div>
+  </div>
+  <div class="retro-credit">(c) 2025-2026 Sevenc0rp. All Rights Reserved</div>
 </footer>
 
-</div>
+<canvas id="globe" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-10;pointer-events:none;"></canvas>
+  </div>
+
+<!-- ── ALL YOUR ORIGINAL SCRIPTS — untouched ── -->
+<script src="gallery-data.js"></script>
+<script>
+  const galleryGrid = document.getElementById("galleryGrid");
+  galleryImages.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.classList.add("gallery-img");
+    galleryGrid.appendChild(img);
+  });
+</script>
+<script src="piclog.js"></script>
+<script>
+const biographyUnlocked = false;
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById("themeToggle");
+  if (!toggle) return;
+
+  if (localStorage.theme === "light") {
+    document.body.classList.remove("dark");
+    toggle.src = "moon.gif";
+  } else {
+    document.body.classList.add("dark");
+    localStorage.theme = "dark";
+    toggle.src = "sun.gif";
+  }
+
+  toggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    if (document.body.classList.contains("dark")) {
+      localStorage.theme = "dark";
+      toggle.src = "sun.gif";
+    } else {
+      localStorage.theme = "light";
+      toggle.src = "moon.gif";
+    }
+  });
+
+  document.querySelectorAll(".tag").forEach(btn => {
+    btn.onclick = () => {
+      let f = btn.dataset.filter;
+      document.querySelectorAll(".post").forEach(p => {
+        p.style.display = f === "all" || p.dataset.tags?.includes(f) ? "" : "none";
+      });
+    };
+  });
+
+  const randomBtn = document.getElementById("randomBtn");
+  if (randomBtn) {
+    randomBtn.addEventListener("click", () => {
+      let posts = [...document.querySelectorAll(".post:not(.pinned)")]
+        .filter(p => getComputedStyle(p).display !== "none");
+      if (!posts.length) { alert("No posts available!"); return; }
+      let r = posts[Math.floor(Math.random() * posts.length)];
+      let link = r.querySelector("a.post-link")?.getAttribute("href");
+      if (!link) { alert("This post has no page yet."); return; }
+      window.location.href = link;
+    });
+  }
+});
+
+const statusEl = document.getElementById("userStatus");
+const hour = new Date().getHours();
+if (hour >= 1 && hour <= 7) {
+  statusEl.textContent = "OFFLINE";
+  statusEl.classList.remove("online");
+  statusEl.classList.add("offline");
+}
+
+function timeAgo(dateString) {
+  const now = new Date();
+  const past = new Date(dateString);
+  const seconds = Math.floor((now - past) / 1000);
+  const intervals = [
+    { label: "year", seconds: 31536000 },
+    { label: "month", seconds: 2592000 },
+    { label: "day", seconds: 86400 },
+    { label: "hour", seconds: 3600 },
+    { label: "minute", seconds: 60 }
+  ];
+  for (let i = 0; i < intervals.length; i++) {
+    const interval = Math.floor(seconds / intervals[i].seconds);
+    if (interval >= 1) return interval + " " + intervals[i].label + (interval > 1 ? "s" : "") + " ago";
+  }
+  return "Just now";
+}
+
+const modes = [
+  { id:"song", label:"[ SONG MODE ]", img:"rodrick.jpg", title:"Rodrick Rules", sub:"Malcolm Todd", desc:"Whats with this song, it's so obsessive", lastChanged:"2026-05-04T18:00:00" },
+  { id:"show", label:"[ SHOW MODE ]", img:"kakegurui.jpg", title:"Kakegurui (Live Action)", sub:"Season 2", desc:"They didn't even wrapped it up with a final season pmo..", lastChanged:"2026-05-04T18:00:00" }
+];
+
+let current = 0;
+let autoRotate = true;
+const panel = document.getElementById("obsessionPanel");
+
+function updateMeta() {
+  const data = modes[current];
+  document.getElementById("obsessionMeta").textContent = "Last Changed: " + timeAgo(data.lastChanged);
+}
+
+function switchMode(index) {
+  const data = modes[index];
+  panel.classList.remove("mode-song","mode-anime","mode-show");
+  panel.classList.add("mode-"+data.id);
+  document.getElementById("obsessionImage").src = data.img;
+  document.getElementById("obsessionTitle").textContent = data.title;
+  document.getElementById("obsessionSub").textContent = data.sub;
+  current = index;
+  updateMeta();
+}
+
+setInterval(() => {
+  if (!autoRotate) return;
+  current = (current + 1) % modes.length;
+  switchMode(current);
+}, 5000);
+
+document.querySelectorAll(".obsession-controls button").forEach(btn => {
+  btn.onclick = () => {
+    autoRotate = false;
+    switchMode(modes.findIndex(m => m.id === btn.dataset.mode));
+  };
+});
+
+setInterval(updateMeta, 60000);
+switchMode(0);
+</script>
+
+<script>
+const canvas = document.getElementById("snow");
+const ctx = canvas.getContext("2d");
+let flakes = [];
+const FLAKE_COUNT = document.body.classList.contains("dark") ? 300 : 160;
+
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize();
+window.addEventListener("resize", resize);
+
+class Flake {
+  constructor() { this.reset(true); }
+  reset(initial=false) {
+    this.x = Math.random() * canvas.width;
+    this.y = initial ? Math.random()*canvas.height : -20;
+    this.size = Math.random()*3 + 0.5;
+    this.speedY = Math.random()*0.8 + 0.25;
+    this.speedX = Math.random()*0.6 - 0.3;
+    this.swing = Math.random()*0.02 + 0.005;
+    this.angle = Math.random()*Math.PI*2;
+    this.opacity = Math.random()*0.5 + 0.25;
+  }
+  update() {
+    this.angle += this.swing;
+    this.x += Math.cos(this.angle) + this.speedX;
+    this.y += this.speedY;
+    if (this.y > canvas.height+10 || this.x < -20 || this.x > canvas.width+20) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i=0;i<FLAKE_COUNT;i++) flakes.push(new Flake());
+function animateSnow() { ctx.clearRect(0,0,canvas.width,canvas.height); flakes.forEach(f=>{f.update();f.draw();}); requestAnimationFrame(animateSnow); }
+animateSnow();
+</script>
+
+<script>
+(function(){
+const canvas = document.getElementById("snow-back");
+const ctx = canvas.getContext("2d");
+function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+resize();
+window.addEventListener("resize", resize);
+const COUNT = 500;
+let particles = [];
+let lastScrollY = window.scrollY;
+let upwardForce = 0;
+window.addEventListener("scroll", () => {
+  const current = window.scrollY;
+  const delta = current - lastScrollY;
+  if (delta > 0) { upwardForce += delta * 0.02; if (upwardForce > 6) upwardForce = 6; }
+  lastScrollY = current;
+});
+class Particle {
+  constructor(){ this.reset(true); }
+  reset(init=false){
+    this.x = Math.random()*canvas.width;
+    this.y = init ? Math.random()*canvas.height : -10;
+    this.baseSpeed = Math.random()*0.6 + 0.3;
+    this.speedX = Math.random()*0.2 - 0.1;
+    this.size = Math.random()*1.2 + 0.5;
+    this.opacity = Math.random()*0.5 + 0.2;
+  }
+  update(){
+    this.x += this.speedX;
+    this.y += this.baseSpeed - upwardForce;
+    if(this.y > canvas.height+10) this.reset();
+    if(this.y < -20) this.y = -20;
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${this.opacity})`;
+    ctx.fill();
+  }
+}
+for(let i=0;i<COUNT;i++) particles.push(new Particle());
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{p.update();p.draw();});
+  upwardForce *= 0.9;
+  requestAnimationFrame(animate);
+}
+animate();
+})();
+</script>
+
+<script>
+const imgElement = document.getElementById('piclogImage');
+const images = galleryImages;
+const staticImg = 'static.gif';
+let currentIndex = 0;
+let showingStatic = false;
+let timeoutId = null;
+let isRunning = false;
+function cycle() {
+  if (!isRunning) return;
+  if (showingStatic) { imgElement.src = images[currentIndex]; showingStatic = false; timeoutId = setTimeout(cycle, 2000); }
+  else { imgElement.src = staticImg; showingStatic = true; timeoutId = setTimeout(() => { currentIndex = (currentIndex + 1) % images.length; cycle(); }, 500); }
+}
+function startCycle() { if (isRunning) return; isRunning = true; cycle(); }
+window.addEventListener('DOMContentLoaded', () => { imgElement.src = images[currentIndex]; startCycle(); });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const postsContainer = document.getElementById("postsContainer");
+  const seeMoreBtn = document.getElementById("seeMoreBtn");
+  if (!postsContainer || !seeMoreBtn) return;
+  seeMoreBtn.addEventListener("click", () => {
+    postsContainer.classList.toggle("expanded");
+    seeMoreBtn.textContent = postsContainer.classList.contains("expanded") ? "SHOW LESS" : "SEE MORE";
+  });
+});
+</script>
+
+<script src="cursor-effect.js"></script>
+<script>n();</script>
+
+<script>
+"use strict";
+const textElement = document.getElementById("text");
+const title = document.getElementById("title");
+const titlebox = document.getElementById("titlebox");
+title.style.opacity = 1;
+const isEmpty = (str) => str == null || str.trim().length === 0;
+titlebox.addEventListener("click", () => {
+  if (parseFloat(title.style.opacity) > 0.5) { title.style.opacity = 0.5; titlebox.style.backgroundColor = "rgb(0, 0, 0)"; }
+  else { title.style.opacity = 1; titlebox.style.backgroundColor = "rgb(5, 5, 5)"; }
+});
+async function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+async function typingAnimation(element, titles) {
+  for (let i = 0; i < titles.length; i++) {
+    let current = titles[i];
+    for (let j = 0; j < current.length; j++) {
+      element.innerText += current[j];
+      await sleep(150);
+      while (parseFloat(title.style.opacity) === 0.5) await sleep(300);
+    }
+    await sleep(600);
+    while (!isEmpty(element.innerText)) {
+      while (parseFloat(title.style.opacity) === 0.5) await sleep(300);
+      element.innerText = element.innerText.substring(0, element.innerText.length - 1);
+      await sleep(100);
+    }
+  }
+  await typingAnimation(element, titles);
+}
+typingAnimation(textElement, ["Welcome to", "Sevencorp.org"]);
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+<!-- your globe script would go here unchanged -->
 
 </body>
 </html>
