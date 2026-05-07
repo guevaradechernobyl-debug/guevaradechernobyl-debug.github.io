@@ -618,7 +618,7 @@ body.dark .retro-footer {
       box-shadow: inset 0 0 0 2px var(--card);
       display: flex;
       gap: 18px;
-      align-items: flex-start;
+      align-items: stretch;
       margin-bottom: 25px;
       font-family: monospace;
         flex: 1;
