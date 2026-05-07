@@ -207,7 +207,21 @@
 
 </div>
 </div>
-
+<div class="obs" id="obs" data-mode="song">
+  <div class="header">[ OBS_SESSION // ACTIVE ]</div>
+  <div class="modes">
+    <div class="mode active" data-mode="song">SONG</div>
+    <div class="mode" data-mode="show">SHOW</div>
+    <div class="mode" data-mode="game">GAME</div>
+    <div class="mode" data-mode="manga">MANGA</div>
+  </div>
+  <div class="row"><div class="label">MODE</div><div class="value" id="modeVal"></div></div>
+  <div class="row"><div class="label">ENTRY</div><div class="value" id="title"></div></div>
+  <div class="row"><div class="label">SOURCE</div><div class="value" id="sub"></div></div>
+  <img id="thumb" class="thumb" />
+  <div class="note cursor" id="note"></div>
+  <div class="meta" id="meta"></div>
+</div>
       </main>
 
      <aside>
@@ -348,25 +362,7 @@
   <img src="GOLDEXPERIENCE.png" width="240px">
 </a>
 
-  <!-- ================= OBSESSION PANEL ================= -->
- <div class="obsession-panel" id="obsessionPanel">
-  <div class="obsession-header">
-    CURRENT OBSESSION
-  </div>
-
-  <div class="obsession-body glitch-switch" id="obsessionContent">
-    <img id="obsessionImage" src="song.jpg">
-
-    <div class="obsession-text">
-      <h3 id="obsessionTitle">Song Title</h3>
-      <div class="sub" id="obsessionSub">Artist Name</div>
-
-      <div class="obsession-meta" id="obsessionMeta">
-        Last Changed: 1 hour ago
-      </div>
-    </div>
-  </div>
-</div>
+  
 
   <!-- ================= RANDOM POST ================= -->
 
@@ -515,108 +511,62 @@ if (hour >= 1 && hour <= 7) {
   statusEl.classList.remove("online");
   statusEl.classList.add("offline");
 }
-/* ===== CURRENT OBSESSION SYSTEM ===== */
 
-/* --- Time Ago Function --- */
-function timeAgo(dateString) {
-  const now = new Date();
-  const past = new Date(dateString);
-  const seconds = Math.floor((now - past) / 1000);
 
-  const intervals = [
-    { label: "year", seconds: 31536000 },
-    { label: "month", seconds: 2592000 },
-    { label: "day", seconds: 86400 },
-    { label: "hour", seconds: 3600 },
-    { label: "minute", seconds: 60 }
-  ];
 
-  for (let i = 0; i < intervals.length; i++) {
-    const interval = Math.floor(seconds / intervals[i].seconds);
-    if (interval >= 1) {
-      return interval + " " + intervals[i].label + (interval > 1 ? "s" : "") + " ago";
-    }
-  }
-
-  return "Just now";
-}
-
-/* --- Modes --- */
-const modes = [
-{
-  id:"song",
-  label:"[ SONG MODE ]",
-  img:"rodrick.jpg",
-  title:"Rodrick Rules",
-  sub:"Malcolm Todd",
-  desc:"Whats with this song, it's so obsessive",
-  lastChanged:"2026-05-04T18:00:00"
-},
-{
-  id:"show",
-  label:"[ SHOW MODE ]",
-  img:"kakegurui.jpg",
-  title:"Kakegurui (Live Action) ",
-  sub:"Season 2",
-  desc:"They didn't even wrapped it up with a final season pmo.. ",
-  lastChanged:"2026-05-04T18:00:00"
-}
-];
-
-let current = 0;
-let autoRotate = true;
-
-const panel = document.getElementById("obsessionPanel");
-
-/* --- Update Meta Helper --- */
-function updateMeta() {
-  const data = modes[current];
-  document.getElementById("obsessionMeta").textContent =
-    "Last Changed: " + timeAgo(data.lastChanged);
-}
-
-/* --- Switch Mode --- */
-function switchMode(index){
-
-  const data = modes[index];
-
-  panel.classList.remove("mode-song","mode-anime","mode-show");
-  panel.classList.add("mode-"+data.id);
-
-  document.getElementById("obsessionImage").src = data.img;
-  document.getElementById("obsessionTitle").textContent = data.title;
-  document.getElementById("obsessionSub").textContent = data.sub;
-
-  current = index;
-
-  updateMeta(); // updates timestamp immediately
-}
-
-/* --- Auto rotation --- */
-setInterval(()=>{
-  if(!autoRotate) return;
-  current = (current + 1) % modes.length;
-  switchMode(current);
-}, 5000);
-
-/* --- Buttons --- */
-document.querySelectorAll(".obsession-controls button")
-.forEach(btn=>{
-  btn.onclick=()=>{
-    autoRotate=false;
-    switchMode(
-      modes.findIndex(m=>m.id===btn.dataset.mode)
-    );
-  };
-});
-
-/* --- Auto update timestamp every minute --- */
-setInterval(updateMeta, 60000);
-
-/* --- Start --- */
-switchMode(0);
 </script> 
+<script>// OBSESSION PANEL
+const obsData = {
+  song:  { title:"Rodrick Rules",  sub:"Malcolm Todd",         note:"this shouldn't be replayable this many times. something's off.", img:"rodrick.jpg",    last:"2026-05-04T18:00:00" },
+  show:  { title:"Kakegurui",      sub:"Live Action · Season 2", note:"they really just left it there. unfinished on purpose?",       img:"kakegurui.jpg",  last:"2026-05-04T18:00:00" },
+  game:  { title:"Nothing yet",    sub:"—",                    note:"still scanning for something worth it.",                         img:"",               last:"2026-05-01T00:00:00" },
+  manga: { title:"Nothing yet",    sub:"—",                    note:"no entry logged.",                                               img:"",               last:"2026-05-01T00:00:00" }
+};
 
+function obsTimeAgo(iso){
+  const s=Math.floor((Date.now()-new Date(iso))/1000);
+  const iv=[{l:'year',s:31536000},{l:'month',s:2592000},{l:'day',s:86400},{l:'hour',s:3600},{l:'minute',s:60}];
+  for(const t of iv){ const n=Math.floor(s/t.s); if(n>=1) return n+" "+t.l+(n>1?"s":"")+" ago"; }
+  return "just now";
+}
+
+function obsTypeText(el, text, speed=18){
+  el.textContent=''; let i=0;
+  function tick(){ if(i<text.length){ el.textContent+=text[i++]; setTimeout(tick,speed); } }
+  tick();
+}
+
+function obsRender(mode){
+  const d=obsData[mode];
+  const root=document.getElementById("obs");
+  root.dataset.mode=mode;
+  root.classList.add("glitch");
+  setTimeout(()=>root.classList.remove("glitch"),250);
+  document.getElementById("modeVal").textContent=mode.toUpperCase();
+  document.getElementById("title").textContent=d.title;
+  document.getElementById("sub").textContent=d.sub;
+  obsTypeText(document.getElementById("note"),"> "+d.note);
+  document.getElementById("meta").textContent="UPDATED: "+obsTimeAgo(d.last);
+  const img=document.getElementById("thumb");
+  if(d.img){ img.src=d.img; img.style.display="block"; }
+  else { img.style.display="none"; }
+  document.querySelectorAll('.obs .mode').forEach(m=>{
+    m.classList.toggle('active', m.dataset.mode===mode);
+  });
+}
+
+let obsCurrent='song';
+obsRender(obsCurrent);
+document.querySelectorAll('.obs .mode').forEach(m=>{
+  m.onclick=()=>{ obsCurrent=m.dataset.mode; obsRender(obsCurrent); };
+});
+setInterval(()=>{
+  document.getElementById("meta").textContent="UPDATED: "+obsTimeAgo(obsData[obsCurrent].last);
+},60000);
+document.addEventListener('keydown',e=>{
+  const map={'1':'song','2':'show','3':'game','4':'manga'};
+  if(map[e.key]) obsRender(map[e.key]);
+});</script>
 <script>
 const canvas = document.getElementById("snow");
 const ctx = canvas.getContext("2d");
