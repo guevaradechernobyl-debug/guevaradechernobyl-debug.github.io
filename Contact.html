@@ -1,4 +1,4 @@
-Look at this, the black card is so fucking fat the background isnt even seeablea nymoree "<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,34 +6,238 @@ Look at this, the black card is so fucking fat the background isnt even seeablea
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Steven — Contact</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
-    
-        /* RIVER CONTACT STYLE */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-.river-contact{
-text-align:center;
-background:rgb(0, 0, 0);
-padding:10px;
-border:2px solid white;
+        :root {
+            --cream:     #f0e8d8;
+            --cream-dim: #c8baa8;
+            --accent:    #b89a6e;
+            --accent-lt: #d4b896;
+            --card-bg:   rgba(12, 10, 8, 0.82);
+            --border:    rgba(200, 186, 160, 0.25);
+            --border-strong: rgba(200, 186, 160, 0.5);
+        }
 
-}
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--cream);
+            overflow-x: hidden;
+            min-height: 100vh;
 
-.river-title{
-font-family:Georgia,serif;
-color:#cc00ff;
-font-size:42px;
-margin-bottom:10px;
-}
+            background: url("BACKGROUND-BLINKIES.gif") repeat;
+            background-size: 900px;
+            animation: moveBg 20s linear infinite;
 
-.river-line{
-border:none;
-border-top:1px solid #999;
-margin:20px auto;
-width:80%;
-}
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 40px 16px 60px;
+        }
 
+        @keyframes moveBg {
+            from { background-position: 0 0; }
+            to   { background-position: -500px -300px; }
+        }
+
+        /* ── WRAPPER ── */
+        .page {
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* ── BACK BUTTON ── */
+        .back-btn {
+            align-self: flex-start;
+            background: transparent;
+            border: none;
+            color: var(--cream-dim);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+            text-decoration: none;
+        }
+        .back-btn::before {
+            content: '←';
+            font-size: 15px;
+        }
+        .back-btn:hover { color: var(--cream); }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-strong);
+            border-radius: 2px;
+            padding: 40px 36px 36px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow:
+                0 4px 48px rgba(0,0,0,0.55),
+                0 0 0 1px rgba(255,255,255,0.03) inset;
+        }
+
+        /* ── HEADER ── */
+        .card-header {
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .eyebrow {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .river-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 600;
+            font-size: clamp(28px, 7vw, 40px);
+            color: var(--cream);
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+        }
+
+        .tagline {
+            margin-top: 12px;
+            font-size: clamp(13px, 3.2vw, 14px);
+            color: var(--cream-dim);
+            line-height: 1.7;
+        }
+
+        .tagline a {
+            color: var(--accent-lt);
+            text-decoration-color: rgba(212, 184, 150, 0.4);
+            text-underline-offset: 3px;
+            transition: color 0.2s;
+        }
+        .tagline a:hover { color: var(--cream); }
+
+        /* ── CONTACT ROWS ── */
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 24px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .contact-label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent);
+            min-width: 64px;
+            flex-shrink: 0;
+        }
+
+        .contact-value {
+            font-size: clamp(13px, 3.4vw, 15px);
+            color: var(--cream);
+            word-break: break-all;
+        }
+
+        .contact-value a {
+            color: var(--cream);
+            text-decoration: underline;
+            text-decoration-color: rgba(240, 232, 216, 0.3);
+            text-underline-offset: 3px;
+            transition: text-decoration-color 0.2s;
+        }
+        .contact-value a:hover {
+            text-decoration-color: var(--cream);
+        }
+
+        /* ── FOOTER NOTE ── */
+        .card-footer {
+            font-size: 13px;
+            color: var(--cream-dim);
+            line-height: 1.65;
+        }
+
+        .card-footer a {
+            color: var(--accent-lt);
+            text-decoration-color: rgba(212, 184, 150, 0.35);
+            text-underline-offset: 3px;
+            transition: color 0.2s;
+        }
+        .card-footer a:hover { color: var(--cream); }
+
+        /* ── MOBILE ── */
+        @media (max-width: 480px) {
+            body  { padding: 24px 12px 48px; }
+            .card { padding: 28px 20px 24px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+
+        <button onclick="window.history.back()" class="back-btn">Go Back</button>
+
+        <div class="card">
+
+            <div class="card-header">
+                <p class="eyebrow">Get in touch</p>
+                <h1 class="river-title">Contact</h1>
+                <p class="tagline">
+                    Feel free to reach out whether it's about coding, a project, or just something interesting.
+                    You're also welcome to join my <a href="#">Discord server</a> to chat directly.
+                </p>
+            </div>
+
+            <div class="contact-list">
+                <div class="contact-item">
+                    <span class="contact-label">Discord</span>
+                    <span class="contact-value">loadstring.json</span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-label">Email</span>
+                    <span class="contact-value">
+                        <a href="mailto:Acrogeezer@gmail.com">Acrogeezer@gmail.com</a>
+                    </span>
+                </div>
+            </div>
+
+            <p class="card-footer">
+                I also post updates on <a href="#">Reddit</a> and <a href="#">Webtiles</a>.
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
 .river-text{
 color:white;
 font-size:18px;
