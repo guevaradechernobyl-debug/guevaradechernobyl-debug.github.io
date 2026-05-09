@@ -30,12 +30,20 @@
 </head>
 
 <body>
+  
 <canvas id="snow-back"></canvas>
 <canvas id="snow"></canvas>
   
   <div class="site-wrapper">
 
-
+<div class="mobile-topbar">
+  <span class="mobile-topbar-title">SEVEN.C0RP</span>
+  <div class="mobile-topbar-right">
+    <img id="mobileThemeToggle" src="moon.gif" class="mobile-theme-toggle" alt="theme">
+    <button class="mobile-menu-btn" id="mobileMenuBtn">MENU ☰</button>
+  </div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 <!--HERE! Banner-->
 
 <div class="top-banner">
@@ -211,7 +219,8 @@
 
       </main>
 
-     <aside>
+     <aside >
+       <button class="drawer-close" id="drawerClose">✕ CLOSE</button>
   <!-- ================= TOP ROW: Pixel intro + Stars ================= -->
   <div class="intro-row">
     <!-- Pixel Intro Panel -->
@@ -424,6 +433,40 @@
   pointer-events: none;
 "></canvas>
   </div>
+    <script>
+(function () {
+  const aside        = document.querySelector('aside');
+  const overlay      = document.getElementById('sidebarOverlay');
+  const menuBtn      = document.getElementById('mobileMenuBtn');
+  const closeBtn     = document.getElementById('drawerClose');
+  const mobileToggle = document.getElementById('mobileThemeToggle');
+  const desktopToggle= document.getElementById('themeToggle');
+
+  function openSidebar()  { aside.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeSidebar() { aside.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+  if (menuBtn)  menuBtn.addEventListener('click', openSidebar);
+  if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  if (overlay)  overlay.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidebar(); });
+
+  function syncMobileToggle() {
+    if (!mobileToggle) return;
+    mobileToggle.src = document.body.classList.contains('dark') ? 'sun.gif' : 'moon.gif';
+  }
+  if (mobileToggle) {
+    syncMobileToggle();
+    mobileToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      localStorage.theme = isDark ? 'dark' : 'light';
+      syncMobileToggle();
+      if (desktopToggle) desktopToggle.src = isDark ? 'sun.gif' : 'moon.gif';
+    });
+  }
+  if (desktopToggle) desktopToggle.addEventListener('click', syncMobileToggle);
+})();
+    </script>
 <script src="gallery-data.js"></script>
 <script>
   const galleryGrid = document.getElementById("galleryGrid");
