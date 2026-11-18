@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Keeping Tabs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap">
+<style id="kt-style">
+/* Layout concept: a pixel-art terminal board. Two open slots side by side, each with its own dot-grid heatmap,
+   then a readout of real numbers, then a closed vault line that keeps everything else out of sight. */
+:root{
+  --bg:#050608; --panel:#0b0d10; --line:#1f242c; --fg:#eef1f4; --dim:#6f7782; --mute:#323942;
+  --teal:#6df0cf; --teal2:#2f9e8a; --pink:#ff3f8e;
+  --px:"Press Start 2P",ui-monospace,Menlo,Consolas,monospace;
+  --vt:"VT323",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{
+  margin:0;color:var(--fg);font:400 19px/1.25 var(--vt);
+  padding-block:26px 44px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.022) 0 1px,transparent 1px 3px)}
+.wrap{max-width:980px;margin:0 auto}
+button{font:400 19px/1 var(--vt);color:var(--fg);background:var(--panel);border:2px solid var(--line);border-radius:0;padding:10px 14px;cursor:pointer;min-height:40px;box-shadow:3px 3px 0 #000}
+button:hover{border-color:var(--teal2)}
+button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}
+button:focus-visible,input:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.go{border-color:var(--teal2);color:var(--teal)}
+.stop{border-color:#7a2549;color:var(--pink)}
+.ghost{color:var(--dim)}
+.danger{color:var(--pink)}
+.label{font:400 9px/1.5 var(--px);letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+h1{margin:0;font:400 14px/1.4 var(--px);letter-spacing:.02em}
+h2.name{margin:4px 0 0;font:400 14px/1.5 var(--px);overflow-wrap:anywhere}
+
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.pips{color:var(--dim);display:flex;align-items:center;gap:8px}
+.pip{width:10px;height:10px;border:2px solid var(--dim)}
+.pip.on{background:var(--teal);border-color:var(--teal)}
+.badge{font:400 9px/1 var(--px);border:2px solid var(--mute);padding:6px 8px;color:var(--dim)}
+.rule{color:var(--dim);margin:0 0 20px;max-width:64ch}
+
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px}
+.slot{background:var(--panel);border:2px solid var(--line);padding:20px;min-width:0;transition:opacity .25s,border-color .25s;display:flex;flex-direction:column;gap:16px}
+.slot.live{border-color:#215046;box-shadow:0 0 0 2px rgba(109,240,207,.08),0 0 40px rgba(109,240,207,.06)}
+.slot.dimmed{opacity:.45}
+.slot-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.dimmed .name{color:var(--dim);text-decoration:line-through}
+.timer{font:400 24px/1.2 var(--px);color:var(--mute);letter-spacing:.02em}
+.live .timer{color:var(--teal);text-shadow:0 0 14px rgba(109,240,207,.4)}
+.state{color:var(--dim);margin-top:6px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats b{display:block;font-weight:400;font-size:26px;line-height:1.1}
+.hm{display:grid;grid-template-columns:repeat(7,1fr);row-gap:clamp(6px,2vw,12px);text-align:center}
+.dw{font:400 8px/1 var(--px);color:var(--mute)}
+.c{height:28px;display:grid;place-items:center;font:400 12px/1 var(--px)}
+.c i{display:block;width:4px;height:4px;background:var(--mute)}
+.c.fut{opacity:.3}
+.c.today i{width:9px;height:9px;background:none;border:2px solid var(--dim)}
+.c.today.run i,.c.today.run b{animation:blink 1.2s steps(2,jump-none) infinite}
+.n1{color:var(--teal2)} .n2{color:var(--teal)} .n3{color:var(--pink)}
+@keyframes blink{50%{opacity:.25}}
+.void{margin:0;font:400 16px/1.4 var(--px);color:var(--mute)}
+.hint{color:var(--dim);margin:0;max-width:34ch}
+.slot.empty{min-height:250px;justify-content:center;align-items:flex-start;border-style:dashed;background:transparent}
+
+.read{margin-top:16px;background:var(--panel);border:2px solid var(--line);padding:20px;display:flex;flex-direction:column;gap:20px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px 18px}
+.tiles b{display:block;font-weight:400;font-size:26px;line-height:1.1;margin-top:2px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:22px}
+.bars{display:flex;flex-direction:column;gap:12px;min-width:0}
+.bar-row .top{display:flex;justify-content:space-between;gap:10px}
+.bar-row .nm{overflow-wrap:anywhere}
+.bar{height:12px;margin-top:4px;background:repeating-linear-gradient(90deg,var(--mute) 0 6px,transparent 6px 8px)}
+.bar i{display:block;height:100%;background:repeating-linear-gradient(90deg,var(--teal) 0 6px,transparent 6px 8px)}
+.bar-row .sub{color:var(--dim);font-size:17px}
+.hours{display:flex;align-items:flex-end;gap:2px;height:84px;border-bottom:2px solid var(--mute)}
+.hours span{flex:1;min-width:0;display:block;background:repeating-linear-gradient(0deg,var(--teal) 0 5px,transparent 5px 7px)}
+.hours span.z{background:var(--mute);height:2px}
+.hours span.pk{background:repeating-linear-gradient(0deg,var(--pink) 0 5px,transparent 5px 7px)}
+.hl{display:flex;justify-content:space-between;color:var(--dim);font-size:16px;margin-top:4px}
+.insights{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.insights li::before{content:"> ";color:var(--teal2)}
+.muted{color:var(--dim);margin:0}
+
+.vaultbar{width:100%;text-align:left;margin-top:16px;border-style:dashed;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;box-shadow:none}
+.vaultbar em{font-style:normal;color:var(--teal2)}
+.vaultbar.static{cursor:default}
+.vault{margin-top:16px;border:2px solid var(--line);background:var(--panel);padding:18px;display:flex;flex-direction:column;gap:14px}
+.vhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.vlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.vrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 0;border-top:2px solid var(--line)}
+.vname{flex:1 1 140px;min-width:0;color:var(--dim);text-decoration:line-through;overflow-wrap:anywhere}
+.vmeta{color:var(--mute)}
+.swap{border:2px solid #7a2549;padding:12px;display:flex;flex-direction:column;gap:10px}
+.add{display:flex;gap:10px;flex-wrap:wrap}
+.add input{flex:1 1 200px;min-width:0;background:#050607;color:var(--fg);border:2px solid var(--line);border-radius:0;padding:9px 12px;font:400 20px/1 var(--vt);min-height:40px}
+.err{color:var(--pink);min-height:1.25em;margin:6px 0 0}
+.welcome{border:2px dashed var(--mute);padding:16px;display:flex;flex-direction:column;gap:6px}
+
+.toast{min-height:22px;margin-top:18px;color:var(--teal)}
+.foot{margin-top:6px;border-top:2px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:8px 24px;flex-wrap:wrap}
+.legend{color:var(--dim);font-size:17px;margin-top:8px;display:flex;gap:4px 16px;flex-wrap:wrap;align-items:center}
+.linkbtn{border:0;background:none;box-shadow:none;padding:0;min-height:0;color:var(--dim);text-decoration:underline;font-size:17px}
+.linkbtn:active{transform:none}
+.dm{margin-top:14px;border:2px solid var(--line);background:var(--panel);padding:16px;display:flex;flex-direction:column;gap:12px}
+.dm p{margin:0;color:var(--dim)}
+.running .vaultbar{opacity:.4}
+@media (prefers-reduced-motion:reduce){.c.today.run i,.c.today.run b{animation:none}.slot{transition:none}}
+</style>
+<div class="wrap" id="app"></div>
+<script type="application/json" id="kt-data">{"v":2,"updated":0,"tabs":[],"sessions":[],"opens":[],"swaps":[],"run":null}</script>
+<script id="kt-code">
+(()=>{
+"use strict";
+/* This page is its own record. Everything it knows sits in the JSON block above. The owner's changes are written back by
+   publishing a new version of the page; anyone else who opens the link sees that version read-only. */
+const HAS_CLAUDE=!!(window.claude&&window.claude.use);
+const LS='keepingtabs.v2';
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DOW=['M','T','W','T','F','S','S'];
+const pad=n=>String(n).padStart(2,'0');
+const key=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const hms=ms=>{const s=Math.max(0,Math.floor(ms/1000));return pad(Math.floor(s/3600))+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60)};
+const shortDate=d=>pad(d.getDate())+'/'+MON[d.getMonth()]+'/'+String(d.getFullYear()).slice(2);
+const fmtMin=m=>m<60?m+' min':Math.floor(m/60)+' h '+pad(m%60)+' min';
+const dayNum=k=>{const p=k.split('-');return Date.UTC(+p[0],+p[1]-1,+p[2])/864e5};
+const num=v=>typeof v==='number'&&isFinite(v);
+
+/* ---------- state ---------- */
+const blank=()=>({v:2,updated:0,tabs:[],sessions:[],opens:[],swaps:[],run:null});
+function norm(d){
+  if(!d||typeof d!=='object')return null;
+  const o=blank();
+  if(Array.isArray(d.tabs))o.tabs=d.tabs.filter(t=>t&&typeof t.id==='string'&&typeof t.name==='string').map(t=>({id:t.id,name:String(t.name).slice(0,40),open:!!t.open,openedAt:+t.openedAt||0,created:String(t.created||'')}));
+  const ids=new Set(o.tabs.map(t=>t.id));
+  if(Array.isArray(d.sessions))o.sessions=d.sessions.filter(s=>s&&ids.has(s.t)&&num(s.s)&&num(s.m)&&typeof s.d==='string'&&num(s.h)).map(s=>({t:s.t,s:s.s,m:s.m,o:num(s.o)?s.o:1,d:s.d,h:s.h}));
+  if(Array.isArray(d.opens))o.opens=d.opens.filter(x=>x&&ids.has(x.t)&&num(x.a)).map(x=>({t:x.t,a:x.a,b:+x.b||0}));
+  if(Array.isArray(d.swaps))o.swaps=d.swaps.filter(num);
+  if(d.run&&ids.has(d.run.id)&&num(d.run.start))o.run={id:d.run.id,start:d.run.start,o:num(d.run.o)?d.run.o:1};
+  o.updated=+d.updated||0;
+  return o;
+}
+let S;
+try{S=norm(JSON.parse(document.getElementById('kt-data').textContent))||blank()}catch(e){S=blank()}
+const loadLocal=()=>{try{return norm(JSON.parse(localStorage.getItem(LS)))}catch(e){return null}};
+const saveLocal=()=>{try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}};
+/* GitHub sync: data lives in keeping-tabs-data.json in your repo. Visitors read it, only a valid token (you) can write it. */
+const GH_OWNER='guevaradechernobyl-debug',GH_REPO='guevaradechernobyl-debug.github.io',GH_PATH='keeping-tabs-data.json';
+const API='https://api.github.com/repos/'+GH_OWNER+'/'+GH_REPO+'/contents/'+GH_PATH;
+const getTok=()=>{try{return localStorage.getItem('kt-token')||''}catch(e){return ''}};
+let MODE=HAS_CLAUDE?null:(getTok()?'edit':'view');                // null = not known yet, 'edit' = owner, 'view' = read-only visitor
+const canEdit=()=>MODE==='edit';
+const V={open:false,pick:null,err:'',confirm:null,draft:'',refocus:false,dm:false,imp:null};
+try{const u=JSON.parse(sessionStorage.getItem('kt-ui'));if(u&&typeof u==='object'){V.open=!!u.open;V.pick=u.pick||null;V.draft=String(u.draft||'');V.dm=!!u.dm;sessionStorage.removeItem('kt-ui')}}catch(e){}
+let status=HAS_CLAUDE?'':'saved on this device',toastT=0;
+
+/* ---------- saving: self-publish (hosted) / data file (standalone) ---------- */
+const TOP='<title>Keeping Tabs</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap">\n';
+const hs=document.head&&document.head.querySelector('style');
+const RESET=(hs&&/color-scheme/.test(hs.textContent))?hs.textContent:':root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}';
+function buildDoc(){
+  const css=document.getElementById('kt-style').textContent,code=document.getElementById('kt-code').textContent;
+  const data=JSON.stringify(S).replace(/</g,'\\u003c');
+  return '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>'+RESET+'</style></head><body>'+TOP+'<style id="kt-style">'+css+'</style>\n<div class="wrap" id="app"></div>\n<script type="application/json" id="kt-data">'+data+'<\/script>\n<script id="kt-code">'+code+'<\/script></body></html>';
+}
+const ART=HAS_CLAUDE?claude.use('artifact').catch(()=>null):Promise.resolve(null);
+let pubT=0,pubBusy=false;
+function queuePublish(){if(!HAS_CLAUDE||!canEdit())return;clearTimeout(pubT);status='saving...';paintStatus();pubT=setTimeout(doPublish,1200)}
+async function doPublish(){
+  if(pubBusy){pubT=setTimeout(doPublish,800);return}
+  const art=await ART;
+  if(!art){status='saved on this device only';paintStatus();return}
+  pubBusy=true;
+  try{
+    try{sessionStorage.setItem('kt-ui',JSON.stringify({open:V.open,pick:V.pick,draft:V.draft,dm:V.dm}))}catch(e){}
+    await art.publish(buildDoc());
+    status='saved';pubBusy=false;paintStatus();   // the view reloads to the new version right after this
+  }catch(e){
+    pubBusy=false;const c=e&&e.code;
+    if(c==='conflict')return;                // the shell reloads to the newer version
+    if(['not_writer','not_granted','not_declared','capability_disabled','capability_removed','consent_required'].includes(c)){MODE='view';render();return}
+    status='could not publish yet, saved on this device';paintStatus();
+    if(c==='rate_limited'||c==='upstream_error')pubT=setTimeout(doPublish,6000);
+  }
+}
+function paintStatus(){const el=document.getElementById('sync');if(el)el.textContent=status}
+
+/* standalone only: autosave to a data file on the computer or flash drive */
+const FSA=false&&typeof window.showSaveFilePicker==='function'&&typeof window.showOpenFilePicker==='function';
+const FTYPES=[{description:'Keeping Tabs data',accept:{'application/json':['.json']}}];
+let fh=null,fileState='none',fwT=0;
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('keepingtabs',1);r.onupgradeneeded=()=>r.result.createObjectStore('h');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function idbGet(){try{const d=await idb();return await new Promise(res=>{const q=d.transaction('h').objectStore('h').get('fh');q.onsuccess=()=>res(q.result||null);q.onerror=()=>res(null)})}catch(e){return null}}
+async function idbSet(v){try{const d=await idb();await new Promise(res=>{const t=d.transaction('h','readwrite');t.objectStore('h').put(v,'fh');t.oncomplete=()=>res();t.onerror=()=>res()})}catch(e){}}
+const wrapState=()=>JSON.stringify({app:'keeping-tabs',v:2,saved:new Date().toISOString(),state:S},null,1);
+async function fileWrite(){
+  if(!fh)return;
+  try{const w=await fh.createWritable();await w.write(wrapState());await w.close();fileState='ready';status='autosaved to '+fh.name}
+  catch(e){fileState='error';status='could not write the data file'}
+  paintStatus();
+}
+function queueFile(){if(!fh||fileState!=='ready')return;clearTimeout(fwT);fwT=setTimeout(fileWrite,300)}
+async function fileRead(){const f=await fh.getFile();const j=JSON.parse(await f.text());return norm(j&&j.state?j.state:j)}
+async function createFile(){
+  try{fh=await showSaveFilePicker({suggestedName:'keeping-tabs-data.json',types:FTYPES});await idbSet(fh);fileState='ready';await fileWrite();toast('Data file created. Every change now saves to it.')}catch(e){}
+  render();
+}
+async function openFile(){
+  try{
+    const [h]=await showOpenFilePicker({types:FTYPES});fh=h;await idbSet(h);
+    const d=await fileRead();
+    if(!d){fh=null;toast('That file is not a Keeping Tabs data file.');return}
+    S=d;saveLocal();fileState='ready';status='autosaving to '+fh.name;toast('Loaded '+d.tabs.length+' tabs from '+fh.name+'.');
+  }catch(e){}
+  render();
+}
+async function reconnectFile(){
+  try{
+    if(await fh.requestPermission({mode:'readwrite'})==='granted'){
+      fileState='ready';const d=await fileRead();
+      if(d&&d.updated>S.updated){S=d;saveLocal()}else await fileWrite();
+      status='autosaving to '+fh.name;
+    }
+  }catch(e){}
+  render();
+}
+if(FSA)(async()=>{
+  fh=await idbGet();if(!fh)return;
+  try{
+    if(await fh.queryPermission({mode:'readwrite'})==='granted'){fileState='ready';const d=await fileRead();if(d&&d.updated>S.updated){S=d;saveLocal()}status='autosaving to '+fh.name}
+    else fileState='needs-permission';
+  }catch(e){fileState='needs-permission'}
+  render();
+})();
+
+/* mode: the owner edits, everybody else reads */
+(async()=>{
+  if(!HAS_CLAUDE)return;
+  let ok=false;
+  try{const u=await Promise.race([claude.use('user'),new Promise(r=>setTimeout(()=>r(null),10000))]);ok=!!u&&await u.canEdit()}catch(e){}
+  MODE=ok?'edit':'view';
+  if(ok){const l=loadLocal();if(l&&l.updated>S.updated){S=l;queuePublish()}else saveLocal();status='saved'}
+  render();
+})();
+const hdr=(tok)=>{const h={Accept:'application/vnd.github+json'};if(tok)h.Authorization='Bearer '+tok;return h};
+async function pull(){
+  const tok=getTok();
+  const r=await fetch(API,{headers:Object.assign(hdr(tok),{Accept:'application/vnd.github.raw+json'}),cache:'no-store'});
+  if(r.status===404)return null;
+  if(!r.ok)throw new Error('pull '+r.status);
+  const j=JSON.parse(await r.text());return norm(j&&j.state?j.state:j);
+}
+let pushT=0,pushBusy=false,pushAgain=false,authBad=false;
+function queuePush(){if(HAS_CLAUDE||!canEdit()||!getTok())return;clearTimeout(pushT);status='saving...';paintStatus();pushT=setTimeout(doPush,1500)}
+async function doPush(){
+  if(pushBusy){pushAgain=true;return}
+  const tok=getTok();if(!tok)return;
+  pushBusy=true;
+  try{
+    const m=await fetch(API,{headers:hdr(tok),cache:'no-store'});
+    if(m.status===401||m.status===403)throw {auth:true};
+    const sha=m.status===200?(await m.json()).sha:undefined;
+    const body={message:'keeping tabs update',content:btoa(unescape(encodeURIComponent(JSON.stringify({app:'keeping-tabs',v:2,state:S})))) };
+    if(sha)body.sha=sha;
+    const r=await fetch(API,{method:'PUT',headers:Object.assign(hdr(tok),{'Content-Type':'application/json'}),body:JSON.stringify(body)});
+    if(r.status===401||r.status===403)throw {auth:true};
+    if(!r.ok)throw new Error('push '+r.status);
+    status='published to your site';
+  }catch(e){status=(e&&e.auth)?'GitHub rejected the token. Leave admin mode and unlock again.':'could not publish yet, saved on this device';if(!(e&&e.auth))pushT=setTimeout(doPush,8000)}
+  pushBusy=false;paintStatus();
+  if(pushAgain){pushAgain=false;doPush()}
+}
+async function tryUnlock(){
+  if(HAS_CLAUDE||location.hash!=='#admin')return;
+  history.replaceState(null,'',location.pathname+location.search);
+  if(getTok()){MODE='edit';render();return}
+  const t=(prompt('Paste your GitHub access token to unlock admin mode:')||'').trim();if(!t)return;
+  try{
+    const r=await fetch('https://api.github.com/repos/'+GH_OWNER+'/'+GH_REPO,{headers:hdr(t)});
+    const j=r.ok?await r.json():null;
+    if(!j||!j.permissions||!j.permissions.push){alert('That token cannot write to '+GH_REPO+'.');return}
+    localStorage.setItem('kt-token',t);MODE='edit';
+    const rem=await pull().catch(()=>null),l=loadLocal();
+    const best=[rem,l].filter(Boolean).sort((a,b)=>b.updated-a.updated)[0];
+    if(best&&best.updated>S.updated)S=best;
+    status='admin mode';render();
+  }catch(e){alert('Could not reach GitHub. Check your connection and try again.')}
+}
+function lockAdmin(){try{localStorage.removeItem('kt-token');localStorage.removeItem(LS)}catch(e){}MODE='view';render();syncRemote()}
+/* everyone: load the latest published data (visitors re-check every 2 minutes) */
+async function syncRemote(){
+  if(HAS_CLAUDE||document.hidden)return;
+  try{
+    const rem=await pull();
+    if(MODE==='edit'){const l=loadLocal();const best=[rem,l,S].filter(Boolean).sort((a,b)=>b.updated-a.updated)[0];
+      if(best!==S&&best.updated>S.updated){S=best;render()}
+      if(l&&(!rem||l.updated>rem.updated))queuePush();else if(rem&&rem.updated>=S.updated&&!pushBusy)status='in sync';
+    }else if(rem&&rem.updated!==S.updated&&!(S.run&&rem.run)){S=rem;render()}
+    else if(rem&&rem.updated===S.updated){}
+    paintStatus();
+  }catch(e){}
+}
+setTimeout(()=>{tryUnlock();syncRemote()},0);
+addEventListener('hashchange',tryUnlock);
+setInterval(()=>{if(MODE!=='edit')syncRemote()},120000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&MODE!=='edit')syncRemote()});
+
+function commit(){S.updated=Date.now();saveLocal();queueFile();queuePublish();queuePush();render()}
+
+/* ---------- derived data ---------- */
+const openTabs=()=>S.tabs.filter(t=>t.open).sort((a,b)=>a.openedAt-b.openedAt);
+const closedTabs=()=>S.tabs.filter(t=>!t.open);
+const byId=id=>S.tabs.find(t=>t.id===id);
+function dayMap(id){const m={};for(const s of S.sessions){if(id&&s.t!==id)continue;const e=m[s.d]||(m[s.d]={s:0,m:0});e.s++;e.m+=s.m}return m}
+function curStreak(m){const d=new Date();if(!(m[key(d)]&&m[key(d)].s>0))d.setDate(d.getDate()-1);let n=0;while(m[key(d)]&&m[key(d)].s>0){n++;d.setDate(d.getDate()-1)}return n}
+function bestStreak(m){const ks=Object.keys(m).filter(k=>m[k].s>0).map(dayNum).sort((a,b)=>a-b);let best=0,run=0,prev=-9;for(const k of ks){run=(k===prev+1)?run+1:1;if(run>best)best=run;prev=k}return best}
+function lastDone(id){let l=null;for(const s of S.sessions)if(s.t===id&&(!l||s.s>l))l=s.s;return l}
+const tabMin=id=>S.sessions.reduce((a,s)=>a+(s.t===id?s.m:0),0);
+function todayMin(){
+  const k=key(new Date());let m=0;
+  for(const s of S.sessions)if(s.d===k)m+=s.m;
+  if(S.run&&key(new Date(S.run.start))===k)m+=Math.floor((Date.now()-S.run.start)/60000);
+  return m;
+}
+function analyse(){
+  const ss=S.sessions;if(!ss.length)return null;
+  const tot=ss.reduce((a,s)=>a+s.m,0),all=dayMap(null);
+  const today=new Date();today.setHours(12,0,0,0);
+  const dow=(today.getDay()+6)%7;let thisW=0,lastW=0;
+  for(let i=0;i<=dow;i++){const a=new Date(today);a.setDate(a.getDate()-dow+i);const b=new Date(a);b.setDate(b.getDate()-7);
+    thisW+=(all[key(a)]||{m:0}).m;lastW+=(all[key(b)]||{m:0}).m}
+  const hours=new Array(24).fill(0);for(const s of ss)if(s.h>=0&&s.h<24)hours[s.h]+=s.m;
+  const solo=ss.reduce((a,s)=>a+(s.o<=1?s.m:0),0);
+  const per=S.tabs.map(t=>{const m=dayMap(t.id);return{t,min:tabMin(t.id),n:ss.filter(s=>s.t===t.id).length,cur:curStreak(m),best:bestStreak(m)}}).filter(p=>p.n>0).sort((a,b)=>b.min-a.min);
+  return{tot,n:ss.length,avg:Math.round(tot/ss.length),longest:Math.max(...ss.map(s=>s.m)),days:Object.keys(all).length,streak:curStreak(all),best:bestStreak(all),
+    thisW,lastW,hours,solo:tot?Math.round(solo/tot*100):0,per,swaps7:S.swaps.filter(x=>x>Date.now()-7*864e5).length};
+}
+
+/* ---------- actions (owner only) ---------- */
+function toast(msg){const el=document.getElementById('toast');if(!el)return;el.textContent=msg;clearTimeout(toastT);toastT=setTimeout(()=>{el.textContent=''},4500)}
+function stopRun(log){
+  if(!S.run)return '';
+  const r=S.run,t=byId(r.id),ms=Date.now()-r.start;S.run=null;
+  if(!t||!log)return log===false?'Session discarded.':'';
+  if(ms<60000)return 'Under a minute, so it was not logged.';
+  const st=new Date(r.start),mins=Math.round(ms/60000);
+  S.sessions.push({t:t.id,s:r.start,m:mins,o:r.o,d:key(st),h:st.getHours()});
+  return mins+' min saved to '+t.name+'.'+(mins>240?' That was a long one, check it is right.':'');
+}
+function startRun(id){
+  if(!canEdit())return;
+  const note=S.run&&S.run.id!==id?stopRun(true):'';
+  S.run={id,start:Date.now(),o:openTabs().length};
+  commit();if(note)toast(note);
+}
+function markOpen(id){S.opens.push({t:id,a:Date.now(),b:0})}
+function markClosed(id){for(let i=S.opens.length-1;i>=0;i--)if(S.opens[i].t===id&&!S.opens[i].b){S.opens[i].b=Date.now();break}}
+function closeTab(id){
+  if(!canEdit())return;const t=byId(id);if(!t)return;
+  let msg='';if(S.run&&S.run.id===id)msg=stopRun(true);
+  t.open=false;t.openedAt=0;markClosed(id);commit();toast('Closed '+t.name+'. '+msg);
+}
+function openTab(id){
+  if(!canEdit())return;const t=byId(id);if(!t||t.open)return;
+  if(openTabs().length<2){t.open=true;t.openedAt=Date.now();markOpen(id);V.open=false;V.pick=null;commit();toast('Opened '+t.name+'.');return}
+  V.pick=id;V.open=true;render();
+}
+function swapIn(outId){
+  if(!canEdit())return;const inc=byId(V.pick),out=byId(outId);if(!inc||!out)return;
+  const msg=(S.run&&S.run.id===outId)?stopRun(true):'';
+  out.open=false;out.openedAt=0;markClosed(outId);inc.open=true;inc.openedAt=Date.now();markOpen(inc.id);S.swaps.push(Date.now());
+  V.pick=null;V.open=false;commit();toast('Swapped '+out.name+' for '+inc.name+'. '+msg);
+}
+function addTab(andOpen){
+  if(!canEdit())return;
+  const inp=document.getElementById('newname'),name=(inp?inp.value:V.draft).trim().replace(/\s+/g,' ');V.draft=name;
+  if(!name){V.err='Give the tab a name first.';V.refocus=true;render();return}
+  if(name.length>28){V.err='Keep it under 28 characters.';V.refocus=true;render();return}
+  if(S.tabs.some(t=>t.name.toLowerCase()===name.toLowerCase())){V.err='A tab called "'+name+'" already exists.';V.refocus=true;render();return}
+  const t={id:'t'+Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36),name,open:false,openedAt:0,created:key(new Date())};
+  S.tabs.push(t);V.err='';V.draft='';V.open=true;
+  if(andOpen){openTab(t.id);if(!t.open){commit();toast(name+' is added. Choose which tab to close.')}return}
+  V.refocus=true;commit();toast('Added '+name+' to the vault.');
+}
+function delTab(id){
+  if(!canEdit())return;const t=byId(id);if(!t)return;
+  if(S.run&&S.run.id===id)S.run=null;
+  S.tabs=S.tabs.filter(x=>x.id!==id);S.sessions=S.sessions.filter(s=>s.t!==id);S.opens=S.opens.filter(o=>o.t!==id);
+  V.confirm=null;commit();toast('Deleted '+t.name+' and its history.');
+}
+async function saveBackup(){
+  const data=wrapState(),name='keeping-tabs-backup-'+key(new Date())+'.json';
+  try{
+    if(HAS_CLAUDE){const d=await claude.use('downloads');if(d){await d.save({filename:name,data});toast('Backup saved.');return}toast('Saving files is not available here.');return}
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();a.remove();toast('Backup downloaded.');
+  }catch(e){if(!e||e.code!=='declined')toast('Could not save the backup.')}
+}
+function readBackup(file){
+  const r=new FileReader();
+  r.onload=()=>{try{const j=JSON.parse(String(r.result)),d=norm(j&&j.state?j.state:j);if(!d||!d.tabs.length&&!d.sessions.length)throw 0;V.imp={d,name:file.name};}catch(e){V.imp=null;toast('That file is not a Keeping Tabs backup.')}render()};
+  r.readAsText(file);
+}
+
+/* ---------- render ---------- */
+function heat(id,live){
+  const m=dayMap(id),today=new Date();today.setHours(0,0,0,0);
+  const dow=(today.getDay()+6)%7,start=new Date(today);start.setDate(start.getDate()-dow-28);
+  let h=DOW.map(d=>'<div class="dw">'+d+'</div>').join('');
+  for(let i=0;i<35;i++){
+    const d=new Date(start);d.setDate(start.getDate()+i);
+    const k=key(d),fut=d>today,isT=k===key(today),e=m[k];
+    let tip=d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'}),inner;
+    if(e&&e.s>0){inner='<b class="'+(e.m>=90?'n3':e.m>=30?'n2':'n1')+'" style="font-weight:400">'+e.s+'</b>';tip+=': '+e.s+(e.s>1?' sessions, ':' session, ')+e.m+' min'}
+    else{inner='<i></i>';if(!fut)tip+=': nothing logged'}
+    h+='<div class="c'+(fut?' fut':'')+(isT?' today':'')+(isT&&live?' run':'')+'" title="'+esc(tip)+'">'+inner+'</div>';
+  }
+  return '<div class="hm" role="img" aria-label="Focus sessions per day over the last five weeks">'+h+'</div>';
+}
+function slotHtml(t,i){
+  const ed=canEdit();
+  if(!t)return '<section class="slot empty"><div class="label">slot '+(i+1)+'</div><p class="void">empty</p><p class="hint">'+(ed?'Nothing is open here, so nothing here gets your thought.':'Nothing is open in this slot right now.')+'</p>'+(ed?'<button data-act="vault">Bring a tab in</button>':'')+'</section>';
+  const live=S.run&&S.run.id===t.id,other=S.run&&!live,m=dayMap(t.id),tl=m[key(new Date())];
+  const btn=!ed?'':live?'<button class="stop" data-act="stop">Stop and save</button><button class="ghost" data-act="discard">Discard</button>':'<button class="go" data-act="start" data-id="'+t.id+'">'+(other?'Switch focus here':'Start focus')+'</button>';
+  return '<section class="slot'+(live?' live':'')+(other?' dimmed':'')+'">'+
+    '<div class="slot-top"><div><div class="label">slot '+(i+1)+'</div><h2 class="name">'+esc(t.name)+'</h2></div>'+(ed?'<button class="ghost" data-act="close" data-id="'+t.id+'" aria-label="Close tab '+esc(t.name)+'">close ×</button>':'')+'</div>'+
+    '<div><div class="timer" data-timer="'+t.id+'">'+(live?hms(Date.now()-S.run.start):'00:00:00')+'</div><div class="state">'+(live?'focusing. nothing else exists.':other?'paused. one thing at a time.':'idle')+'</div></div>'+
+    (btn?'<div class="btns">'+btn+'</div>':'')+
+    heat(t.id,live)+
+    '<div class="stats"><div><span class="label">today</span><b>'+((tl&&tl.m)||0)+' min</b></div><div><span class="label">streak</span><b>'+curStreak(m)+' d</b></div><div><span class="label">all time</span><b>'+(Math.round(tabMin(t.id)/6)/10)+' h</b></div></div>'+
+  '</section>';
+}
+function readHtml(){
+  const a=analyse();
+  if(!a)return '<section class="read"><span class="label">the readout</span><p class="muted">Nothing logged yet. Finish a focus session of at least a minute and the numbers, the split between your tabs and your best hours show up here.</p></section>';
+  const tile=(l,v)=>'<div><span class="label">'+l+'</span><b>'+v+'</b></div>';
+  const mx=Math.max(1,...a.hours),pk=a.hours.indexOf(Math.max(...a.hours));
+  const bars=a.per.map(p=>{const pc=Math.round(p.min/a.tot*100);return '<div class="bar-row"><div class="top"><span class="nm">'+esc(p.t.name)+'</span><span>'+pc+'%</span></div><div class="bar"><i style="width:'+pc+'%"></i></div><div class="sub">'+fmtMin(p.min)+' · '+p.n+(p.n===1?' session':' sessions')+' · streak '+p.cur+' d · best '+p.best+' d</div></div>'}).join('');
+  const hrs=a.hours.map((v,h)=>'<span class="'+(v===0?'z':h===pk?'pk':'')+'" style="'+(v?'height:'+Math.max(1,Math.round(v/mx*12))*7+'px':'')+'" title="'+pad(h)+':00 · '+v+' min"></span>').join('');
+  const diff=a.thisW-a.lastW,ins=[];
+  ins.push('Most focus went to '+esc(a.per[0].t.name)+' ('+Math.round(a.per[0].min/a.tot*100)+'% of your minutes).');
+  ins.push('Your strongest hour starts at '+pad(pk)+':00.');
+  ins.push('This week: '+a.thisW+' min, '+(diff>=0?'+':'')+diff+' compared with the same days last week.');
+  ins.push(a.solo+'% of your focus happened with only one tab open.');
+  return '<section class="read"><span class="label">the readout</span>'+
+    '<div class="tiles">'+tile('focused',fmtMin(a.tot))+tile('sessions',a.n)+tile('average',a.avg+' min')+tile('longest',a.longest+' min')+tile('active days',a.days)+tile('streak / best',a.streak+' / '+a.best+' d')+tile('swaps, 7 days',a.swaps7)+tile('solo focus',a.solo+'%')+'</div>'+
+    '<div class="cols"><div><span class="label">where the minutes went</span><div class="bars" style="margin-top:12px">'+bars+'</div></div>'+
+    '<div><span class="label">when you start focusing</span><div class="hours" style="margin-top:12px" role="img" aria-label="Focus minutes by hour of day">'+hrs+'</div><div class="hl"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div></div></div>'+
+    '<ul class="insights">'+ins.map(x=>'<li>'+x+'</li>').join('')+'</ul></section>';
+}
+function vaultHtml(){
+  const closed=closedTabs();
+  if(!canEdit())return closed.length?'<div class="vaultbar static"><span>'+closed.length+' closed '+(closed.length===1?'tab':'tabs')+' · out of mind</span></div>':'';
+  const force=!S.tabs.length;
+  if(!V.open&&!force)return '<button class="vaultbar" data-act="vault"><span>'+closed.length+' closed '+(closed.length===1?'tab':'tabs')+' · out of mind</span><em>open the vault</em></button>';
+  const pick=V.pick&&byId(V.pick);
+  let h='<div class="vault"><div class="vhead"><span class="label">'+(force?'start here':'the vault · closed tabs')+'</span>'+(force?'':'<button class="ghost" data-act="hidev">hide</button>')+'</div>';
+  if(force)h+='<div class="welcome"><div>Add the things you actually do: coding, a course, a game, a chore.</div><div class="muted">Only two can be open at once. The rest wait in the vault, out of mind.</div></div>';
+  if(pick)h+='<div class="swap"><div>Both slots are in use. Close one to open <b>'+esc(pick.name)+'</b>:</div><div class="btns">'+openTabs().map(t=>'<button data-act="swap" data-id="'+t.id+'">Close '+esc(t.name)+'</button>').join('')+'<button class="ghost" data-act="cancelpick">Cancel</button></div></div>';
+  if(closed.length)h+='<ul class="vlist">'+closed.map(t=>{
+    const ld=lastDone(t.id),mn=tabMin(t.id);
+    const del=V.confirm===t.id?'<button class="danger" data-act="delyes" data-id="'+t.id+'">Delete tab and history</button><button class="ghost" data-act="delno">Keep</button>':'<button class="ghost" data-act="del" data-id="'+t.id+'">delete</button>';
+    return '<li class="vrow"><span class="vname">'+esc(t.name)+'</span><span class="vmeta">'+(ld?'last '+shortDate(new Date(ld))+' · ':'')+mn+' min</span><button class="go" data-act="open" data-id="'+t.id+'">open</button>'+del+'</li>';
+  }).join('')+'</ul>';
+  else if(!force)h+='<p class="muted">No closed tabs.</p>';
+  h+='<div><div class="add"><input id="newname" type="text" maxlength="40" autocomplete="off" placeholder="name a new tab" value="'+esc(V.draft)+'" aria-label="New tab name"><button data-act="add">Add to vault</button><button class="go" data-act="addopen">Add and open</button></div><p class="err" role="alert">'+esc(V.err)+'</p></div>';
+  return h+'</div>';
+}
+function dataHtml(){
+  if(!canEdit())return '';
+  if(!V.dm)return '<div class="legend"><button class="linkbtn" data-act="dm">data and backup</button></div>';
+  let h='<div class="dm"><div class="vhead"><span class="label">data and backup</span><button class="ghost" data-act="dm">hide</button></div>';
+  if(HAS_CLAUDE)h+='<p>Every change saves into this page itself. Anyone you share the link with sees the latest version, read only. A backup file is a copy you can keep on your computer or a flash drive.</p>';
+  else if(FSA){
+    h+='<p>'+(fileState==='ready'&&fh?'Autosaving every change to <b>'+esc(fh.name)+'</b>.':fileState==='needs-permission'&&fh?'Your data file is <b>'+esc(fh.name)+'</b>. Your browser needs a click to let this page write to it again.':'Link a data file and every change is written to it, so the file can live on a flash drive.')+'</p><div class="btns">'+
+      (fileState==='needs-permission'&&fh?'<button class="go" data-act="refile">Reconnect data file</button>':'')+'<button data-act="newfile">Create data file</button><button data-act="openfile">Open data file</button></div>';
+  }else h+='<p>Admin mode. Every change you make is published to your website automatically, usually within a few seconds. Visitors only ever see it, they cannot change it. A backup file is a copy you can keep on your computer.</p><div class="btns"><button class="ghost" data-act="lock">Leave admin mode</button></div>';
+  h+='<div class="btns"><button data-act="backup">Save backup</button><button data-act="loadbackup">Load backup</button><input id="impfile" type="file" accept=".json,application/json" hidden></div>';
+  if(V.imp)h+='<div class="swap"><div>Replace everything here with <b>'+esc(V.imp.name)+'</b>? It holds '+V.imp.d.tabs.length+' tabs and '+V.imp.d.sessions.length+' sessions.</div><div class="btns"><button class="danger" data-act="impyes">Replace</button><button class="ghost" data-act="impno">Cancel</button></div></div>';
+  return h+'</div>';
+}
+function render(){
+  const app=document.getElementById('app'),o=openTabs();
+  const sw=S.swaps.filter(x=>key(new Date(x))===key(new Date())).length;
+  app.className='wrap'+(S.run?' running':'');
+  app.innerHTML=
+    '<header><h1>keeping tabs</h1><div class="pips">'+(MODE==='view'?'<span class="badge">VIEW ONLY</span>':'')+'<span>open</span><span class="pip'+(o.length>0?' on':'')+'"></span><span class="pip'+(o.length>1?' on':'')+'"></span></div></header>'+
+    '<p class="rule">Pure attention: two tabs open at most, one in focus at a time. Whatever is closed does not get a thought until it is swapped in.</p>'+
+    '<div class="slots">'+slotHtml(o[0],0)+slotHtml(o[1],1)+'</div>'+
+    readHtml()+vaultHtml()+
+    '<div class="toast" id="toast" role="status" aria-live="polite"></div>'+
+    '<footer class="foot"><span>Today: <span id="fmin">'+todayMin()+'</span> min focused, '+sw+(sw===1?' swap':' swaps')+', '+o.length+' of 2 open</span><span>'+shortDate(new Date())+'</span></footer>'+
+    '<div class="legend"><span>numbers are focus sessions per day</span><span><b class="n1" style="font-weight:400">1</b> under 30 min</span><span><b class="n2" style="font-weight:400">2</b> 30 min or more</span><span><b class="n3" style="font-weight:400">3</b> 90 min or more</span><span id="sync"></span></div>'+
+    dataHtml();
+  paintStatus();
+  if(V.refocus){V.refocus=false;const i=document.getElementById('newname');if(i){i.focus();const n=i.value.length;try{i.setSelectionRange(n,n)}catch(e){}}}
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const a=b.dataset.act,id=b.dataset.id;
+  if(a==='vault'){if(!canEdit())return;V.open=true;V.err='';render()}
+  else if(a==='hidev'){V.open=false;V.pick=null;V.confirm=null;render()}
+  else if(a==='open')openTab(id);
+  else if(a==='swap')swapIn(id);
+  else if(a==='cancelpick'){V.pick=null;render()}
+  else if(a==='close')closeTab(id);
+  else if(a==='start')startRun(id);
+  else if(a==='stop'){if(!canEdit())return;const m=stopRun(true);commit();toast(m)}
+  else if(a==='discard'){if(!canEdit())return;const m=stopRun(false);commit();toast(m)}
+  else if(a==='del'){V.confirm=id;render()}
+  else if(a==='delno'){V.confirm=null;render()}
+  else if(a==='delyes')delTab(id);
+  else if(a==='add')addTab(false);
+  else if(a==='addopen')addTab(true);
+  else if(a==='dm'){V.dm=!V.dm;V.imp=null;render()}
+  else if(a==='backup')saveBackup();
+  else if(a==='loadbackup'){const f=document.getElementById('impfile');if(f)f.click()}
+  else if(a==='impyes'&&canEdit()&&V.imp){S=V.imp.d;V.imp=null;commit();toast('Backup loaded.')}
+  else if(a==='impno'){V.imp=null;render()}
+  else if(a==='lock')lockAdmin();
+  else if(a==='newfile')createFile();
+  else if(a==='openfile')openFile();
+  else if(a==='refile')reconnectFile();
+});
+document.addEventListener('change',e=>{if(e.target&&e.target.id==='impfile'&&e.target.files[0])readBackup(e.target.files[0])});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target&&e.target.id==='newname'){e.preventDefault();addTab(false)}});
+document.addEventListener('input',e=>{if(e.target&&e.target.id==='newname')V.draft=e.target.value});
+setInterval(()=>{
+  if(S.run){const el=document.querySelector('[data-timer="'+S.run.id+'"]');if(el)el.textContent=hms(Date.now()-S.run.start)}
+  const f=document.getElementById('fmin');if(f)f.textContent=todayMin();
+},1000);
+render();
+})();
+</script>
+
+</body></html>
