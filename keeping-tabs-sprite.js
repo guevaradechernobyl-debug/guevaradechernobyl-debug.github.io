@@ -6,42 +6,45 @@
   if(window.__ktSprite)return;window.__ktSprite=true;
 
   /* ---- easy settings ---- */
-  var SCALE_DESKTOP=3;       // 3 = 147x129 px (whole numbers keep the pixels sharp)
-  var SCALE_MOBILE=2;        // 2 = 98x86 px
+  var SCALE_DESKTOP=3;       // big screens: 3 = 147x129 px (whole numbers keep the pixels sharp)
+  var SCALE_SMALL=2;         // used when there is less room beside the intro box
+  var SCALE_MOBILE=2;        // phones: 2 = 98x86 px
   var GAP=0.38;              // gap between the sprite and the intro box, as a fraction of the sprite's width
   var NUDGE_Y=0;             // move up (-) or down (+) in px from the spot at the bottom-left of the intro box
   var FOLLOW_SCROLL=true;    // true = stays on screen while scrolling, false = scrolls away with the page
-  var LABEL_Y=0.6;           // label height on the sprite: 0 = top, 1 = bottom (0.6 is about the stomach/feet)
-  var LABEL_COLOR='#ff2a2a';
-  var LABEL_SIZE=15;         // px
-  var LEFT_FALLBACK=14,TOP_FALLBACK=12,TOP_FALLBACK_MOBILE=66; // used when there is no room beside the intro box
+  var LABEL_Y=0.6;           // label height on the sprite: 0 = top, 1 = bottom
+  var TEXT_COLOR='#ffffff';  // label text
+  var TIMER_COLOR='#ffd426'; // timer
+  var LABEL_SIZE=14;         // px
+  var LABEL_FONT='"Pixelify Sans","VT323",ui-monospace,Menlo,Consolas,monospace';
+  var PHONE_BELOW=760;       // screens narrower than this use the corner spot
+  var CORNER=12;             // px from the right/bottom edge in the corner spot
   /* ----------------------- */
 
   var cs=document.currentScript,base=cs&&cs.src?cs.src.replace(/[^\/]*$/,''):'';
   var PAGE=base+'keeping-tabs.html',DATA=base+'keeping-tabs-data.json';
   var reduced=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var mobile=function(){return innerWidth<760};
-  var PAD=10;
+  var PAD=12;
 
-  var F='font-family:"VT323",ui-monospace,Menlo,Consolas,monospace!important;font-weight:400!important;font-style:normal!important;text-transform:none!important;letter-spacing:0!important;-webkit-font-smoothing:none;';
+  var F='font-family:'+LABEL_FONT+'!important;font-weight:400!important;font-style:normal!important;text-transform:none!important;letter-spacing:0!important;';
   var css=
-  '#kt-sprite{position:fixed;z-index:9999;display:block;padding:'+PAD+'px;line-height:0;text-decoration:none;-webkit-tap-highlight-color:transparent}'+
+  '#kt-sprite{position:fixed;z-index:9999;display:block;padding:'+PAD+'px;line-height:0;text-decoration:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}'+
   '#kt-sprite .kt-in{position:relative;display:block;animation:kt-bob 1.6s ease-in-out infinite}'+
-  '#kt-sprite img{display:block;image-rendering:pixelated;image-rendering:crisp-edges;image-rendering:pixelated;transform-origin:50% 100%;animation:kt-wig 5s ease-in-out infinite;transition:filter .2s}'+
+  '#kt-sprite img{display:block;image-rendering:pixelated;image-rendering:crisp-edges;image-rendering:pixelated;transform-origin:50% 100%;animation:kt-wig 5s ease-in-out infinite;transition:transform .15s}'+
   '#kt-sprite:hover .kt-in,#kt-sprite:focus-visible .kt-in{animation-play-state:paused}'+
-  '#kt-sprite:hover img,#kt-sprite:focus-visible img{animation:none;transform:scale(1.08);filter:brightness(1.15) drop-shadow(0 0 6px rgba(109,240,207,.7))}'+
-  '#kt-sprite:focus-visible{outline:2px solid #6df0cf;outline-offset:-2px}'+
-  '#kt-sprite.live img{filter:drop-shadow(0 0 6px #6df0cf)}'+
-  '#kt-sprite .kt-sp{position:absolute;width:6px;height:6px;background:#fff;box-shadow:0 0 0 2px rgba(109,240,207,.55);opacity:0;animation:kt-tw 2.4s steps(1,end) infinite;pointer-events:none}'+
+  '#kt-sprite:hover img,#kt-sprite:focus-visible img{animation:none;transform:scale(1.08)}'+
+  '#kt-sprite:focus-visible{outline:2px solid #fff;outline-offset:-2px}'+
+  '#kt-sprite .kt-sp{position:absolute;width:6px;height:6px;background:#fff;opacity:0;animation:kt-tw 2.4s steps(1,end) infinite;pointer-events:none}'+
   '#kt-sprite .kt-sp.a{top:-2px;right:-6px}'+
-  '#kt-sprite .kt-sp.b{top:34%;left:-10px;width:4px;height:4px;animation-delay:.8s;background:#6df0cf}'+
+  '#kt-sprite .kt-sp.b{top:34%;left:-10px;width:4px;height:4px;animation-delay:.8s;background:'+TIMER_COLOR+'}'+
   '#kt-sprite .kt-sp.c{bottom:6px;right:-12px;width:4px;height:4px;animation-delay:1.6s}'+
   /* label: no box, no border, sits on the sprite's body */
   '#kt-sprite .kt-tip{position:absolute;left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;'+
-    'color:'+LABEL_COLOR+'!important;background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0!important;'+F+'font-size:'+LABEL_SIZE+'px!important;line-height:1!important;'+
-    'text-shadow:1px 0 #000,-1px 0 #000,0 1px #000,0 -1px #000,1px 1px #000,-1px -1px #000,1px -1px #000,-1px 1px #000}'+
-  '#kt-sprite .kt-tip span{display:block;max-width:260px;overflow:hidden;text-overflow:ellipsis;'+F+'}'+
-  '#kt-sprite .kt-tip .kt-t{margin-top:2px}'+
+    'background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0!important;'+F+'font-size:'+LABEL_SIZE+'px!important;line-height:1!important;'+
+    'text-shadow:1px 1px 0 #000}'+
+  '#kt-sprite .kt-tip span{display:block;max-width:min(260px,calc(100vw - 24px));overflow:hidden;text-overflow:ellipsis;'+F+'}'+
+  '#kt-sprite .kt-l{color:'+TEXT_COLOR+'!important}'+
+  '#kt-sprite .kt-t{color:'+TIMER_COLOR+'!important;margin-top:3px}'+
   '#kt-sprite:hover .kt-tip,#kt-sprite:focus-visible .kt-tip,#kt-sprite.live .kt-tip{opacity:1}'+
   '@keyframes kt-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}'+
   '@keyframes kt-wig{0%,82%,100%{transform:rotate(0) scale(1)}86%{transform:rotate(-7deg) scale(1.06)}90%{transform:rotate(6deg) scale(1.06)}94%{transform:rotate(-4deg) scale(1.03)}}'+
@@ -66,31 +69,53 @@
   a.appendChild(inner);
   document.body.appendChild(a);
 
-  /* ---- position: beside the bottom-left of the intro box ---- */
+  /* keep the label inside the screen */
+  function clampTip(){
+    tip.style.transform='translateX(-50%)';
+    var r=tip.getBoundingClientRect(),dx=0,vw=document.documentElement.clientWidth||innerWidth;
+    if(r.width){if(r.left<6)dx=6-r.left;else if(r.right>vw-6)dx=vw-6-r.right}
+    if(dx)tip.style.transform='translateX(calc(-50% + '+Math.round(dx)+'px))';
+  }
+
+  /* ---- position ---- */
+  function size(sc){img.style.width=(49*sc)+'px';img.style.height=(43*sc)+'px';tip.style.top=Math.round(43*sc*LABEL_Y)+'px'}
   function layout(){
-    var sc=mobile()?SCALE_MOBILE:SCALE_DESKTOP,W=49*sc,H=43*sc;
-    img.style.width=W+'px';img.style.height=H+'px';
-    tip.style.top=Math.round(H*LABEL_Y)+'px';
-    var left=null,top=null;
     var pan=document.querySelector('.main-column .pixel-panel')||document.querySelector('.pixel-panel');
-    if(!mobile()&&pan){
+    var placed=false;
+    if(innerWidth>=PHONE_BELOW&&pan){
       var r=pan.getBoundingClientRect();
-      var l=r.left-W*GAP-W,t=r.bottom+W*0.1-H/2+NUDGE_Y;
-      if(r.width>0&&l>=6){left=l;top=t}
+      [SCALE_DESKTOP,SCALE_SMALL].some(function(sc){
+        var W=49*sc,H=43*sc,l=r.left-W*GAP-W;
+        if(r.width>0&&l>=6){
+          size(sc);
+          var t=r.bottom+W*0.1-H/2+NUDGE_Y,abs=!FOLLOW_SCROLL;
+          a.style.position=abs?'absolute':'fixed';
+          a.style.right='auto';a.style.bottom='auto';
+          a.style.left=Math.round(l-PAD+(abs?scrollX:0))+'px';
+          a.style.top=Math.round(t+scrollY-PAD)+'px';
+          placed=true;return true;
+        }
+        return false;
+      });
     }
-    var abs=!FOLLOW_SCROLL&&left!==null;
-    if(left===null){left=LEFT_FALLBACK;top=mobile()?TOP_FALLBACK_MOBILE:TOP_FALLBACK}
-    else if(FOLLOW_SCROLL)top+=window.scrollY;           // keep the spot it has at the top of the page
-    else top+=window.scrollY;                            // absolute: document coordinates
-    a.style.position=abs?'absolute':'fixed';
-    a.style.left=Math.round(left-PAD+(abs?window.scrollX:0))+'px';
-    a.style.top=Math.round(top-PAD)+'px';
+    if(!placed){            /* phones and narrow windows: bottom-right corner, clear of the notch/home bar */
+      size(SCALE_MOBILE);
+      a.style.position='fixed';a.style.left='auto';a.style.top='auto';
+      a.style.right='calc('+(CORNER-PAD)+'px + env(safe-area-inset-right,0px))';
+      a.style.bottom='calc('+(CORNER-PAD)+'px + env(safe-area-inset-bottom,0px))';
+    }
+    clampTip();
   }
   layout();
   addEventListener('resize',layout);
   addEventListener('load',layout);
   if(window.ResizeObserver){var ro=new ResizeObserver(layout);ro.observe(document.body);var p0=document.querySelector('.pixel-panel');if(p0)ro.observe(p0)}
   setTimeout(layout,600);setTimeout(layout,2000);
+
+  /* hide while the mobile menu drawer is open */
+  var aside=document.querySelector('aside');
+  function syncHidden(){a.style.display=(aside&&aside.classList.contains('open'))?'none':'block'}
+  if(aside&&window.MutationObserver){new MutationObserver(syncHidden).observe(aside,{attributes:true,attributeFilter:['class']});syncHidden()}
 
   /* ---- live state + timer ---- */
   var runStart=0,tickT=0;
@@ -102,6 +127,7 @@
     clearInterval(tickT);
     if(live){runStart=start;l1.textContent='focusing: '+name;l2.style.display='block';tick();tickT=setInterval(tick,1000)}
     else{runStart=0;l1.textContent=idleText;l2.style.display='none'}
+    clampTip();
   }
   function poll(){
     if(document.hidden)return;
